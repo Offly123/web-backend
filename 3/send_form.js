@@ -7,13 +7,16 @@ $(document).ready(function() {
       type: "POST",
       url: "form_handler.jss",
       data: dataToSend,
-      success: (res) => {
-          console.log(res + " row inserted succesfully");
+      success: function(response) {
+        if (response) {
+          console.log(response);
+        } else {
+          console.log("Error");
+        }
       },
-      error: (err) => {
-        console.log("ERROR");
+      error: function(err) {
         console.log(err.responseText);
-      }
+      },
     });
   })
 

@@ -10,21 +10,21 @@ require('dotenv').config({
 
 let body = '';
 process.stdin.on('data', chunk => {
-  body += chunk.toString();
+  body = chunk.toString();
 });
 
 process.stdin.on('end', () => {
-  
-  const parsedData = querystring.parse(body);
-  
+
   console.log('Content-Type: application/json');
   console.log();
+
+  let parsedData = querystring.parse(body);
 
   let DB_HOST = process.env.DBHOST;
   let DB_USER = process.env.DBUSER;
   let DB_PSWD = process.env.DBPSWD;
   let DB_NAME = process.env.DBNAME;
-
+  
   let con = mysql.createConnection({
     host:       DB_HOST,
     user:       DB_USER,
@@ -33,12 +33,12 @@ process.stdin.on('end', () => {
   });
   
   con.connect(function(err) {
+    console.log("HERE");
+    
     if (err) {
-      console.log(err);
-      throw err;
+      console.log(err)
     };
-    console.log("Connected\n");
-
+    
     const data = {
       fullName: parsedData.fullName,
       phone: parsedData.phone,
@@ -48,27 +48,45 @@ process.stdin.on('end', () => {
       biography: parsedData.biography
     };  
 
-    let sql_injection  = "INSERT INTO users (full_name, phone, email, date_of_birth, gender, biography) VALUES (?)";
-    let values = [
-      [data.fullName, data.phone, data.email, data.birthDate, data.sex, data.biography]
+
+
+    let sql_users  = "INSERT IGNORE INTO users (full_name, phone, email, date_of_birth, gender, biography) values (?)";
+    const users = [
+      [data.fullName, data.phone, data.email, data.birthDate, data.sex, data.biography],
     ];
+    let user_id;
 
-    console.log(data);
-    console.log("created");
-
-    con.query(sql_injection, values, function(err, res) {
+    con.query(sql_users, users, function(err, result) {
 
       if (err) {
-        console.log("Error with injection");
         console.log(err);
-        con.end();
         throw err;
       };
 
-      console.log(res.affectedRows);
-      con.end();
+      console.log("users inserted");
+      user_id = result.insertId;
+      console.log("user_id = " + user_id);
+      
 
-    })
+    
+      let sql_user_languages  = "INSERT IGNORE INTO user_languages (user_id, language_id) values ?";
+      let user_languages = [];
+      parsedData.language.forEach(element => {
+        user_languages.push([user_id, element]);
+      });
+
+      console.log(user_languages);
+
+      con.query(sql_user_languages, [user_languages], function(err, result) {
+
+        if (err) {
+          console.log(err);
+          throw err;
+        };
+
+        console.log("user languages inserted");
+
+      });
+    });
   })
-  console.log();
 });
