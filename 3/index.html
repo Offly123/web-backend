@@ -11,48 +11,89 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        Тут хэдер
-    </header>
+    <div class="svg-wrapper">
+        <svg class="svg" id="svg1" width="400" height="400">
+            <circle cx="200" cy="200" r="200" fill="#ffffcc" />
+        </svg>
+        <svg class="svg" id="svg2" width="200" height="200">
+            <circle cx="100" cy="100" r="100" fill="#ffffcc" />
+        </svg>
+        <svg class="svg" id="svg3" width="600" height="600">
+            <circle cx="300" cy="300" r="300" fill="#ffffcc" />
+        </svg>
+    </div >
     <form id="form">
-        <label>ФИО:</label><br>
-        <input type="text" name="fullName" placeholder="Имя:"><br>
-        <label>Номер телефона:</label><br>
-        <input type="phone" name="phone" placeholder="8-800-555-35-35"><br>
-        <label>Электронная почта</label><br>
-        <input type="email" name="email" placeholder="example@somemail.com"><br>
-        <label>Дата рождения</label><br>
-        <input type="date" name="birthDate"><br>
-        <label>Пол:</label><br>
-        <input name="sex" type="radio" id="radio1" value="male">
-        <label for="radio1">Мужской</label><br>
-        <input name="sex" type="radio" id="radio2" value="female">
-        <label for="radio2">Женский</label><br>
-        <input name="sex" type="radio" id="radio3" value="other" checked="checked">
-        <label for="radio3">Боевой вертолёт</label><br>
-        <label>Выберите любимый язык программирования: </label><br>
-        
-        <input name="language" type="checkbox" value="1">Pascal</input><br>
-        <input name="language" type="checkbox" value="2">C</input><br>
-        <input name="language" type="checkbox" value="3">C++</input><br>
-        <input name="language" type="checkbox" value="4">JavaScript</input><br>
-        <input name="language" type="checkbox" value="5">PHP</input><br>
-        <input name="language" type="checkbox" value="6">Python</input><br>
-        <input name="language" type="checkbox" value="7">Java</input><br>
-        <input name="language" type="checkbox" value="8">Haskel</input><br>
-        <input name="language" type="checkbox" value="9">Clojure</input><br>
-        <input name="language" type="checkbox" value="10">Prolog</input><br>
-        <input name="language" type="checkbox" value="11">Scala</input><br>
-        <input name="language" type="checkbox" value="12">Go</input><br>
-        <label>Краткая биография:</label><br>
-        <textarea name="biography" placeholder="ы"></textarea><br>
-        <input type="checkbox"> <label>С приказом об отчислении озеакомлен(а)</label><br>
-        <button id="consent" type="submit">Submit</button>
-    </form>
+        <div class="head">
+            Форма(не доделано)
+        </div>
+        <div class="main">
 
-    <vilikiyKostil style="flex: 1"></vilikiyKostil>
-    <footer>
-        Тут футер
-    </footer>
+            <div class="element">
+                <label>ФИО:</label>
+                <input type="text" name="fullName" placeholder="Иванов Иван Иванович">
+            </div>
+
+            <div class="element">
+                <label>Номер телефона:</label>
+                <input type="phone" name="phone" placeholder="8-800-555-35-35">
+            </div>
+
+            <div class="element">
+                <label>Электронная почта</label>
+                <input type="email" name="email" placeholder="example@somemail.com">
+            </div>
+
+            <div class="element">
+                <label>Дата рождения</label>
+                <input type="date" name="birthDate">
+            </div>
+
+            <div class="element radio">
+
+                <div class="pol">
+                    <label>Пол:</label>
+                </div>
+
+                <div class="radio-buttons-wrapper">
+
+                    <div class="btn-wrapper">
+                        <input name="sex" type="radio" class="radio-btn" id="radio1" value="male">
+                        <label for="radio1">Мужской</label>
+                    </div>
+
+                    <div class="btn-wrapper">
+                        <input name="sex" type="radio" class="radio-btn" id="radio2" value="female">
+                        <label for="radio2">Женский</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div>
+                <label>Любимые языки программирования: </label>
+            </div>
+            
+            <!-- <input name="language" type="checkbox" value="1">Pascal</input><br>
+            <input name="language" type="checkbox" value="2">C</input><br>
+            <input name="language" type="checkbox" value="3">C++</input><br>
+            <input name="language" type="checkbox" value="4">JavaScript</input><br>
+            <input name="language" type="checkbox" value="5">PHP</input><br>
+            <input name="language" type="checkbox" value="6">Python</input><br>
+            <input name="language" type="checkbox" value="7">Java</input><br>
+            <input name="language" type="checkbox" value="8">Haskel</input><br>
+            <input name="language" type="checkbox" value="9">Clojure</input><br>
+            <input name="language" type="checkbox" value="10">Prolog</input><br>
+            <input name="language" type="checkbox" value="11">Scala</input><br>
+            <input name="language" type="checkbox" value="12">Go</input><br> -->
+            <label>Краткая биография:</label><br>
+            <textarea name="biography" placeholder="ы"></textarea>
+            <div>
+                <input type="checkbox">
+                <label>С приказом об отчислении ознакомлен(а)</label><br>
+            </div>
+        </div>
+        <button id="button" type="submit">Отправить</button>
+    </form>
 </body>
 </html>
