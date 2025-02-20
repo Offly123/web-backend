@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="./">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="send_form.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#"> 
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        Тут хэдер
+    </header>
+    <form id="form">
+        <label>ФИО:</label><br>
+        <input type="text" name="fullName" placeholder="Имя:"><br>
+        <label>Номер телефона:</label><br>
+        <input type="phone" name="phone" placeholder="8-800-555-35-35"><br>
+        <label>Электронная почта</label><br>
+        <input type="email" name="email" placeholder="example@somemail.com"><br>
+        <label>Дата рождения</label><br>
+        <input type="date" name="birthDate"><br>
+        <label>Пол:</label><br>
+        <input name="sex" type="radio" id="radio1" value="male">
+        <label for="radio1">Мужской</label><br>
+        <input name="sex" type="radio" id="radio2" value="female">
+        <label for="radio2">Женский</label><br>
+        <input name="sex" type="radio" id="radio3" value="other" checked="checked">
+        <label for="radio3">Боевой вертолёт</label><br>
+        <label>Выберите любимый язык программирования: </label><br>
+        <!--<input type="checkbox" value="language">Pascal</input><br>
+        <input type="checkbox" value="language">C</input><br>
+        <input type="checkbox" value="language">C++</input><br>
+        <input type="checkbox" value="language">JavaScript</input><br>
+        <input type="checkbox" value="language">PHP</input><br>
+        <input type="checkbox" value="language">Python</input><br>
+        <input type="checkbox" value="language">Java</input><br>
+        <input type="checkbox" value="language">Haskel</input><br>
+        <input type="checkbox" value="language">Clojure</input><br>
+        <input type="checkbox" value="language">Prolog</input><br>
+        <input type="checkbox" value="language">Scala</input><br>
+        <input type="checkbox" value="language">Go</input><br>-->
+        <label>Краткая биография:</label><br>
+        <textarea name="biography" placeholder="ы"></textarea><br>
+        <input type="checkbox"> <label>С приказом об отчислении озеакомлен(а)</label><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <vilikiyKostil style="flex: 1"></vilikiyKostil>
+    <footer>
+        Тут футер
+    </footer>
+</body>
+</html>

@@ -1,0 +1,13 @@
+body {
+  min-height: 100vh;
+  flex-direction: column;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  background-color: #3c3c3c;
+  color: white;
+}
+
+#radio1 {
+  background-color: #aaa;
+}
