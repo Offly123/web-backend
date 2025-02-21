@@ -20,6 +20,41 @@ process.stdin.on('end', () => {
 
   let parsedData = querystring.parse(body);
 
+  if (parsedData.fullName.length > 150) {
+    console.log("ФИО не может быть длиннее 150 символов");
+    return;
+  }
+
+  if (!(/^[А-Яа-яЁё\s]+$/.test(parsedData.fullName))) {
+    console.log("ФИО может содержать только кириллические символы и пробелы");
+    return;
+  }
+
+  if (!(/^[0-9\s]+$/.test(parsedData.fullName))) {
+    console.log("Номер телефона может содержать только цифры и пробелы");
+    return;
+  }
+
+  if (parsedData.sex == null) {
+    console.log("Поле \"Пол\" не может быть пустым");
+    return;
+  }
+
+  if (parsedData.language == undefined) {
+    console.log("Выберите хотя бы один любимый язык программирования");
+    return;
+  }
+
+  if (parsedData.biography == '') {
+    console.log("Заполните поле \"Краткая биография\"");
+    return;
+  }
+
+  if (parsedData.agreement == 'on') {
+    console.log("Ознакомьтесь с приказом об отчислении и поставьте галочку");
+    return;
+  }
+
   let DB_HOST = process.env.DBHOST;
   let DB_USER = process.env.DBUSER;
   let DB_PSWD = process.env.DBPSWD;
@@ -33,10 +68,9 @@ process.stdin.on('end', () => {
   });
   
   con.connect(function(err) {
-    console.log("HERE");
     
     if (err) {
-      console.log(err)
+      throw err;
     };
     
     const data = {
@@ -59,13 +93,10 @@ process.stdin.on('end', () => {
     con.query(sql_users, users, function(err, result) {
 
       if (err) {
-        console.log(err);
         throw err;
       };
 
-      console.log("users inserted");
       user_id = result.insertId;
-      console.log("user_id = " + user_id);
       
 
     
@@ -75,18 +106,15 @@ process.stdin.on('end', () => {
         user_languages.push([user_id, element]);
       });
 
-      console.log(user_languages);
-
       con.query(sql_user_languages, [user_languages], function(err, result) {
 
         if (err) {
-          console.log(err);
           throw err;
         };
 
-        console.log("user languages inserted");
-
+        con.end();
       });
     });
-  })
+  });
+  console.log("Данные успешно обработаны");
 });

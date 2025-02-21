@@ -3,7 +3,7 @@ body {
   overflow: hidden;
 }
 
-p {
+p, ul, li {
   all: unset;
 }
 
@@ -45,12 +45,17 @@ body {
   padding: 0;
   margin: 0;
   background-color: #3c3c3c;
-  background-image: linear-gradient(#e57cff, #7954ff);
+  background-image: linear-gradient(#b763cc, #5a3ebf);
 }
 
+
+/* ФОРМА */
+
+
+
 form {
-  box-shadow: 0px 0px 10px rgba(255,255,255, .5);
-  background-color: rgba(255,255,255, .2);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .2);
   height: clamp(550px, 85vw, 600px);
   width: clamp(200px , 85vw, 600px);
   padding: max(5px, 1vw);
@@ -60,12 +65,25 @@ form {
   backdrop-filter: blur(5px);
 }
 
+
+
+/* ЗАГОЛОВОК */
+
+
+
 form > .head {
   font-weight: 600;
   height: clamp(15px, 5%, 50px);
   font-size: 1.5rem;
   text-align: center;
 }
+
+
+
+
+/* ГЛАВНОЕ */
+
+
 
 form > .main {
   display: flex;
@@ -74,6 +92,12 @@ form > .main {
   align-content: flex-start;
   height: 90%;
 }
+
+
+
+/* ПОЛЯ ВВОДА */
+
+
 
 form > .main > .element {
   align-items: center;
@@ -104,7 +128,11 @@ form > .main > .element {
   border-radius: 100px;
   border: 1px solid black;
   box-shadow: 0px 0px 0px rgba(255,255,255,.5) inset;
-  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+.element > input:hover {
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .element > input::placeholder {
@@ -115,6 +143,12 @@ form > .main > .element {
   outline: none;
   box-shadow: 0px 0px 7px rgba(255,255,255, .5) inset;
 }
+
+
+
+/* ПОЛ */
+
+
 
 .radio {
   display: flex;
@@ -139,29 +173,34 @@ form > .main > .element {
 .btn-wrapper {
   width: calc(100% - 20px);
   background-color: none;
-  transition: background-color .2s;
+  transition: background-color .12s;
   border: 1px solid black;
   border-radius: 100px;
 }
 
 .btn-wrapper > label {
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 900;
   width: 100%;
   height: 100%;
-  transition: box-shadow .3s;
+  transition: box-shadow .3s, background-color .3s;
+  border-radius: 0 100px 100px 0;
+}
+
+.btn-wrapper > label:hover {
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .btn-wrapper > label:focus {
   box-shadow: 0px 0px 7px rgba(255,255,255, .5) inset;
   border-radius: 0 100px 100px 0;
-  outline: 1px solid black;
 }
 
-.btn-wrapper:first-child > label:focus {
-  outline: 1px solid black;
+.btn-wrapper:first-child > label {
   border-radius: 100px 0 0 100px;
 }
 
@@ -187,7 +226,35 @@ form > .main > .element {
 }
 
 
-/* ТУТ СТИЛИ ЯЗЫКОВ */
+
+/* ЯЗЫКИ */
+
+
+
+.languages {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: clamp(20px, 7%, 70px);
+  width: clamp(300px, 60%, 500px);
+}
+
+.languages > label {
+  width: 1000px;
+}
+
+.language-list > li > input {
+  /* visibility: hidden;  */
+}
+
+.language-list > li > label:focus {
+  outline: 0px 0px 1px black;
+}
+
+
+
+/* БИОГРАФИЯ */
+
 
 
 #biography {
@@ -205,6 +272,10 @@ form > .main > .element {
   padding: 5px;
   width: 100%;
   border-radius: 10px;
+}
+
+#biography > textarea::placeholder {
+ color: rgba(0, 0, 0, .5)
 }
 
 #biography > textarea:focus {

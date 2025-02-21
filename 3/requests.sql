@@ -4,12 +4,12 @@ CREATE TABLE users (
     phone VARCHAR(15),
     email VARCHAR(255),
     date_of_birth DATE,
-    gender ENUM('male', 'female', 'other'),
+    gender ENUM('male', 'female'),
     biography TEXT
 );
 
 CREATE TABLE user_languages (
-    user_id INT AUTO_INCREMENT DEFAULT 1,
+    user_id INT,
     language_id INT,
     PRIMARY KEY (user_id, language_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,

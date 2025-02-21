@@ -8,16 +8,11 @@ $(document).ready(function() {
       url: "form_handler.jss",
       data: dataToSend,
       success: function(response) {
-        if (response) {
-          console.log(response);
-        } else {
-          console.log("Error");
-        }
+        alert("123");
       },
       error: function(err) {
-        console.log(err.responseText);
+        alert(err.responseText);
       },
     });
   })
-
 })
