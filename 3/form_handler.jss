@@ -30,7 +30,7 @@ process.stdin.on('end', () => {
     return;
   }
 
-  if (!(/^[0-9\s]+$/.test(parsedData.fullName))) {
+  if (!(/^[0-9\s]+$/.test(parsedData.phone))) {
     console.log("Номер телефона может содержать только цифры и пробелы");
     return;
   }
