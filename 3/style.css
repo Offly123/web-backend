@@ -3,7 +3,7 @@ body {
   overflow: hidden;
 }
 
-p, ul, li {
+p, ul, li  {
   all: unset;
 }
 
@@ -56,7 +56,7 @@ body {
 form {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);
   background-color: rgba(0, 0, 0, .2);
-  height: clamp(550px, 85vw, 600px);
+  height: clamp(50px, 95dvh, 650px);
   width: clamp(200px , 85vw, 600px);
   padding: max(5px, 1vw);
   border-radius: 10px;
@@ -106,7 +106,7 @@ form > .main > .element {
   display: flex;
   flex-direction: column;
   height: clamp(60px, 7%, 70px);
-  width: clamp(300px, 60%, 500px);
+  width: clamp(250px, 90%, 275px);
   border-radius: 7px;
   padding: 0px 5px;
 }
@@ -196,6 +196,7 @@ form > .main > .element {
 }
 
 .btn-wrapper > label:focus {
+  outline: none;
   box-shadow: 0px 0px 7px rgba(255,255,255, .5) inset;
   border-radius: 0 100px 100px 0;
 }
@@ -235,20 +236,76 @@ form > .main > .element {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: clamp(20px, 7%, 70px);
-  width: clamp(300px, 60%, 500px);
+  height: clamp(20px, 14%, 140px);
+  width: clamp(300px, 80%, 500px);
+}
+
+.language-list {
+  display: flex;
+  flex-direction: column;
+  height: 75px;
+  width: fit-content;
+  overflow: hidden;
+  overflow-y:visible;
+  border-radius: 5px;
+}
+
+.language-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.language-list::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 0 5px 5px 0;
+  width: 5px;
+}
+
+.language-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 0 5px 5px 0;
+  width: 5px;
+}
+
+.language-btn {
+  
+}
+
+.show-languages {
+
+}
+
+.hide-languages {
+
 }
 
 .languages > label {
-  width: 1000px;
+  flex: 1;
+}
+
+.language-list > li {
+  background-color: rgba(255, 255, 255, .2);
+  padding: 3px;
+  transition: all .2s;
+}
+
+.language-list > li:has(input:checked) {
+  background-color: rgba(100, 255, 100, .4);
 }
 
 .language-list > li > input {
-  /* visibility: hidden;  */
+  z-index: 1;
+  text-align: center;
+  visibility: hidden;
+  display: none;
+}
+
+.language-list > li > label {
+  display: block;
+  width: 100%;
 }
 
 .language-list > li > label:focus {
-  outline: 0px 0px 1px black;
+  
 }
 
 
