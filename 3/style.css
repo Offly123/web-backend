@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Manrope";
-  src: url("./fonts/Manrope-VariableFont_wght.ttf");
+  src: url("./font/Manrope-VariableFont_wght.ttf");
 }
 
 body {
@@ -60,6 +60,7 @@ body {
 
 
 form {
+  font-weight: 600;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);
   background-color: rgba(0, 0, 0, .2);
   height: clamp(50px, 95dvh, 650px);
@@ -78,7 +79,7 @@ form {
 
 
 form > .head {
-  font-weight: 600;
+  font-weight: 900;
   height: clamp(15px, 5%, 50px);
   font-size: 1.5rem;
   text-align: center;
@@ -121,6 +122,7 @@ form > .main > .element {
   color: black;
   margin-left: 15px;
   padding: clamp(2px, 1vw, 4px);
+  padding-bottom: 0;
 }
 
 .element > input {
@@ -147,7 +149,7 @@ form > .main > .element {
 
 .element > input:focus {
   outline: none;
-  box-shadow: 0px 0px 7px rgba(255,255,255, .5) inset;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
 }
 
 
@@ -203,8 +205,7 @@ form > .main > .element {
 
 .btn-wrapper > label:focus {
   outline: none;
-  box-shadow: 0px 0px 7px rgba(255,255,255, .5) inset;
-  border-radius: 0 100px 100px 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .3) inset;
 }
 
 .btn-wrapper:first-child > label {
@@ -226,6 +227,7 @@ form > .main > .element {
 
 .btn-wrapper:has(input:checked) {
   background-color: rgba(255, 0, 179, .3);
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
 }
 
 .btn-wrapper:has(input:checked):first-child {
@@ -246,14 +248,25 @@ form > .main > .element {
   width: clamp(300px, 80%, 500px);
 }
 
+.language-btn {
+  position: relative;
+}
+
 .language-list {
-  display: flex;
+  display: none;
   flex-direction: column;
   height: 75px;
   width: fit-content;
   overflow: hidden;
   overflow-y:visible;
   border-radius: 5px;
+  position: absolute;
+  top: 25px;
+  right: 0;
+}
+
+.show-languages {
+  display: flex;
 }
 
 .language-list::-webkit-scrollbar {
@@ -272,26 +285,18 @@ form > .main > .element {
   width: 5px;
 }
 
-.language-btn {
+.languages > label {
   
 }
 
-.show-languages {
-
-}
-
-.hide-languages {
-
-}
-
-.languages > label {
-  flex: 1;
-}
-
 .language-list > li {
-  background-color: rgba(255, 255, 255, .2);
+  background-color: rgba(255, 255, 255, .1);
   padding: 3px;
   transition: all .2s;
+}
+
+.language-list > li:hover {
+  background-color: rgba(255, 255, 255, .15);
 }
 
 .language-list > li:has(input:checked) {
@@ -310,8 +315,8 @@ form > .main > .element {
   width: 100%;
 }
 
-.language-list > li > label:focus {
-  
+.language-list > li > label:hover {
+
 }
 
 
@@ -341,9 +346,13 @@ form > .main > .element {
  color: rgba(0, 0, 0, .5)
 }
 
+#biography > textarea:hover {
+  background-color: rgba(255, 255, 255, .15);
+}
+
 #biography > textarea:focus {
   outline: none;
-  box-shadow: 0px 0px 7px rgba(255,255,255, .5) inset;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
 }
 
 
@@ -356,11 +365,18 @@ form > .main > .element {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: flex-end;
-  align-content: end;
-  justify-items: end;
 }
 
-.submit-btn {
-  /* float: right; */
+#submit-btn {
+  font-weight: 600;
+  border: none;
+  border-radius: 100px;
+  height: clamp(30px, 1vw, 70px);
+  background-color: rgba(0, 221, 255, 0.5);
+  opacity: .5;
+  transition: all .3s;
+}
+
+#submit-btn:hover {
+  background-color: rgba(0, 221, 255, 0.7);
 }
