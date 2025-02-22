@@ -55,21 +55,21 @@ body {
 }
 
 
+
 /* ФОРМА */
 
 
 
 form {
   font-weight: 600;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);
-  background-color: rgba(0, 0, 0, .2);
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, .2);
   height: clamp(50px, 95dvh, 650px);
   width: clamp(200px , 85vw, 600px);
   padding: max(5px, 1vw);
   border-radius: 10px;
-  outline: #5100ff 10px;
   color: black;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(25px);
 }
 
 
@@ -84,7 +84,6 @@ form > .head {
   font-size: 1.5rem;
   text-align: center;
 }
-
 
 
 
@@ -140,7 +139,7 @@ form > .main > .element {
 }
 
 .element > input:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .element > input::placeholder {
@@ -244,25 +243,50 @@ form > .main > .element {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   height: clamp(20px, 14%, 140px);
   width: clamp(300px, 80%, 500px);
+}
+
+.languages > label {
+  align-content: center;
 }
 
 .language-btn {
   position: relative;
 }
 
+#toggle-languages {
+  font-weight: 600;
+  border: none;
+  border-radius: 100px;
+  height: clamp(30px, 1vw, 70px);
+  width: 75px;
+  background-color: rgba(0, 221, 255, 0.3);
+  transition: all .3s;
+}
+
+#toggle-languages:hover {
+  background-color: rgba(0, 221, 255, 0.5);
+}
+
+#toggle-languages:focus {
+  outline: none;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
 .language-list {
   display: none;
   flex-direction: column;
-  height: 75px;
+  height: 100px;
   width: fit-content;
   overflow: hidden;
   overflow-y:visible;
   border-radius: 5px;
   position: absolute;
-  top: 25px;
+  top: 35px;
   right: 0;
+  backdrop-filter: blur(5px);
 }
 
 .show-languages {
@@ -275,28 +299,32 @@ form > .main > .element {
 
 .language-list::-webkit-scrollbar-track {
   background-color: rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 1);
   border-radius: 0 5px 5px 0;
   width: 5px;
 }
 
 .language-list::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(0, 221, 255, 0.4);
   border-radius: 0 5px 5px 0;
   width: 5px;
 }
 
 .languages > label {
-  
+  padding: 5px;
+  height: 100%;
 }
 
 .language-list > li {
-  background-color: rgba(255, 255, 255, .1);
-  padding: 3px;
+  padding-left: 5px;
+  width: 100px;
+  display: block;
+  background-color: rgba(255, 255, 255, .4);
   transition: all .2s;
 }
 
 .language-list > li:hover {
-  background-color: rgba(255, 255, 255, .15);
+  background-color: rgba(255, 255, 255, .5);
 }
 
 .language-list > li:has(input:checked) {
@@ -304,7 +332,6 @@ form > .main > .element {
 }
 
 .language-list > li > input {
-  z-index: 1;
   text-align: center;
   visibility: hidden;
   display: none;
@@ -347,7 +374,7 @@ form > .main > .element {
 }
 
 #biography > textarea:hover {
-  background-color: rgba(255, 255, 255, .15);
+  background-color: rgba(255, 255, 255, .2);
 }
 
 #biography > textarea:focus {
@@ -372,11 +399,15 @@ form > .main > .element {
   border: none;
   border-radius: 100px;
   height: clamp(30px, 1vw, 70px);
-  background-color: rgba(0, 221, 255, 0.5);
-  opacity: .5;
+  background-color: rgba(0, 221, 255, 0.3);
   transition: all .3s;
 }
 
 #submit-btn:hover {
-  background-color: rgba(0, 221, 255, 0.7);
+  background-color: rgba(0, 255, 200, 0.5);
+}
+
+#submit-btn:focus {
+  outline: none;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
 }
