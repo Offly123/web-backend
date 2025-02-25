@@ -22,7 +22,7 @@
         <svg class="svg" id="svg3" width="600" height="600">
             <circle cx="300" cy="300" r="300" fill="#ffe948" />
         </svg>
-    </div >
+    </div>
     <form id="form" method="get" action="form_handler.jss">
         <div class="head">
             Форма
@@ -31,17 +31,17 @@
 
             <div class="element">
                 <label>ФИО:</label>
-                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required>
+                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required $fullName_error>
             </div>
 
             <div class="element">
                 <label>Номер телефона:</label>
-                <input type="phone" name="phone" placeholder="8-800-555-35-35" required>
+                <input type="phone" name="phoneNumber" placeholder="8-800-555-35-35" required>
             </div>
 
             <div class="element">
                 <label>Электронная почта</label>
-                <input type="email" name="email" placeholder="example@somemail.com" required>
+                <input type="email" name="emailAddress" placeholder="example@somemail.com" required>
             </div>
 
             <div class="element">
@@ -131,11 +131,11 @@
 
             <div class="element" id="biography">
                 <label>Краткая биография:</label>
-                <textarea id="mytext" name="biography" placeholder="Биография"></textarea>
+                <textarea id="mytext" name="biography" placeholder="Биография" required></textarea>
             </div>
             <div>
                 <input id="agreement" type="checkbox" name="agreement" required>
-                <label for="agreement">С приказом об отчислении ознакомлен(а)<!--мне лень делать эту кнопку--></label><br>
+                <label for="agreement">С приказом об отчислении ознакомлен(а)<!--мне лень делать эту кнопку красивой--></label><br>
             </div>
         </div>
         <div class="form-end">

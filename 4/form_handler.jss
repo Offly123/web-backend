@@ -3,84 +3,57 @@
 
 const mysql = require('mysql2');
 const querystring = require('querystring');
+const url = require('url');
+const fs = require('fs');
 require('dotenv').config({
   path: "../../../.env"
 });
-const fs = require('fs');
-const path = require('path');
+const cook = require('./cook.jss');
 
-fs.readFile('/home/u68757/www/web-backend/4/index.html', (err, data) => {
-  console.log("something");
-  if (err) {
-    console.log("error", err);
-    return;
-  }
-  console.log(data);
-})
-
-let body = '';
-process.stdin.on('data', (info) => {
-  body += info.toString();
+process.stdin.on('data', () => {
+  
 }).on('end', () => {
   
-  let parsedData = querystring.parse(body);
-  
-  let currentDate = new Date();
-  currentDate.setFullYear(currentDate.getFullYear() + 1);
-  console.log('Set-Cookie: test153=1234; Expires=' + currentDate.toGMTString());
-  console.log('Content-Type: text/html; charset=utf-8');
+  let requestURI = process.env.REQUEST_URI;
+  let formData = url.parse(requestURI, true).query;
+
+  cook.setCookies(formData);
   // console.log('Content-Type: application/json; charset=utf-8');
+  console.log('Content-Type: text/html; charset=utf-8');
   console.log();
 
-  // fs.writeFile('/home/u68757/www/web-backend/4/temp.html', content, { flag: 'a+' }, err => {});
+
+  let cookieList = cook.cookiesToArray();  
   
-  try {
-    const data = fs.readFileSync('/home/u68757/www/web-backend/4/temp.html', 'utf8');
+  // console.log("cookieList:");
+  // console.log(cookieList);
+
+  
     
-    // console.log(data);
-    let temp = data.replace('$something', 'value="itworks" class="somestyle"');
-    console.log(temp);
+  // console.log("before");
+  if (!cook.validateValues(cookieList)) {
+    try {
+      const page = fs.readFileSync('/home/u68757/www/web-backend/4/index.html', 'utf8');
+      
+      let editedPage = page.replace('$fullName_error', 'value="' + cookieList.fullName + '"');
+      console.log(editedPage);
+    } catch (err) {
+      console.log(err);
+    }
+    return;
+  }
+  // console.log("after");
+
+
+  try {
+    const page = fs.readFileSync('/home/u68757/www/web-backend/4/index.html', 'utf8');
+    
+    // let editedPage = page.replace('$fullName_error', 'value="' + cookieList.fullName);
+    console.log(page);
   } catch (err) {
     console.log(err);
   }
-  // console.log("Text");
 
-
-  
-  if (parsedData.fullName.length > 150) {
-    console.log("ФИО не может быть длиннее 150 символов");
-    return;
-  }
-
-  if (!(/^[А-Яа-яЁё\s]+$/.test(parsedData.fullName))) {
-    console.log("ФИО может содержать только кириллические символы и пробелы");
-    return;
-  }
-
-  if (!(/^[0-9\s]+$/.test(parsedData.phone))) {
-    console.log("Номер телефона может содержать только цифры и пробелы");
-    return;
-  }
-
-  if (parsedData.sex == null) {
-    console.log("Поле \"Пол\" не может быть пустым");
-    return;
-  }
-
-  if (parsedData.language == undefined) {
-    console.log("Выберите хотя бы один любимый язык программирования");
-    return;
-  }
-
-  if (parsedData.biography == '') {
-    console.log("Заполните поле \"Краткая биография\"");
-    return;
-  }
-
-  if (parsedData.agreement == 'on') {
-    console.log("Ознакомьтесь с приказом об отчислении и поставьте галочку");
-    return;
-  }
 
   const DB_HOST = process.env.DBHOST;
   const DB_USER = process.env.DBUSER;
@@ -101,12 +74,12 @@ process.stdin.on('data', (info) => {
     };
     
     const data = {
-      fullName: parsedData.fullName,
-      phone: parsedData.phone,
-      email: parsedData.email,
-      birthDate: parsedData.birthDate,
-      sex: parsedData.sex,
-      biography: parsedData.biography
+      fullName: formData.fullName,
+      phone: formData.phone,
+      email: formData.email,
+      birthDate: formData.birthDate,
+      sex: formData.sex,
+      biography: formData.biography
     };  
 
 
@@ -128,7 +101,7 @@ process.stdin.on('data', (info) => {
     
       let sql_user_languages  = "INSERT IGNORE INTO user_languages (user_id, language_id) values ?";
       let user_languages = [];
-      parsedData.language.forEach(element => {
+      formData.language.forEach(element => {
         user_languages.push([user_id, element]);
       });
 
@@ -142,5 +115,4 @@ process.stdin.on('data', (info) => {
       });
     });
   });
-  console.log("Данные успешно обработаны");
 });
