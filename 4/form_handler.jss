@@ -9,6 +9,15 @@ require('dotenv').config({
 const fs = require('fs');
 const path = require('path');
 
+fs.readFile('/home/u68757/www/web-backend/4/index.html', (err, data) => {
+  console.log("something");
+  if (err) {
+    console.log("error", err);
+    return;
+  }
+  console.log(data);
+})
+
 let body = '';
 process.stdin.on('data', (info) => {
   body += info.toString();
@@ -20,20 +29,24 @@ process.stdin.on('data', (info) => {
   currentDate.setFullYear(currentDate.getFullYear() + 1);
   console.log('Set-Cookie: test153=1234; Expires=' + currentDate.toGMTString());
   console.log('Content-Type: text/html; charset=utf-8');
+  // console.log('Content-Type: application/json; charset=utf-8');
   console.log();
+
+  // fs.writeFile('/home/u68757/www/web-backend/4/temp.html', content, { flag: 'a+' }, err => {});
   
-  console.log("Before file<br>");
-  const myRead = fs.createReadStream(path.join(__dirname, '/index.html'), 'utf8');
-  let page = '';
-  myRead.on('data', (info) => {
-    page += info;
-  }).on('end', () => {
-    console.log(page);
-  }) 
-  console.log("After file\n");
+  try {
+    const data = fs.readFileSync('/home/u68757/www/web-backend/4/temp.html', 'utf8');
+    
+    // console.log(data);
+    let temp = data.replace('$something', 'value="itworks" class="somestyle"');
+    console.log(temp);
+  } catch (err) {
+    console.log(err);
+  }
+  // console.log("Text");
 
 
-
+  
   if (parsedData.fullName.length > 150) {
     console.log("ФИО не может быть длиннее 150 символов");
     return;
@@ -69,8 +82,6 @@ process.stdin.on('data', (info) => {
     return;
   }
 
-
-
   const DB_HOST = process.env.DBHOST;
   const DB_USER = process.env.DBUSER;
   const DB_PSWD = process.env.DBPSWD;
@@ -97,7 +108,6 @@ process.stdin.on('data', (info) => {
       sex: parsedData.sex,
       biography: parsedData.biography
     };  
-
 
 
     let sql_users  = "INSERT IGNORE INTO users (full_name, phone, email, date_of_birth, gender, biography) values (?)";

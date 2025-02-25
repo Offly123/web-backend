@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="./">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="send_form.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="front.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#"> 
+    <title>Lab 4</title>
+</head>
+<body>
+    <div class="svg-wrapper">
+        <svg class="svg" id="svg1" width="400" height="400">
+            <circle cx="200" cy="200" r="200" fill="#ffe948" />
+        </svg>
+        <svg class="svg" id="svg2" width="200" height="200">
+            <circle cx="100" cy="100" r="100" fill="#ffe948" />
+        </svg>
+        <svg class="svg" id="svg3" width="600" height="600">
+            <circle cx="300" cy="300" r="300" fill="#ffe948" />
+        </svg>
+    </div >
+    <form id="form" method="get" action="form_handler.jss">
+        <div class="head">
+            Форма
+        </div>
+        <div class="main">
+
+            <div class="element">
+                <label>ФИО:</label>
+                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required>
+            </div>
+
+            <div class="element">
+                <label>Номер телефона:</label>
+                <input type="phone" name="phone" placeholder="8-800-555-35-35" required $something  >
+            </div>
+
+            <div class="element">
+                <label>Электронная почта</label>
+                <input type="email" name="email" placeholder="example@somemail.com" required>
+            </div>
+
+            <div class="element">
+                <label>Дата рождения</label>
+                <input type="date" name="birthDate" required>
+            </div>
+
+            <div class="element radio">
+
+                <div class="pol">
+                    <label>Пол:</label>
+                </div>
+
+                <div class="radio-buttons-wrapper">
+
+                    <div class="btn-wrapper">
+                        <input name="sex" type="radio" id="radio1" class="radio-btn" value="male">
+                        <label for="radio1" tabindex="0">М</label>
+                    </div>
+
+                    <div class="btn-wrapper">
+                        <input name="sex" type="radio" id="radio2" class="radio-btn" value="female">
+                        <label class="TEST" for="radio2" tabindex="0">Ж</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="languages">
+                <label>Любимые языки программирования: </label>
+                
+                <div class="language-btn">
+                    <button class="dont-close" id="toggle-languages" type="button">Языки</button>
+                    <ul class="language-list">
+                        <li class="dont-close">
+                            <input class="dont-close" id="language1" name="language" type="checkbox" value="1">
+                            <label class="dont-close" for="language1" tabindex="0">Pascal</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language2" name="language" type="checkbox" value="2">
+                            <label class="dont-close" for="language2" tabindex="0">C</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language3" name="language" type="checkbox" value="3">
+                            <label class="dont-close" for="language3" tabindex="0">C++</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language4" name="language" type="checkbox" value="4">
+                            <label class="dont-close" for="language4" tabindex="0">JavaScript</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language5" name="language" type="checkbox" value="5">
+                            <label class="dont-close" for="language5" tabindex="0">PHP</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language6" name="language" type="checkbox" value="6">
+                            <label class="dont-close" for="language6" tabindex="0">Python</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language7" name="language" type="checkbox" value="7">
+                            <label class="dont-close" for="language7" tabindex="0">Java</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language8" name="language" type="checkbox" value="8">
+                            <label class="dont-close" for="language8" tabindex="0">Haskel</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language9" name="language" type="checkbox" value="9">
+                            <label class="dont-close" for="language9" tabindex="0">Clojure</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language10" name="language" type="checkbox" value="10">
+                            <label class="dont-close" for="language10" tabindex="0">Prolog</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language11" name="language" type="checkbox" value="11">
+                            <label class="dont-close" for="language11" tabindex="0">Scala</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language12" name="language" type="checkbox" value="12">
+                            <label class="dont-close" for="language12" tabindex="0">Go</label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="element" id="biography">
+                <label>Краткая биография:</label>
+                <textarea id="mytext" name="biography" placeholder="Биография"></textarea>
+            </div>
+            <div>
+                <input id="agreement" type="checkbox" name="agreement" required>
+                <label for="agreement">С приказом об отчислении ознакомлен(а)<!--мне лень делать эту кнопку--></label><br>
+            </div>
+        </div>
+        <div class="form-end">
+            <button id="submit-btn" type="submit">Отправить</button>
+        </div>
+    </form>
+</body>
+</html>
