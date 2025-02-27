@@ -30,30 +30,49 @@
         <div class="main">
 
             <div class="element">
-                <label>ФИО:</label>
-                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required $fullName_error>
+                <label>
+                    ФИО:
+                    <p class="error-text" $fullNameError>
+                        Только кириллические буквы, не больше 150 символов
+                    </p>
+                </label>
+                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required>
             </div>
 
             <div class="element">
                 <label>Номер телефона:</label>
+                <p class="error-text" $phoneNumberError>
+                    Номер телефона может содержать только цифры
+                </p>
                 <input type="phone" name="phoneNumber" placeholder="8-800-555-35-35" required>
             </div>
 
             <div class="element">
                 <label>Электронная почта</label>
+                <p class="error-text" $emailAddressError>
+                    Если вы это видите - вы волшебник
+                </p>
                 <input type="email" name="emailAddress" placeholder="example@somemail.com" required>
             </div>
 
             <div class="element">
-                <label>Дата рождения</label>
+                <label>
+                    Дата рождения
+                    <p class="error-text" $birthDateError>
+                        Год не может быть меньше 1900
+                    </p>
+                </label>
                 <input type="date" name="birthDate" required>
             </div>
 
             <div class="element radio">
 
                 <div class="pol">
-                    <label>Пол:</label>
+                    <label>
+                        Пол:
+                    </label>
                 </div>
+
 
                 <div class="radio-buttons-wrapper">
 
@@ -61,6 +80,10 @@
                         <input name="sex" type="radio" id="radio1" class="radio-btn" value="male">
                         <label for="radio1" tabindex="0">М</label>
                     </div>
+
+                    <p class="error-text-sex error-text" $sexError>
+                        Укажите ваш пол
+                    </p>
 
                     <div class="btn-wrapper">
                         <input name="sex" type="radio" id="radio2" class="radio-btn" value="female">
@@ -72,8 +95,12 @@
             </div>
 
             <div class="languages">
-                <label>Любимые языки программирования: </label>
-                
+                <label>
+                    <p class="error-text-languages error-text" $languageError>
+                        Выберите хотя бы 1 язык
+                    </p>
+                    Любимые языки программирования:
+                </label>
                 <div class="language-btn">
                     <button class="dont-close" id="toggle-languages" type="button">Языки</button>
                     <ul class="language-list">
@@ -131,6 +158,9 @@
 
             <div class="element" id="biography">
                 <label>Краткая биография:</label>
+                <p class="error-text-biography error-text" $biographyError>
+                    Биография не длинее 300 символов
+                </p>
                 <textarea id="mytext" name="biography" placeholder="Биография" required></textarea>
             </div>
             <div>

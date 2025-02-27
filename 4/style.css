@@ -112,16 +112,21 @@ form > .main {
 form > .main > .element {
   align-items: center;
   display: flex;
+  position: relative;
   flex-direction: column;
-  height: clamp(60px, 7%, 70px);
+  justify-content: space-between;
+  height: clamp(60px, 12%, 70px);
   width: clamp(250px, 90%, 275px);
   border-radius: 7px;
   padding: 0px 5px;
 }
 
 .element > label {
+  position: relative;
   color: black;
   margin-left: 15px;
+  width: 100%;
+  text-align: center;
   padding: clamp(2px, 1vw, 4px);
   padding-bottom: 0;
 }
@@ -138,6 +143,7 @@ form > .main > .element {
   border: 1px solid black;
   box-shadow: 0px 0px 0px rgba(255,255,255,.5) inset;
   transition: box-shadow 0.3s, background-color 0.3s;
+  margin-top: 10px;
 }
 
 .element > input:hover {
@@ -168,7 +174,10 @@ form > .main > .element {
 .radio > .pol {
   width: 20%;
   text-align: center;
+  position: relative;
 }
+
+
 
 .radio > .radio-buttons-wrapper {
   display: flex;
@@ -180,6 +189,7 @@ form > .main > .element {
 }
 
 .btn-wrapper {
+  height: min(100%, 25px);
   width: calc(100% - 20px);
   background-color: none;
   transition: background-color .12s;
@@ -243,15 +253,24 @@ form > .main > .element {
 
 .languages {
   display: flex;
+  position: relative;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   height: clamp(20px, 10%, 140px);
   width: clamp(300px, 80%, 500px);
+  padding: 12px 0px;
 }
 
 .languages > label {
   align-content: center;
+  position: relative;
+  padding: 4px 5px;
+  min-height: 25px;
+  height: fit-content;
+  border-radius: 100px;
+  margin-right: 5px;
+
 }
 
 .language-btn {
@@ -263,7 +282,7 @@ form > .main > .element {
   border: none;
   border-radius: 100px;
   height: clamp(30px, 1vw, 70px);
-  width: 75px;
+  width: clamp(50px, 15vw, 75px);
   background-color: rgba(0, 221, 255, 0.3);
   transition: all .3s;
 }
@@ -312,11 +331,6 @@ form > .main > .element {
   width: 5px;
 }
 
-.languages > label {
-  padding: 5px;
-  height: 100%;
-}
-
 .language-list > li {
   padding-left: 5px;
   width: 100px;
@@ -344,10 +358,6 @@ form > .main > .element {
   width: 100%;
 }
 
-.language-list > li > label:hover {
-
-}
-
 
 
 /* БИОГРАФИЯ */
@@ -368,6 +378,7 @@ form > .main > .element {
   padding: 5px;
   width: 100%;
   border-radius: 10px;
+  margin-top: 10px;
 }
 
 #biography > textarea::placeholder {
@@ -411,4 +422,34 @@ form > .main > .element {
 #submit-btn:focus {
   outline: none;
   box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+
+
+/* ОШИБКИ */
+
+
+
+.error-text  {
+  /* display: none; */
+  color: #ff1010;
+  font-size: clamp(6px, 2.5vw, 9px);
+  position: absolute;
+  left: 20px;
+  top: 23px;
+}
+
+.error-text-sex {
+  left: 45px;
+  top: 20px;
+}
+
+.error-text-languages {
+  top: -15px;
+  left: 23px;
+}
+
+.error-text-biography {
+  left: 10px;
+  top: 22px;
 }

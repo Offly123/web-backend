@@ -1,10 +1,8 @@
 #!/usr/bin/env node
-"use strict";
+'use strict';
 
 const mysql = require('mysql2');
-const querystring = require('querystring');
 const url = require('url');
-const fs = require('fs');
 require('dotenv').config({
   path: "../../../.env"
 });
@@ -17,44 +15,23 @@ process.stdin.on('data', () => {
   let requestURI = process.env.REQUEST_URI;
   let formData = url.parse(requestURI, true).query;
 
-  cook.setCookies(formData);
-  // console.log('Content-Type: application/json; charset=utf-8');
-  console.log('Content-Type: text/html; charset=utf-8');
-  console.log();
-
-
-  let cookieList = cook.cookiesToArray();  
+  // console.log('Content-type: application/json\n');
+  // console.log('Location: /web-backend/4\n');
+  cook.formDataToCookie(formData);
   
-  // console.log("cookieList:");
-  // console.log(cookieList);
-
   
-    
-  // console.log("before");
-  if (!cook.validateValues(cookieList)) {
-    try {
-      const page = fs.readFileSync('/home/u68757/www/web-backend/4/index.html', 'utf8');
-      
-      let editedPage = page.replace('$fullName_error', 'value="' + cookieList.fullName + '"');
-      console.log(editedPage);
-    } catch (err) {
-      console.log(err);
-    }
+  // console.log("he");
+  if (!cook.checkValues(formData)) {
+    // console.log('Content-type: application/json\n');
+    // console.log(formData);
+    // console.log('Location: /web-backend/4\n');
     return;
   }
-  // console.log("after");
+  console.log('Content-type: application/json\n');
+  console.log(formData);
 
-
-  try {
-    const page = fs.readFileSync('/home/u68757/www/web-backend/4/index.html', 'utf8');
-    
-    // let editedPage = page.replace('$fullName_error', 'value="' + cookieList.fullName);
-    console.log(page);
-  } catch (err) {
-    console.log(err);
-  }
-
-
+  // console.log("he");
+  // return;
   const DB_HOST = process.env.DBHOST;
   const DB_USER = process.env.DBUSER;
   const DB_PSWD = process.env.DBPSWD;
@@ -75,15 +52,15 @@ process.stdin.on('data', () => {
     
     const data = {
       fullName: formData.fullName,
-      phone: formData.phone,
-      email: formData.email,
+      phone: formData.phoneNumber,
+      email: formData.emailAddress,
       birthDate: formData.birthDate,
       sex: formData.sex,
       biography: formData.biography
     };  
 
 
-    let sql_users  = "INSERT IGNORE INTO users (full_name, phone, email, date_of_birth, gender, biography) values (?)";
+    let sql_users  = 'INSERT IGNORE INTO users (full_name, phone, email, date_of_birth, gender, biography) values (?)';
     const users = [
       [data.fullName, data.phone, data.email, data.birthDate, data.sex, data.biography],
     ];
@@ -99,7 +76,7 @@ process.stdin.on('data', () => {
       
 
     
-      let sql_user_languages  = "INSERT IGNORE INTO user_languages (user_id, language_id) values ?";
+      let sql_user_languages  = 'INSERT IGNORE INTO user_languages (user_id, language_id) values ?';
       let user_languages = [];
       formData.language.forEach(element => {
         user_languages.push([user_id, element]);
