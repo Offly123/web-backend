@@ -94,6 +94,7 @@ exports.checkValues = (formData) => {
 exports.cookiesInForm = (page) => {
   const cookieValues = this.cookiesToJSON();
   for (let cookieName in cookieValues) {
+    // оставь надежду всяк сюда входящий
     if (cookieName.search("Error") != -1) {
       page = this.ShowError(page, cookieName);
     }
