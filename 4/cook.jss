@@ -88,9 +88,7 @@ exports.checkValues = (formData) => {
 
 
 
-// получает на вход строку (html документ), потом по печенью подставляет данные в поля
-// если в конце печенья Error, то подсветить поля красным
-// TODO: поменять принцип работы на изменение "переменных" по печенью
+// печенье вставляет в форму
 exports.cookiesInForm = (page) => {
   const cookieValues = this.cookiesToJSON();
   for (let cookieName in cookieValues) {
