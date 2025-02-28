@@ -18,16 +18,14 @@ process.stdin.on('data', () => {
   console.log();
 
 
-  // let cookieList = cook.cookiesToJSON();
-  // console.log(cookieList);
-
   try {
     const page = fs.readFileSync('/home/u68757/www/web-backend/4/page.html', 'utf8');
     
+    const editedPage = cook.cookiesInForm(page);
 
-    console.log(page);
+    console.log(editedPage);
   } catch (err) {
     console.log(err);
   }
-  
+
 });

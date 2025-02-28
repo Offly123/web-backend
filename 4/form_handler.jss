@@ -17,31 +17,27 @@ process.stdin.on('data', () => {
 
   // console.log('Content-type: application/json\n');
   // console.log('Location: /web-backend/4\n');
+  
+  
+  // console.log("text");
+  // console.log('Content-type: application/json\n');
   cook.formDataToCookie(formData);
-  
-  
-  // console.log("he");
   if (!cook.checkValues(formData)) {
     // console.log('Content-type: application/json\n');
-    // console.log(formData);
-    // console.log('Location: /web-backend/4\n');
+    console.log('Location: /web-backend/4\n');
     return;
   }
-  console.log('Content-type: application/json\n');
-  console.log(formData);
-
-  // console.log("he");
+  
+  // console.log('Content-type: application/json\n');
+  console.log('Location: /web-backend/4\n');
   // return;
-  const DB_HOST = process.env.DBHOST;
-  const DB_USER = process.env.DBUSER;
-  const DB_PSWD = process.env.DBPSWD;
-  const DB_NAME = process.env.DBNAME;
+  
   
   const con = mysql.createConnection({
-    host:       DB_HOST,
-    user:       DB_USER,
-    password:   DB_PSWD,
-    database:   DB_NAME
+    host:       process.env.DBHOST,
+    user:       process.env.DBUSER,
+    password:   process.env.DBPSWD,
+    database:   process.env.DBNAME
   });
   
   con.connect(function(err) {

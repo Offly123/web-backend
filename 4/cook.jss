@@ -1,17 +1,7 @@
 // don't let him cook
 
 
-
-// // получает имя печенья и значение, устанавливает на время сессии
-// exports.setCookie = (name, value) => {
-//   console.log('Set-Cookie: ' + name + '=' + value);  
-// }
-// // получает имя печенья, значение и секунды на жизнь
-// exports.setCookie = (name, value, secondsToLive) => {
-//   let timeofDeath = new Date();
-//   timeofDeath.setSeconds(timeofDeath.getSeconds() + secondsToLive);
-//   console.log('Set-Cookie: ' + name + '=' + value + '; Expires=' + timeofDeath);
-// }
+// получает имя, значение и время в секундах
 exports.setCookie = (...args) => {
   if (args.length == 2) {
     console.log('Set-Cookie: ' + args[0] + '=' + args[1]);
@@ -36,6 +26,9 @@ exports.formDataToCookie = (formData) => {
 // возвращает JSON, содержащий все cookies
 exports.cookiesToJSON = () => {
   let cookieList = {};
+  if (process.env.HTTP_COOKIE == undefined) {
+    return cookieList;
+  }
   toArray = process.env.HTTP_COOKIE.split("; ");
   toArray.forEach((cook) => {
     cookieList[cook.split("=")[0]] = cook.split("=")[1];
@@ -95,12 +88,41 @@ exports.checkValues = (formData) => {
 
 
 
-// получает на вход строку (html документ) и переменные с ошибками, после заменяет "переменные" на атрибут style
-// чтобы подсветить поля, в которых ошибки
+// получает на вход строку (html документ), потом по печенью подставляет данные в поля
+// если в конце печенья Error, то подсветить поля красным
 // TODO: поменять принцип работы на изменение "переменных" по печенью
-exports.showErrorText = (page, fieldsWithErrors) => {
-  fieldsWithErrors.forEach((variableName) => {
-    page = page.replace(variableName, 'style="display: block"');
-  });
+exports.cookiesInForm = (page) => {
+  const cookieValues = this.cookiesToJSON();
+  for (let cookieName in cookieValues) {
+    if (cookieName.search("Error") != -1) {
+      page = this.ShowError(page, cookieName);
+    }
+    if (cookieName == 'biography') {
+      page = page.replace('$' + cookieName + '$', cookieValues[cookieName]);
+    }
+    if (cookieName == 'sex') {
+      if (cookieValues[cookieName] == 'male') {
+        page = page.replace('$sexMale$', 'checked');
+      } else {
+        page = page.replace('$sexFemale$', 'checked');
+      }
+    }
+    if (cookieName == 'language') {
+      let languageArray = cookieValues[cookieName].split(",");
+      languageArray.forEach((langId) => {
+        page = page.replace('$language' + langId + '$', 'checked');
+      });
+    }
+    cookieNameWithoutError = cookieName.replace('Error', '');
+    page = page.replace('$' + cookieNameWithoutError + '$', 'value="' + cookieValues[cookieName] + '"');
+  }
+  page = page.replace('$biography$', '');
+  return page;
+}
+
+
+exports.ShowError = (page, cookieName) => {
+  page = page.replace('$'+ cookieName + '$', 'style="display: block"');
+  page = page.replace('$'+ cookieName + 'Border$', 'style="border: 1px solid red"');
   return page;
 }

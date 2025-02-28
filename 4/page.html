@@ -32,37 +32,43 @@
             <div class="element">
                 <label>
                     ФИО:
-                    <p class="error-text" $fullNameError>
+                    <p class="error-text" $fullNameError$>
                         Только кириллические буквы, не больше 150 символов
                     </p>
                 </label>
-                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required>
+                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required $fullName$ $fullNameErrorBorder$>
             </div>
 
             <div class="element">
                 <label>Номер телефона:</label>
-                <p class="error-text" $phoneNumberError>
+                <p class="error-text" 
+                $phoneNumberError$>
                     Номер телефона может содержать только цифры
                 </p>
-                <input type="phone" name="phoneNumber" placeholder="8-800-555-35-35" required>
+                <input type="phone" name="phoneNumber" placeholder="8-800-555-35-35" required 
+                $phoneNumber$ $phoneNumberErrorBorder$>
             </div>
 
             <div class="element">
                 <label>Электронная почта</label>
-                <p class="error-text" $emailAddressError>
+                <p class="error-text" 
+                $emailAddressError$>
                     Если вы это видите - вы волшебник
                 </p>
-                <input type="email" name="emailAddress" placeholder="example@somemail.com" required>
+                <input type="email" name="emailAddress" placeholder="example@somemail.com" required 
+                $emailAddress$ $emailAddressErrorBorder$>
             </div>
 
             <div class="element">
                 <label>
                     Дата рождения
-                    <p class="error-text" $birthDateError>
+                    <p class="error-text" 
+                    $birthDateError$>
                         Год не может быть меньше 1900
                     </p>
                 </label>
-                <input type="date" name="birthDate" required>
+                <input type="date" name="birthDate" required 
+                $birthDate$ $birthDateErrorBorder$>
             </div>
 
             <div class="element radio">
@@ -74,19 +80,24 @@
                 </div>
 
 
-                <div class="radio-buttons-wrapper">
+                <div class="radio-buttons-wrapper" 
+                $sexBorder$>
 
-                    <div class="btn-wrapper">
-                        <input name="sex" type="radio" id="radio1" class="radio-btn" value="male">
+                    <div class="btn-wrapper" 
+                    $sexBorder$>
+                        <input name="sex" type="radio" id="radio1" class="radio-btn" value="male" 
+                        $sexMale$>
                         <label for="radio1" tabindex="0">М</label>
                     </div>
 
-                    <p class="error-text-sex error-text" $sexError>
+                    <p class="error-text-sex error-text" 
+                    $sexError$>
                         Укажите ваш пол
                     </p>
 
-                    <div class="btn-wrapper">
-                        <input name="sex" type="radio" id="radio2" class="radio-btn" value="female">
+                    <div class="btn-wrapper" $sexBorder$>
+                        <input name="sex" type="radio" id="radio2" class="radio-btn" value="female" 
+                        $sexFemale$>
                         <label class="TEST" for="radio2" tabindex="0">Ж</label>
                     </div>
 
@@ -95,8 +106,10 @@
             </div>
 
             <div class="languages">
-                <label>
-                    <p class="error-text-languages error-text" $languageError>
+                <label 
+                $languageErrorBorder$>
+                    <p class="error-text-languages error-text" 
+                    $languageError$>
                         Выберите хотя бы 1 язык
                     </p>
                     Любимые языки программирования:
@@ -105,51 +118,63 @@
                     <button class="dont-close" id="toggle-languages" type="button">Языки</button>
                     <ul class="language-list">
                         <li class="dont-close">
-                            <input class="dont-close" id="language1" name="language" type="checkbox" value="1">
+                            <input class="dont-close" id="language1" name="language" type="checkbox" value="1" 
+                            $language1$>
                             <label class="dont-close" for="language1" tabindex="0">Pascal</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language2" name="language" type="checkbox" value="2">
+                            <input class="dont-close" id="language2" name="language" type="checkbox" value="2" 
+                            $language2$>
                             <label class="dont-close" for="language2" tabindex="0">C</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language3" name="language" type="checkbox" value="3">
+                            <input class="dont-close" id="language3" name="language" type="checkbox" value="3" 
+                            $language3$>
                             <label class="dont-close" for="language3" tabindex="0">C++</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language4" name="language" type="checkbox" value="4">
+                            <input class="dont-close" id="language4" name="language" type="checkbox" value="4" 
+                            $language4$>
                             <label class="dont-close" for="language4" tabindex="0">JavaScript</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language5" name="language" type="checkbox" value="5">
+                            <input class="dont-close" id="language5" name="language" type="checkbox" value="5" 
+                            $language5$>
                             <label class="dont-close" for="language5" tabindex="0">PHP</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language6" name="language" type="checkbox" value="6">
+                            <input class="dont-close" id="language6" name="language" type="checkbox" value="6" 
+                            $language6$>
                             <label class="dont-close" for="language6" tabindex="0">Python</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language7" name="language" type="checkbox" value="7">
+                            <input class="dont-close" id="language7" name="language" type="checkbox" value="7" 
+                            $language7$>
                             <label class="dont-close" for="language7" tabindex="0">Java</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language8" name="language" type="checkbox" value="8">
+                            <input class="dont-close" id="language8" name="language" type="checkbox" value="8" 
+                            $language8$>
                             <label class="dont-close" for="language8" tabindex="0">Haskel</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language9" name="language" type="checkbox" value="9">
+                            <input class="dont-close" id="language9" name="language" type="checkbox" value="9" 
+                            $language9$>
                             <label class="dont-close" for="language9" tabindex="0">Clojure</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language10" name="language" type="checkbox" value="10">
+                            <input class="dont-close" id="language10" name="language" type="checkbox" value="10" 
+                            $language10$>
                             <label class="dont-close" for="language10" tabindex="0">Prolog</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language11" name="language" type="checkbox" value="11">
+                            <input class="dont-close" id="language11" name="language" type="checkbox" value="11" 
+                            $language11$>
                             <label class="dont-close" for="language11" tabindex="0">Scala</label>
                         </li>
                         <li class="dont-close">
-                            <input class="dont-close" id="language12" name="language" type="checkbox" value="12">
+                            <input class="dont-close" id="language12" name="language" type="checkbox" value="12" 
+                            $language12$>
                             <label class="dont-close" for="language12" tabindex="0">Go</label>
                         </li>
                     </ul>
@@ -158,10 +183,12 @@
 
             <div class="element" id="biography">
                 <label>Краткая биография:</label>
-                <p class="error-text-biography error-text" $biographyError>
+                <p class="error-text-biography error-text" 
+                $biographyError$>
                     Биография не длинее 300 символов
                 </p>
-                <textarea id="mytext" name="biography" placeholder="Биография" required></textarea>
+                <textarea id="mytext" name="biography" placeholder="Биография" required
+                $biographyErrorBorder$>$biography$</textarea>
             </div>
             <div>
                 <input id="agreement" type="checkbox" name="agreement" required>
