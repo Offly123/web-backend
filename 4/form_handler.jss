@@ -15,22 +15,19 @@ process.stdin.on('data', () => {
   let requestURI = process.env.REQUEST_URI;
   let formData = url.parse(requestURI, true).query;
 
-  // console.log('Content-type: application/json\n');
-  // console.log('Location: /web-backend/4\n');
-  
-  
-  // console.log("text");
-  // console.log('Content-type: application/json\n');
+  // console.log('Content-Type: application/json\n');
   cook.formDataToCookie(formData);
+  // console.log('he');
+  
   if (!cook.checkValues(formData)) {
-    // console.log('Content-type: application/json\n');
+    // console.log('Content-Type: application/json\n');
     console.log('Location: /web-backend/4\n');
     return;
   }
-  
-  // console.log('Content-type: application/json\n');
+  // console.log('Content-Type: application/json\n');
+  // console.log('he');
   console.log('Location: /web-backend/4\n');
-  // return;
+
   
   
   const con = mysql.createConnection({

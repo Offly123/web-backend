@@ -19,6 +19,7 @@ exports.formDataToCookie = (formData) => {
   for (let index in formData) {
     this.setCookie(index, formData[index], 60 * 60 * 24 * 365);
   }
+  this.setCookie('dataSend', 'false');
 }
 
 
@@ -50,7 +51,7 @@ exports.checkValues = (formData) => {
     this.setCookie('fullNameError', '', -1);
   }
   
-  if (!(/^[0-9]+$/.test(formData.phoneNumber))) {
+  if (!(/^[0-9]+$/.test(formData.phoneNumber)) || formData.phoneNumber.length > 15) {
     this.setCookie('phoneNumberError', formData.phoneNumber);
     this.setCookie('phoneNumber', '', -1);
     validValue = false;
@@ -88,17 +89,26 @@ exports.checkValues = (formData) => {
 
 
 
-// печенье вставляет в форму
+// получает HTML страницу в виде строки, значение из cookies вставляет в форму, если есть 
+// ошибки, то подсвечивает
 exports.cookiesInForm = (page) => {
   const cookieValues = this.cookiesToJSON();
+  let anyErrors = false;
+
   for (let cookieName in cookieValues) {
+
     // оставь надежду всяк сюда входящий
+
     if (cookieName.search("Error") != -1) {
       page = this.ShowError(page, cookieName);
+      this.setCookie('dataSend', 'false');
+      anyErrors = true;
     }
+
     if (cookieName == 'biography') {
       page = page.replace('$' + cookieName + '$', cookieValues[cookieName]);
     }
+
     if (cookieName == 'sex') {
       if (cookieValues[cookieName] == 'male') {
         page = page.replace('$sexMale$', 'checked');
@@ -106,20 +116,30 @@ exports.cookiesInForm = (page) => {
         page = page.replace('$sexFemale$', 'checked');
       }
     }
+
     if (cookieName == 'language') {
       let languageArray = cookieValues[cookieName].split(",");
       languageArray.forEach((langId) => {
         page = page.replace('$language' + langId + '$', 'checked');
       });
     }
+
     cookieNameWithoutError = cookieName.replace('Error', '');
     page = page.replace('$' + cookieNameWithoutError + '$', 'value="' + cookieValues[cookieName] + '"');
   }
+
+  if (!anyErrors && cookieValues.dataSend != 'true' && cookieValues.dataSend != undefined) {
+    this.setCookie('dataSend', 'true', 60 * 60 * 24 * 365);
+    page = page.replace('$animateSuccess$', 'id="animate-success"');
+  }
+
   page = page.replace('$biography$', '');
   return page;
 }
 
 
+
+// подсвечивает ошибки по имени cookie
 exports.ShowError = (page, cookieName) => {
   page = page.replace('$'+ cookieName + '$', 'style="display: block"');
   page = page.replace('$'+ cookieName + 'Border$', 'style="border: 1px solid red"');

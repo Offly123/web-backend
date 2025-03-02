@@ -16,6 +16,12 @@ p, ul, li  {
   all: unset;
 }
 
+
+
+/* SVG шарики */
+
+
+
 .svg-wrapper {
   position: absolute;
   overflow: hidden;
@@ -45,6 +51,12 @@ p, ul, li  {
   right: calc(50vw + 300px);
 }
 
+
+
+/* BODY */
+
+
+
 body {
   font-family: Manrope;
   min-height: 100vh;
@@ -56,6 +68,41 @@ body {
   margin: 0;
   background-color: #3c3c3c;
   background-image: linear-gradient(#b763cc, #5a3ebf);
+}
+
+
+
+/* СООБЩЕНИЕ ОБ ОТПРАВКЕ */
+
+
+
+.popup-success {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75px;
+  position: absolute;
+  top: -75px;
+  background-color: rgba(0, 255, 0, 0.5);
+  z-index: 2;
+  backdrop-filter: blur(5px);
+}
+
+#animate-success {
+  animation: popup-animate 3s;
+}
+
+.popup-success > p {
+ font-weight: 900;
+ font-size: 20px;
+}
+
+@keyframes popup-animate {
+  0% {top: -75px}
+  25% {top: 0px}
+  75% {top: 0px}
+  100% {top: -75px}
 }
 
 
@@ -307,6 +354,7 @@ form > .main > .element {
   top: 35px;
   right: 0;
   backdrop-filter: blur(5px);
+  z-index: 1;
 }
 
 .show-languages {
@@ -430,6 +478,7 @@ form > .main > .element {
 
 
 .error-text  {
+  text-wrap: nowrap;
   display: none;
   color: #ff1010;
   font-size: clamp(6px, 2.5vw, 9px);
