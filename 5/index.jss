@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+'use strict';
+
+const mysql = require('mysql2');
+const querystring = require('querystring');
+const url = require('url');
+const fs = require('fs');
+require('dotenv').config({
+  path: "../../../.env"
+});
+const cook = require('./cook.jss');
+
+process.stdin.on('data', () => {
+  
+}).on('end', async () => {
+  
+  try {
+    const page = fs.readFileSync('/home/u68757/www/web-backend/5/page.html', 'utf8');
+    
+    const editedPage = cook.cookiesInForm(page);
+    // console.log('Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
+    
+    console.log('Content-Type: text/html; charset=utf-8');
+    
+    console.log();
+
+    console.log(editedPage);
+  } catch (err) {
+    console.log(err);
+  }
+
+});
