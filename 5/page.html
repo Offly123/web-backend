@@ -24,25 +24,26 @@
         </svg>
     </div>
 
-    <div class="popup-success" $animateSuccess$>
+    <div id="popup-success" $animateSuccess$>
         <p>
             Данные успешно обработаны
         </p>
+        <button id="close-popup">&times;</button>
     </div>
 
     <form id="form-login" class="form-shown">
         <div class="head">
-            Войти
+            Вход
         </div>
         <div class="main">
             <div class="element">
-                <label for="login">
+                <label>
                     Логин:
                 </label>
                 <input id="login" type="text" placeholder="Логин">
             </div>
             <div class="element">
-                <label for="password">
+                <label>
                     Пароль:                    
                 </label>
                 <input id="password" type="password" placeholder="Пароль">

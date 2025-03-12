@@ -1,3 +1,5 @@
+'use strict';
+
 $(document).ready(function () {
     // Позволяет выбирать языки табуляцией
     $('label[tabindex="0"]').keypress(function (e) {
@@ -6,10 +8,11 @@ $(document).ready(function () {
     });
 
 
+
+    // Показывает/скрывает список языков
     $("#toggle-languages").click(function () {
         $(".language-list").toggleClass("show-languages");
     });
-    // дальше бога нет
     $(".language-list").on({
         focusout: function (event) {
             if ($(event.relatedTarget)[0] == undefined ||
@@ -25,24 +28,62 @@ $(document).ready(function () {
         }
     });
 
+
+    // По нажатию кнопок меняет отображаемую форму
+    let login = $("#form-login");
+    let registration = $("#form-registration");
+
     $(".switch-to-registration").click(async (e) =>  {
         e.preventDefault();
-        $("#form-login").addClass("hide-form");
-        $("#form-login").removeClass("show-form");
-        $("#form-registration").addClass("show-form");
-        $("#form-registration").removeClass("hide-form");
+        disableButtons();
+        animateHideShow(login, registration);
         setTimeout(() => {
-            $("#form-login").addClass("form-hidden");
-            $("#form-login").removeClass("form-shown");
-            $("#form-registration").addClass("form-shown");
-            $("#form-registration").removeClass("form-hidden");
-        }, 4000);
-    })
+            hideShowForm(login, registration);
+            this.disabled = false;
+        }, 700);
+
+    });
+
     $(".switch-to-login").click((e) =>  {
         e.preventDefault();
-        $("#form-registration").removeClass("show-form");
-        $("#form-registration").addClass("hide-form");
-        $("#form-login").removeClass("hide-form");
-        $("#form-login").addClass("show-form");
+        disableButtons();
+        animateHideShow(registration, login);
+        setTimeout(() => {
+            hideShowForm(registration, login);
+            this.disabled = false;
+        }, 700);
+    });
+
+    $("#close-popup").click((e) => {
+        e.preventDefault();
+        $("#popup-success").addClass("success-hide");
     })
 });
+
+
+// Уводит влево форму hide и выводит справа форму show
+function animateHideShow(hide, show) {
+    $(hide).addClass("hide-form");
+    $(hide).removeClass("show-form");
+    $(show).addClass("show-form");
+    $(show).removeClass("hide-form");
+}
+
+
+// Скрывает форму hide и показывает форму show
+function hideShowForm(hide, show) {
+    $(hide).addClass("form-hidden");
+    $(hide).removeClass("form-shown");
+    $(show).addClass("form-shown");
+    $(show).removeClass("form-hidden");
+}
+
+// Отключает кнопку на время анимации
+function disableButtons() {
+    $(".switch-to-registration")[0].disabled = true;
+    $(".switch-to-login")[0].disabled = true;
+    setTimeout(() => {
+        $(".switch-to-registration")[0].disabled = false;
+    $(".switch-to-login")[0].disabled = false;
+    }, 700);
+}

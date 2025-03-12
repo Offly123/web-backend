@@ -130,7 +130,7 @@ exports.cookiesInForm = (page) => {
 
   if (!anyErrors && cookieValues.dataSend != 'true' && cookieValues.dataSend != undefined) {
     this.setCookie('dataSend', 'true', 60 * 60 * 24 * 365);
-    page = page.replace('$animateSuccess$', 'id="animate-success"');
+    page = page.replace('$animateSuccess$', 'class="success-show"');
   }
 
   page = page.replace('$biography$', '');
