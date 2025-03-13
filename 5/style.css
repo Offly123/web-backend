@@ -98,9 +98,10 @@ body {
     animation: popup-hide 1s forwards;
 }
 
-#popup-success > p {
+#success-data > p {
+    display: block;
     font-weight: 900;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 #popup-success > button {
@@ -526,7 +527,7 @@ form>.main>.element {
 
 .form-end {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
     height: clamp(30px, 5%, 40px);
 }

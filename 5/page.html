@@ -25,9 +25,11 @@
     </div>
 
     <div id="popup-success" $animateSuccess$>
-        <p>
-            Данные успешно обработаны
-        </p>
+        <div id="success-data">
+            <p>Данные успешно обработаны</p>
+            <p>Логин: $login$</p>
+            <p>Пароль: $password$</p>
+        </div>
         <button id="close-popup">&times;</button>
     </div>
 
@@ -50,12 +52,12 @@
             </div>
         </div>
         <div class="form-end">
-            <button class="switch-to-registration">Регистрация</button>
             <button class="submit-btn">Войти</button>
+            <button class="switch-to-registration">Регистрация</button>
         </div>
     </form>
 
-    <form id="form-registration" class="form-hidden" method="get" action="form_handler.jss">
+    <form id="form-registration" class="form-hidden" method="get" action="registration.jss">
         <div class="head">
             Регистрация
         </div>
@@ -228,8 +230,8 @@
             </div>
         </div>
         <div class="form-end">
-            <button class="switch-to-login">Войти</button>
             <button class="submit-btn" type="submit">Отправить</button>
+            <button class="switch-to-login">Войти</button>
         </div>
     </form>
 </body>

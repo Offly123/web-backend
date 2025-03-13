@@ -21,6 +21,13 @@ CREATE TABLE languages (
     language_name VARCHAR(100) NOT NULL UNIQUE
 );
 
+CREATE TABLE passwords (
+    user_id INT PRIMARY KEY,
+    user_login VARCHAR(20),
+    user_password VARCHAR(20),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 --Вставка в users
 INSERT INTO users (full_name, phone, email, date_of_birth, gender, biography) values (?)
 

@@ -33,25 +33,14 @@ $(document).ready(function () {
     let login = $("#form-login");
     let registration = $("#form-registration");
 
-    $(".switch-to-registration").click(async (e) =>  {
+    $(".switch-to-registration").click((e) =>  {
         e.preventDefault();
-        disableButtons();
-        animateHideShow(login, registration);
-        setTimeout(() => {
-            hideShowForm(login, registration);
-            this.disabled = false;
-        }, 700);
-
+        switchForm(login, registration, this);
     });
 
     $(".switch-to-login").click((e) =>  {
         e.preventDefault();
-        disableButtons();
-        animateHideShow(registration, login);
-        setTimeout(() => {
-            hideShowForm(registration, login);
-            this.disabled = false;
-        }, 700);
+        switchForm(registration, login, this);
     });
 
     $("#close-popup").click((e) => {
@@ -59,6 +48,17 @@ $(document).ready(function () {
         $("#popup-success").addClass("success-hide");
     })
 });
+
+
+// Меняет форму с hide на show
+function switchForm(hide, show, button) {
+    disableButtons();
+    animateHideShow(hide, show);
+    setTimeout(() => {
+        hideShowForm(hide, show);
+        button.disabled = false;
+    }, 700);
+}
 
 
 // Уводит влево форму hide и выводит справа форму show
@@ -70,7 +70,7 @@ function animateHideShow(hide, show) {
 }
 
 
-// Скрывает форму hide и показывает форму show
+// Скрывает (diaplay: none) форму hide и показывает форму show
 function hideShowForm(hide, show) {
     $(hide).addClass("form-hidden");
     $(hide).removeClass("form-shown");
