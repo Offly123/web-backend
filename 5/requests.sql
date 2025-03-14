@@ -23,13 +23,16 @@ CREATE TABLE languages (
 
 CREATE TABLE passwords (
     user_id INT PRIMARY KEY,
-    user_login VARCHAR(20),
-    user_password VARCHAR(20),
+    user_login VARCHAR(100),
+    user_password VARCHAR(100),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 --Вставка в users
-INSERT INTO users (full_name, phone, email, date_of_birth, gender, biography) values (?)
+INSERT IGNORE INTO users (full_name, phone, email, date_of_birth, gender, biography) values (?, ?, ?, ?, ?, ?)
 
 --Вставка в user_languages
-INSERT INTO user_languages (user_id, language_id) values ?
+INSERT IGNORE INTO user_languages (user_id, language_id) values (?, ?)
+
+--Вставка в passwords
+INSERT IGNORE INTO passwords (user_id, user_login, user_password) values (?, ?, ?)

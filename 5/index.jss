@@ -15,14 +15,12 @@ process.stdin.on('data', () => {
 }).on('end', () => {
 
     try {
+        // console.log('Content-Type: application/json; charset=utf-8\n');
         const page = fs.readFileSync('/home/u68757/www/web-backend/5/page.html', 'utf8');
 
-        const editedPage = cook.cookiesInForm(page);
+        let editedPage = cook.cookiesInForm(page);
 
-        console.log('Content-Type: text/html; charset=utf-8');
-        // console.log('Content-Type: application/json; charset=utf-8');
-
-        console.log();
+        console.log('Content-Type: text/html; charset=utf-8\n');
 
         console.log(editedPage);
         // console.log(process);

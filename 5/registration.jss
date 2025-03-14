@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+const { createHash } = require('crypto');
 const mysql = require('mysql2/promise');
 const url = require('url');
 const fs = require('fs');
@@ -28,7 +29,6 @@ process.stdin.on('data', () => {
     }
     // console.log('Content-Type: application/json\n');
     // console.log('after if');
-    // console.log('Location: /web-backend/5\n');
 
     const con = await mysql.createConnection({
         host: process.env.DBHOST,
@@ -56,7 +56,6 @@ process.stdin.on('data', () => {
         if (formData.language.constructor !== Array) {
             formData.language = [formData.language];
         }
-        // console.log(formData.language);
         await formData.language.forEach(language_id => {
             let user_languages = [user_id, language_id];
             con.execute(sql_user_languages, user_languages);
@@ -64,9 +63,14 @@ process.stdin.on('data', () => {
         
         
         // Вставка логина и пароля в passwords
-        let login = 'login';
-        let password = 'password';
-        let sql_passwords = 'INSERT IGNORE INTO passwords (user_id, user_login, user_password) values (?, ?, ?)'
+        let login = cook.generateString();
+        let password = cook.generateString();
+        
+        // Запись логина и пароля во временный файл, чтобы отобразить пользователю
+        fs.writeFileSync('auth.txt', login + ';' + password);
+
+        password = createHash('sha256').update(login).digest('base64');
+        let sql_passwords = 'INSERT IGNORE INTO passwords (user_id, user_login, user_password) values (?, ?, ?)';
         let passwords = [
             user_id, login, password
         ];
@@ -76,10 +80,12 @@ process.stdin.on('data', () => {
 
     } catch(err) {
         console.log('Content-Type: application/json\n');
+        console.log(auth);
         console.log('Ошибка при вставке');
         console.log(err);
     } finally {
         await con.end();
     }
     console.log('Location: /web-backend/5\n');
+
 });

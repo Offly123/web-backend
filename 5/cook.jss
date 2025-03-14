@@ -1,5 +1,6 @@
 // don't let him cook
-let fs = require('fs');
+
+const fs = require('fs');
 
 
 // получает имя, значение и время в секундах
@@ -131,8 +132,12 @@ exports.cookiesInForm = (page) => {
     if (!anyErrors && cookieValues.dataSend != 'true' && cookieValues.dataSend != undefined) {
         this.setCookie('dataSend', 'true', 60 * 60 * 24 * 365);
 
-        let login = 'login';
-        let password = 'password';
+
+        // Чтение сгенерированных данных из файла
+        auth = fs.readFileSync('auth.txt', 'utf8').split(';');
+        fs.writeFileSync('auth.txt', '');
+        let login = auth[0];
+        let password = auth[1];
 
         page = page.replace('$animateSuccess$', 'class="success-show"');
         page = page.replace('$login$', login);
