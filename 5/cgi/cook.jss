@@ -5,13 +5,13 @@ const fs = require('fs');
 
 // получает имя, значение и время в секундах
 exports.setCookie = (...args) => {
-    if (args.length == 2) {
-        console.log('Set-Cookie: ' + args[0] + '=' + args[1]);
+    if (args.length === 2) {
+        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/5/; httponly');
         return;
     }
     let timeofDeath = new Date();
     timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
-    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; Expires=' + timeofDeath + '; httponly');
+    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/5/; Expires=' + timeofDeath + '; httponly');
 }
 
 
@@ -24,10 +24,10 @@ exports.formDataToCookie = (formData) => {
 }
 
 
-// возвращает JSON, содержащий все cookies
+// Возвращает JSON, содержащий все cookies
 exports.cookiesToJSON = () => {
     let cookieList = {};
-    if (process.env.HTTP_COOKIE == undefined) {
+    if (process.env.HTTP_COOKIE === undefined) {
         return cookieList;
     }
     toArray = process.env.HTTP_COOKIE.split("; ");
@@ -37,6 +37,19 @@ exports.cookiesToJSON = () => {
     return cookieList;
 }
 
+
+// Удаляет все куки кроме session
+// (после успешной регистрации личные данные надо удалить
+// чтобы их нельзя было украсть)
+exports.deleteRegistrationData = () => {
+    let cooks = this.cookiesToJSON();
+    for (cookie in cooks) {
+        if (cookie === 'session') {
+            continue;
+        }
+        this.setCookie(cookie, '', -1);
+    }
+}
 
 
 // получает данные формы в виде JSON, меняет <Имя> печенья на <Имя>Error, 
@@ -68,7 +81,7 @@ exports.checkValues = (formData) => {
         this.setCookie('birthDateError', '', -1);
     }
 
-    if (formData.sex == null) {
+    if (formData.sex === null) {
         this.setCookie('sexError', 'none');
         this.setCookie('sex', '', -1);
         validValue = false;
@@ -76,7 +89,7 @@ exports.checkValues = (formData) => {
         this.setCookie('sexError', '', -1);
     }
 
-    if (formData.language == undefined) {
+    if (formData.language === undefined) {
         this.setCookie('languageError', 'none');
         this.setCookie('language', '', -1);
         validValue = false;
@@ -90,51 +103,56 @@ exports.checkValues = (formData) => {
 
 // получает HTML страницу в виде строки, значение из cookies вставляет в форму, если есть 
 // ошибки, то подсвечивает
-exports.cookiesInForm = (page) => {
+exports.cookiesInPage = (page) => {
     const cookieValues = this.cookiesToJSON();
     let anyErrors = false;
-
+    
     for (let cookieName in cookieValues) {
-
+        
         // оставь надежду всяк сюда входящий
-
+        
         if (cookieName.search("Error") != -1) {
             page = this.ShowError(page, cookieName);
             this.setCookie('dataSend', 'false');
             anyErrors = true;
         }
-
-        if (cookieName == 'biography') {
+        
+        if (cookieName === 'biography') {
             page = page.replace('$' + cookieName + '$', cookieValues[cookieName]);
         }
-
-        if (cookieName == 'sex') {
-            if (cookieValues[cookieName] == 'male') {
+        
+        if (cookieName === 'sex') {
+            if (cookieValues[cookieName] === 'male') {
                 page = page.replace('$sexMale$', 'checked');
             } else {
                 page = page.replace('$sexFemale$', 'checked');
             }
         }
-
-        if (cookieName == 'language') {
+        
+        if (cookieName === 'language') {
             let languageArray = cookieValues[cookieName].split(",");
             languageArray.forEach((langId) => {
                 page = page.replace('$language' + langId + '$', 'checked');
             });
         }
-
         cookieNameWithoutError = cookieName.replace('Error', '');
         page = page.replace('$' + cookieNameWithoutError + '$', 'value="' + cookieValues[cookieName] + '"');
     }
-
     
-    // Если данные отправлены впервые и нет ошибок, 
+    
+    // Если данные отправлены впервые и нет ошибок
     if (!anyErrors && cookieValues.dataSend != 'true' && cookieValues.dataSend != undefined) {
         this.setCookie('dataSend', 'true', 60 * 60 * 24 * 365);
 
-
         // Чтение сгенерированных данных из файла
-        auth = fs.readFileSync('auth.txt', 'utf8').split(';');
+        let auth;
+        process.chdir('./cgi');
+        try {
+            auth = fs.readFileSync('auth.txt', 'utf8').split(';');
+        } catch (err) {
+            console.log('Content-Type: application/json\n');
+            console.log(err);
+        }
         fs.writeFileSync('auth.txt', '');
         let login = auth[0];
         let password = auth[1];
@@ -143,9 +161,13 @@ exports.cookiesInForm = (page) => {
         page = page.replace('$login$', login);
         page = page.replace('$password$', password);
     }
+    
+    
+    return page;
+}
 
 
-    // Удаляет неиспользованные переменные
+exports.deleteHTMLFlags = (page) => {
     page = page.replace(/\$.*?\$/g, '');
     return page;
 }
