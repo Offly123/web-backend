@@ -44,7 +44,7 @@ exports.cookiesToJSON = () => {
 exports.deleteRegistrationData = () => {
     let cooks = this.cookiesToJSON();
     for (cookie in cooks) {
-        if (cookie === 'session') {
+        if (cookie === 'session' || cookie === 'dataSend') {
             continue;
         }
         this.setCookie(cookie, '', -1);
@@ -159,7 +159,7 @@ exports.cookiesInPage = (page) => {
 
         page = page.replace('$animateSuccess$', 'class="success-show"');
         page = page.replace('$login$', login);
-        page = page.replace('$password$', password);
+        page = page.replace('$password$', password);    
     }
     
     

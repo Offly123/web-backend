@@ -8,36 +8,31 @@ require('dotenv').config({
 });
 const cook = require('./cgi/cook.jss');
 const myjwt = require('./cgi/jsonlib.jss');
+const html = require('./cgi/templates.jss');
 
 process.stdin.on('data', () => {
 
 }).on('end', async () => {
 
     // console.log('Content-Type: application/json\n');
-    let page;
-    try {
-        page = fs.readFileSync('/home/u68757/www/web-backend/5/html-templates/page.html', 'utf8');
-    } catch (err) {
-        console.log('Content-Type: application/json; charset=utf-8\n');
-        console.log('Файл page.html не найден');
-        return;
-    }
-    page = cook.cookiesInPage(page);
-    let cookies = cook.cookiesToJSON().dataSend;
-    if (cookies) {
-        cook.deleteRegistrationData();
-    }
     
-    console.log('Content-Type: text/html; charset=utf-8\n');
-    // console.log(page);
+    let base = html.getHTML('base.html');
+    
+    let isDataSended = cook.cookiesToJSON().dataSend;
+    if (isDataSended === 'false') {
+        cook.deleteRegistrationData();
+        let popup = html.getHTML('popup.html');
+        base = html.addTemplate(base, popup);
+    }
     
     // console.log(process);
     
     let jwt = cook.cookiesToJSON().session;
     
     if (!jwt) {
-        page = cook.deleteHTMLFlags(page);
-        console.log(page);
+        let forms = html.getHTML('forms.html');
+        base = html.addTemplate(base, forms);
+        html.returnHTML(base);
         return;
     }
     let decoded = myjwt.decodeJWT(jwt);
@@ -74,10 +69,13 @@ process.stdin.on('data', () => {
     }
 
     if (!successAuth) {
-        console.log(page);
+        let forms = html.getHTML('forms.html');
+        base = html.addTemplate(base, forms);
+        html.returnHTML(base);
         return;
     }
     
-    page = cook.deleteHTMLFlags(page);
-    console.log(page);
+    let profile = html.getHTML('profile.html');
+    base = html.addTemplate(base, profile);
+    html.returnHTML(base);
 });
