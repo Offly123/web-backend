@@ -7,75 +7,92 @@ require('dotenv').config({
     path: "../../../.env"
 });
 const cook = require('./cgi/cook.jss');
-const myjwt = require('./cgi/jsonlib.jss');
+const myjwt = require('./cgi/jwtlib.jss');
 const html = require('./cgi/templates.jss');
+const { showError } = require('./cgi/hz.jss');
 
 process.stdin.on('data', () => {
 
 }).on('end', async () => {
 
     // console.log('Content-Type: application/json\n');
-    
+
     let base = html.getHTML('base.html');
-    
-    let isDataSended = cook.cookiesToJSON().dataSend;
-    if (isDataSended === 'false') {
+
+    let dataSend = cook.cookiesToJSON().dataSend;
+    if (dataSend === 'false') {
         cook.deleteRegistrationData();
-        let popup = html.getHTML('popup.html');
-        base = html.addTemplate(base, popup);
+        base = html.addTemplate(
+            base,
+            html.getHTML('popup.html')
+        );
     }
     
-    // console.log(process);
-    
-    let jwt = cook.cookiesToJSON().session;
+    const jwt = cook.cookiesToJSON().session;
     
     if (!jwt) {
-        let forms = html.getHTML('forms.html');
-        base = html.addTemplate(base, forms);
+        base = html.addTemplate(
+            base,
+            html.getHTML('forms.html')
+        );
         html.returnHTML(base);
         return;
     }
     let decoded = myjwt.decodeJWT(jwt);
-    
-    
+
+
     const con = await mysql.createConnection({
         host: process.env.DBHOST,
         user: process.env.DBUSER,
         password: process.env.DBPSWD,
         database: process.env.DBNAME
     });
-    let successAuth = false;
+    con.beginTransaction();
+
+    
+    // Если есть JWT - возвращаем личный кабинет,
+    // иначе логин и регистрацию
+    const sql_get_secret = `
+        SELECT jwtKey FROM 
+        jwt_keys 
+        where userId = (?)
+    `;
+    let user_id = decoded[1].userId;
+    let secret;
+    
+    // Получаем ключ JWT из БД
     try {
-        
-
-        let sql_get_secret = 'SELECT jwt_key FROM jwt_keys WHERE user_id=(?)';
-        let user_id = JSON.parse(decoded[1]).user_id;
-        user_id = [user_id];
-        let secret = await con.execute(sql_get_secret, user_id);
-        secret = secret[0][0].jwt_key;
-
-        if (!myjwt.isValideJWT(decoded, secret)) {
-            console.log('Ошибка при аутентификации');
-            return;
-        }
-        successAuth = true;
-        
-
+        secret = await con.execute(sql_get_secret, [user_id]);
     } catch (err) {
-        console.log('Ошибка в ДБ');
-        console.log(err);
-    } finally {
-        con.end();
+        showError(con, err);
+        return;
     }
-
-    if (!successAuth) {
-        let forms = html.getHTML('forms.html');
-        base = html.addTemplate(base, forms);
+    
+    // Если JWT не валидный - удаляем его и возвращаем
+    // логин и регистрацию
+    if (!myjwt.isValideJWT(decoded, secret[0][0].jwtKey)) {
+        cook.setCookie('session', '', -1);
+        con.rollback();
+        con.end();
+        base = html.addTemplate(
+            base,
+            html.getHTML('forms.html')
+        );
         html.returnHTML(base);
         return;
     }
     
-    let profile = html.getHTML('profile.html');
-    base = html.addTemplate(base, profile);
+    
+    
+    con.commit();
+    con.end();
+    
+    
+
+    // Если валидный JWT - возвращаем личный кабинет
+    base = html.addTemplate(
+        base, 
+        html.getHTML('profile.html')
+    );
     html.returnHTML(base);
 });

@@ -17,7 +17,7 @@ exports.getHTML = (page) => {
 }
 
 // Вставляет в base(HTML в виде строки) части template
-// (весь body и стиль)
+// (часть head и весь body)
 // HTML получает в виде строк
 exports.addTemplate = (base, append) => {
     style = getBetween(append, '$headStart$', '$headEnd$');

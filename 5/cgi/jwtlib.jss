@@ -5,7 +5,7 @@ const { createHmac } = require('crypto');
 const mysql = require('mysql2/promise');
 
 
-// Получает JSON данных и создаёт paylod (iat текущая дата, exp на +1 год)
+// Получает объект данных и создаёт paylod (iat текущая дата, exp на +1 год)
 const createPayload = (info) => {
     let payload = {
         'iat': Math.floor(Date.now() / 1000),
@@ -42,18 +42,28 @@ exports.createJWT = (payload, secret) => {
     return header + '.' + payload + '.' + signature;
 }
 
+
+// Получает JWT в виде строки и возвращает его декодированным в 
+// виде массива (0 - голова, 1 - тело).
 exports.decodeJWT = (jwt) => {
     jwt = jwt.split('.');
     jwt[0] = Buffer.from(jwt[0], 'base64url').toString('utf8');
     jwt[1] = Buffer.from(jwt[1], 'base64url').toString('utf8');
+    jwt[0] = JSON.parse(jwt[0]);
+    jwt[1] = JSON.parse(jwt[1]);
     return jwt;
 }
 
-exports.isValideJWT = (decoded, secret) => {
-    let header =  decoded[0];
-    header = Buffer.from(header).toString('base64url');
-    let payload = decoded[1];
-    payload = Buffer.from(payload).toString('base64url');
 
+// Получает JWT в виде массива и ключ
+exports.isValideJWT = (decoded, secret) => {
+    if (secret[0][0] == undefined) {
+        return false;
+    }
+    let header = JSON.stringify(decoded[0]);
+    header = Buffer.from(header).toString('base64url');
+    let payload = JSON.stringify(decoded[1]);
+    payload = Buffer.from(payload).toString('base64url');
+    
     return createSignature(header, payload, secret) === decoded[2];
 }

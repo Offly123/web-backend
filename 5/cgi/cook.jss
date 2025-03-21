@@ -15,7 +15,7 @@ exports.setCookie = (...args) => {
 }
 
 
-// получает поля формы в виде JSON и устанавливает значения cookies на год
+// получает поля формы в виде объекта и устанавливает значения cookies на год
 exports.formDataToCookie = (formData) => {
     for (let index in formData) {
         this.setCookie(index, formData[index], 60 * 60 * 24 * 365);
@@ -24,7 +24,7 @@ exports.formDataToCookie = (formData) => {
 }
 
 
-// Возвращает JSON, содержащий все cookies
+// Возвращает объект, содержащий все cookies
 exports.cookiesToJSON = () => {
     let cookieList = {};
     if (process.env.HTTP_COOKIE === undefined) {
@@ -39,8 +39,6 @@ exports.cookiesToJSON = () => {
 
 
 // Удаляет все куки кроме session
-// (после успешной регистрации личные данные надо удалить
-// чтобы их нельзя было украсть)
 exports.deleteRegistrationData = () => {
     let cooks = this.cookiesToJSON();
     for (cookie in cooks) {
@@ -52,52 +50,67 @@ exports.deleteRegistrationData = () => {
 }
 
 
-// получает данные формы в виде JSON, меняет <Имя> печенья на <Имя>Error, 
+// получает данные формы в виде объекта, меняет <Имя> печенья на <Имя>Error, 
 // если значение плохое
 exports.checkValues = (formData) => {
-    let validValue = true;
+    let validValues = true;
     if (!(/^[А-Яа-яЁё\s]+$/.test(formData.fullName)) || formData.fullName.length > 150) {
         this.setCookie('fullNameError', formData.fullName);
         this.setCookie('fullName', '', -1);
-        validValue = false;
+        validValues = false;
     } else {
         this.setCookie('fullNameError', '', -1);
     }
 
+
     if (!(/^[0-9]+$/.test(formData.phoneNumber)) || formData.phoneNumber.length > 15) {
         this.setCookie('phoneNumberError', formData.phoneNumber);
         this.setCookie('phoneNumber', '', -1);
-        validValue = false;
+        validValues = false;
     } else {
         this.setCookie('phoneNumberError', '', -1);
     }
 
-    let birthYear = formData.birthDate.split('-');
-    if (birthYear[0] < 1900) {
+
+    if (!(/^[0-9a-zA-Z\-_]+@[0-9a-zA-Z\-_]+\.[a-z]+$/.test(formData.emailAddress))) {
+        this.setCookie('emailAddressError', formData.emailAddress);
+        this.setCookie('emailAddress', '', -1);
+        validValues = false;
+    } else {
+        this.setCookie('emailAddressError', '', -1);
+    }
+
+
+    let birthYear = formData.birthDate.split('-')[0];
+    let currentYear = new Date().getFullYear();
+    if (!(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(formData.birthDate)) || birthYear < 1900 || birthYear > currentYear) {
         this.setCookie('birthDateError', formData.birthDate);
         this.setCookie('birthDate', '', -1);
-        validValue = false;
+        validValues = false;
     } else {
         this.setCookie('birthDateError', '', -1);
     }
 
-    if (formData.sex === null) {
+
+    if (formData.sex === undefined) {
         this.setCookie('sexError', 'none');
         this.setCookie('sex', '', -1);
-        validValue = false;
+        validValues = false;
     } else {
         this.setCookie('sexError', '', -1);
     }
 
+
     if (formData.language === undefined) {
         this.setCookie('languageError', 'none');
         this.setCookie('language', '', -1);
-        validValue = false;
+        validValues = false;
     } else {
         this.setCookie('languageError', '', -1);
     }
 
-    return validValue;
+
+    return validValues;
 }
 
 
@@ -142,9 +155,9 @@ exports.cookiesInPage = (page) => {
     
     // Если данные отправлены впервые и нет ошибок
     if (!anyErrors && cookieValues.dataSend != 'true' && cookieValues.dataSend != undefined) {
-        this.setCookie('dataSend', 'true', 60 * 60 * 24 * 365);
+        this.setCookie('dataSend', 'true');
 
-        // Чтение сгенерированных данных из файла
+        // Чтение сгенерированных логина и пароля из файла
         let auth;
         process.chdir('./cgi');
         try {
@@ -159,7 +172,7 @@ exports.cookiesInPage = (page) => {
 
         page = page.replace('$animateSuccess$', 'class="success-show"');
         page = page.replace('$login$', login);
-        page = page.replace('$password$', password);    
+        page = page.replace('$password$', password);
     }
     
     
@@ -181,11 +194,10 @@ exports.ShowError = (page, cookieName) => {
 }
 
 
-// Генерирует случайную строку длиной 10
-exports.generateString = () => {
+exports.generateString = (length) => {
     let string = '';
     let symbols = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < length; i++) {
         string += symbols[Math.floor(Math.random() * symbols.length)];
     }
     return string;

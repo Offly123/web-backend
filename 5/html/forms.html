@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     $headStart$
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <script src="../js/forms.js"></script>
     $style$
     $headEnd$
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="../js/front.js"></script>
     <link rel="shortcut icon" href="#">
     <title>forms-template</title>
 </head>
@@ -68,7 +68,7 @@
                 <label>Электронная почта:</label>
                 <p class="error-text" 
                 $emailAddressError$>
-                    Если вы это видите - вы волшебник
+                    Невалидный e-mail
                 </p>
                 <input type="email" name="emailAddress" placeholder="example@somemail.com" required 
                 $emailAddress$ $emailAddressErrorBorder$>
@@ -79,7 +79,7 @@
                     Дата рождения:
                     <p class="error-text" 
                     $birthDateError$>
-                        Год не может быть меньше 1900
+                    Год не может быть меньше 1900 и больше 2025
                     </p>
                 </label>
                 <input type="date" name="birthDate" required 
@@ -96,10 +96,10 @@
     
     
                 <div class="radio-buttons-wrapper" 
-                $sexBorder$>
+                $sexErrorBorder$>
     
                     <div class="btn-wrapper" 
-                    $sexBorder$>
+                    $sexErrorBorder$>
                         <input name="sex" type="radio" id="radio1" class="radio-btn" value="male" 
                         $sexMale$>
                         <label for="radio1" tabindex="0">М</label>
@@ -110,7 +110,8 @@
                         Укажите ваш пол
                     </p>
     
-                    <div class="btn-wrapper" $sexBorder$>
+                    <div class="btn-wrapper" 
+                    $sexErrorBorder$>
                         <input name="sex" type="radio" id="radio2" class="radio-btn" value="female" 
                         $sexFemale$>
                         <label class="TEST" for="radio2" tabindex="0">Ж</label>

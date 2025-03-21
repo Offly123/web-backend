@@ -8,11 +8,11 @@ $(document).ready(function () {
     });
 
 
-
     // Показывает/скрывает список языков
     $("#toggle-languages").click(function () {
         $(".language-list").toggleClass("show-languages");
     });
+
     $(".language-list").on({
         focusout: function (event) {
             if ($(event.relatedTarget)[0] == undefined ||
@@ -21,6 +21,7 @@ $(document).ready(function () {
                 $(".language-list").removeClass("show-languages");
         }
     });
+    
     $(document).click(function (event) {
         if ($(event.target)[0] == undefined ||
             ($(event.target)[0].className != "dont-close")) {
@@ -42,6 +43,8 @@ $(document).ready(function () {
         e.preventDefault();
         switchForm(registration, login, this);
     });
+
+
 
     $("#close-popup").click((e) => {
         e.preventDefault();
@@ -77,6 +80,7 @@ function hideShowForm(hide, show) {
     $(show).addClass("form-shown");
     $(show).removeClass("form-hidden");
 }
+
 
 // Отключает кнопку на время анимации
 function disableButtons() {
