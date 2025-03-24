@@ -8,7 +8,7 @@ CREATE TABLE users (
     biography TEXT
 );
 
-CREATE TABLE user_languages (
+CREATE TABLE userLanguages (
     userId INT,
     languageId INT,
     PRIMARY KEY (userId, languageId),
@@ -23,7 +23,7 @@ CREATE TABLE passwords (
     FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
 );
 
-CREATE TABLE jwt_keys (
+CREATE TABLE jwtKeys (
     userId INT PRIMARY KEY,
     jwtKey VARCHAR(51),
     FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
@@ -47,19 +47,23 @@ INSERT IGNORE INTO languages (languageId, languageName) values ('Prolog', 10);
 INSERT IGNORE INTO languages (languageId, languageName) values ('Scala', 11);
 INSERT IGNORE INTO languages (languageId, languageName) values ('Go', 12);
 
---Удалить все таблицы (кроме languages)
-drop table user_languages;
-drop table passwords;
-drop table jwt_keys;
-drop table users;
+--Очистить все таблицы (кроме languages)
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE users;
+TRUNCATE userLanguages;
+TRUNCATE passwords;
+TRUNCATE jwtKeys;
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 --Вставка в users
 INSERT IGNORE INTO users 
     (fullName, phoneNumber, emailAddress, birthDate, sex, biography) 
 values (?, ?, ?, ?, ?, ?)
 
---Вставка в user_languages
-INSERT IGNORE INTO user_languages 
+--Вставка в userLanguages
+INSERT IGNORE INTO userLanguages 
     (userId, languageId) 
 values (?, ?)
 
@@ -68,14 +72,14 @@ INSERT IGNORE INTO passwords
     (userId, userLogin, userPassword) 
 values (?, ?, ?)
 
---Вставка в jwt_keys
-INSERT IGNORE INTO jwt_keys 
+--Вставка в jwtLeys
+INSERT IGNORE INTO jwtLeys 
     (userId, jwtKey) 
 values (?, ?)
 
 --Взять ключ пользователя
 SELECT jwtKey FROM 
-    jwt_keys 
+    jwtKeys 
 where userId = (?)
 
 --Взять айди по логину
@@ -85,7 +89,7 @@ where userLogin = (?)
 
 --Взять секретный ключ по логину
 SELECT jwtKey FROM (
-    passwords JOIN jwt_keys ON passwords.userId = jwt_keys.userId
+    passwords JOIN jwtKeys ON passwords.userId = jwtKeys.userId
 ) 
 WHERE userLogin = (?)
 
@@ -97,9 +101,13 @@ WHERE userLogin = (?)
 --Получить данные
 SELECT * FROM 
     users 
-WHERE userId=(?)
+WHERE userId = (?)
 
 --Обновить данные
 UPDATE users SET 
-    fullName=?, phoneNumber=?, emailAddress=?, birthDate=?, sex=?, biography=? 
+    fullName = ?, phoneNumber = ?, emailAddress = ?, birthDate = ?, sex = ?, biography = ? 
+WHERE userId = ?
+
+--Удалить языки
+DELETE FROM userLanguages 
 WHERE userId = ?

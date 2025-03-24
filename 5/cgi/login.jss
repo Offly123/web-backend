@@ -10,7 +10,7 @@ require('dotenv').config({
 });
 const cook = require('./cook.jss');
 const myjwt = require('./jwtlib.jss');
-const { showError } = require('./hz.jss');
+const { showDBError } = require('./hz.jss');
 
 
 process.stdin.on('data', () => {
@@ -36,26 +36,26 @@ process.stdin.on('data', () => {
 
     // Сравнение отправленного пароля с хэшем пароля в БД
     let userPassword;
-    const sql_get_password = `
+    const sqlGetPassword = `
         SELECT userPassword FROM 
             passwords 
         WHERE userLogin = (?)
     `;
 
     try {
-        userPassword = await con.execute(sql_get_password, [formData.login]);
+        userPassword = await con.execute(sqlGetPassword, [formData.login]);
     } catch (err) {
-        showError();
+        showDBError();
         return;
     }
 
     const providedPassword = createHash('sha256').update(formData.password).digest('base64');
     if (!userPassword[0][0] || providedPassword != userPassword[0][0].userPassword) {
-        console.log('Content-Type: application/json\n');
-        console.log('Неверный логин или пароль\n');
-        console.log('Вообще тут надо вернуть назад и подсветить поля красным но это потом');
-        // con.rollback();
+        con.rollback();
         con.end();
+        cook.setCookie('wrongLogin', 'true', 1);
+        console.log('Cache-Control: max-age=0, no-cache');
+        console.log('Location: /web-backend/5\n');
         return;
     }
 
@@ -63,33 +63,33 @@ process.stdin.on('data', () => {
     // При правильном пароле берёт из БД ключ для этого пользователя
     // и записывает в куки его JWT на год
     let secret;
-    let user_id;
+    let userId;
 
-    const sql_get_key = `
+    const sqlGetKey = `
     SELECT jwtKey FROM (
-        passwords JOIN jwt_keys ON passwords.userId = jwt_keys.userId
+        passwords JOIN jwtKeys ON passwords.userId = jwtKeys.userId
         ) 
         WHERE userLogin = (?)
     `;
-    const sql_get_id = `
+    const sqlGetId = `
         SELECT userId FROM 
         passwords 
         where userLogin = (?)
     `;
     try {
-        secret = await con.execute(sql_get_key, [formData.login]);
+        secret = await con.execute(sqlGetKey, [formData.login]);
         secret = secret[0][0].jwtKey;
 
-        user_id = await con.execute(sql_get_id, [formData.login]);
-        user_id = user_id[0][0].userId;
+        userId = await con.execute(sqlGetId, [formData.login]);
+        userId = userId[0][0].userId;
 
     } catch (err) {
-        showError();
+        showDBError();
         return;
     }
 
     const JWTInfo = {
-        'userId': user_id
+        'userId': userId
     }
     const jwt = myjwt.createJWT(JWTInfo, secret);
     cook.setCookie('session', jwt, 60 * 60 * 24 * 365);

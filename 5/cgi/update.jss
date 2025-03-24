@@ -2,16 +2,14 @@
 'use strict';
 
 
-const { createHash } = require('crypto');
 const mysql = require('mysql2/promise');
 const url = require('url');
-const fs = require('fs');
 require('dotenv').config({
     path: "../../../../.env"
 });
 const cook = require('./cook.jss');
 const myjwt = require('./jwtlib.jss');
-const { showError } = require('./hz.jss');
+const { showDBError } = require('./hz.jss');
 
 
 process.stdin.on('data', () => {
@@ -19,17 +17,16 @@ process.stdin.on('data', () => {
 }).on('end', async () => {
     
     // console.log('Content-Type: application/json\n');
-
+    
     let requestURI = process.env.REQUEST_URI;
     let formData = url.parse(requestURI, true).query;
-
+    
     // Проверка введённых значений
     if (!cook.checkValues(formData)) {
         console.log('Location: /web-backend/5\n');
         return;
     }
-
-
+    
     const con = await mysql.createConnection({
         host: process.env.DBHOST,
         user: process.env.DBUSER,
@@ -37,27 +34,41 @@ process.stdin.on('data', () => {
         database: process.env.DBNAME
     });
     con.beginTransaction();
-
-
-    // Берёт из JWT user_id и обновляет данные в users
-    // TODO: обновить также данные в user_languages
-    let jwt = cook.cookiesToJSON().session;
-    let user_id = myjwt.decodeJWT(jwt)[1].userId;
-    let sql_user_data = `
-        UPDATE users SET 
-            fullName=?, phoneNumber=?, emailAddress=?, birthDate=?, sex=?, biography=? 
-        WHERE userId = ?
-    `;
-    let user_data = [
-        formData.fullName, formData.phoneNumber, formData.emailAddress, formData.birthDate, formData.sex, formData.biography, user_id
-    ];
-
     
-
+    
+    // Берёт из JWT userId и обновляет данные в users
+    let jwt = cook.cookiesToJSON().session;
+    let userId = myjwt.decodeJWT(jwt)[1].userId;
+    let sqlUserData = `
+    UPDATE users SET 
+    fullName=?, phoneNumber=?, emailAddress=?, birthDate=?, sex=?, biography=? 
+    WHERE userId = ?
+    `;
+    let sqlDeleteLanguages = `
+    DELETE FROM userLanguages 
+    WHERE userId = ?
+    `;
+    let sqlInsertLanguages = `
+    INSERT IGNORE INTO userLanguages 
+    (userId, languageId) 
+    values (?, ?)
+    `;
+    let userData = [
+        formData.fullName, formData.phoneNumber, formData.emailAddress, formData.birthDate, formData.sex, formData.biography, userId
+    ];
+    // Суём в массив если выбран только один язык, чтобы forEach заработал
+    if (formData.language.constructor !== Array) {
+        formData.language = [formData.language];
+    }
+    
     try {
-        con.execute(sql_user_data, user_data);
+        con.execute(sqlUserData, userData);
+        con.execute(sqlDeleteLanguages, [userId]);
+        formData.language.forEach(lang => {
+            con.execute(sqlInsertLanguages, [userId, lang]);
+        })
     } catch (err) {
-        showError();
+        showDBError();
         return;
     }
 

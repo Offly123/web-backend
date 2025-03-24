@@ -20,6 +20,7 @@ const createPayload = (info) => {
 };
 
 
+// Получает объекты header и payload, строку secret и возвращает подпись 
 const createSignature = (header, payload, secret) => {
     return createHmac('sha256', secret)
         .update(header + '.' + payload)

@@ -10,7 +10,7 @@ require('dotenv').config({
 });
 const cook = require('./cook.jss');
 const myjwt = require('./jwtlib.jss');
-const { showError } = require('./hz.jss');
+const { showDBError } = require('./hz.jss');
 
 process.stdin.on('data', async () => {
 
@@ -18,6 +18,7 @@ process.stdin.on('data', async () => {
 
     // console.log('Content-Type: application/json\n');
 
+    // console.log('hehe');
     // Получает данные из ссылки и записывает в formData
     let requestURI = process.env.REQUEST_URI;
     let formData = url.parse(requestURI, true).query;
@@ -25,8 +26,8 @@ process.stdin.on('data', async () => {
 
     cook.formDataToCookie(formData);
 
-
-    // При наличии ошибок подсвечивает их
+    
+    // При наличии ошибок записывает их в куки
     if (!cook.checkValues(formData)) {
         console.log('Location: /web-backend/5\n');
         // console.log('Content-Type: application/json\n');
@@ -44,9 +45,8 @@ process.stdin.on('data', async () => {
     con.beginTransaction();
 
 
-
     // Вставка основных данных пользователя в users
-    const sql_users = `
+    const sqlUsers = `
         INSERT IGNORE INTO users 
             (fullName, phoneNumber, emailAddress, birthDate, sex, biography) 
         values (?, ?, ?, ?, ?, ?)
@@ -56,21 +56,21 @@ process.stdin.on('data', async () => {
     ];
     let result;
     try {
-        result = await con.execute(sql_users, users);
+        result = await con.execute(sqlUsers, users);
     } catch (err) {
-        showError(con, err);
+        showDBError(con, err);
         return;
     }
 
 
 
-    // Вставка выбранных языков в user_languages
-    let sql_user_languages = `
-        INSERT IGNORE INTO user_languages 
+    // Вставка выбранных языков в userLanguages
+    let sqlUserLanguages = `
+        INSERT IGNORE INTO userLanguages 
             (userId, languageId) 
         values (?, ?)
     `;
-    let user_id = result[0].insertId;
+    let userId = result[0].insertId;
 
     // Если только один язык, всё равно суём его в массив, потому что forEach
     // иначе не заработает
@@ -79,12 +79,12 @@ process.stdin.on('data', async () => {
     }
 
     try {
-        await formData.language.forEach(language_id => {
-            let user_languages = [user_id, language_id];
-            con.execute(sql_user_languages, user_languages);
+        await formData.language.forEach(languageId => {
+            let userLanguages = [userId, languageId];
+            con.execute(sqlUserLanguages, userLanguages);
         });
     } catch (err) {
-        showError(con, err);
+        showDBError(con, err);
         return;
     }
 
@@ -98,46 +98,47 @@ process.stdin.on('data', async () => {
     fs.writeFileSync('auth.txt', login + ';' + password);
 
     password = createHash('sha256').update(password).digest('base64');
-    let sql_passwords = `
+    let sqlPasswords = `
         INSERT IGNORE INTO passwords 
             (userId, userLogin, userPassword) 
         values (?, ?, ?)
     `;
     let passwords = [
-        user_id, login, password
+        userId, login, password
     ];
 
     try {
-        await con.execute(sql_passwords, passwords);
+        await con.execute(sqlPasswords, passwords);
     } catch (err) {
-        showError(con, err);
+        showDBError(con, err);
         return;
     }
 
 
 
     // Вставка случайного ключа для подписи JWT пользователя
-    const sql_jwt_keys = `
-        INSERT IGNORE INTO jwt_keys 
+    const sqlJwtKeys = `
+        INSERT IGNORE INTO jwtKeys 
             (userId, jwtKey) 
         values (?, ?)
     `;
     const JWTInfo = {
-        'user_id': user_id
+        'userId': userId
     }
     const secret = cook.generateString(50);
     const jwt = myjwt.createJWT(JWTInfo, secret);
-    const jwt_keys = [
-        user_id, secret
+    const jwtKeys = [
+        userId, secret
     ];
 
     try {
-        await con.execute(sql_jwt_keys, jwt_keys);
+        await con.execute(sqlJwtKeys, jwtKeys);
     } catch (err) {
-        showError(con, err);
+        showDBError(con, err);
         return;
     }
     cook.setCookie('session', jwt, 60 * 60 * 24 * 365);
+    cook.setCookie('anyErrors', 'false');
 
 
 
