@@ -2,8 +2,8 @@
 'use strict';
 
 const { createHash } = require('crypto');
+const querystring = require('querystring');
 const mysql = require('mysql2/promise');
-const url = require('url');
 const fs = require('fs');
 require('dotenv').config({
     path: "../../../../.env"
@@ -12,16 +12,16 @@ const cook = require('./cook.jss');
 const myjwt = require('./jwtlib.jss');
 const { showDBError } = require('./hz.jss');
 
-process.stdin.on('data', async () => {
-
+let body = '';
+process.stdin.on('data', (chunk) => {
+    body += chunk.toString();
 }).on('end', async () => {
-
+    
     // console.log('Content-Type: application/json\n');
-
+    
+    let formData = querystring.parse(body);
+    
     // console.log('hehe');
-    // Получает данные из ссылки и записывает в formData
-    let requestURI = process.env.REQUEST_URI;
-    let formData = url.parse(requestURI, true).query;
 
 
     cook.formDataToCookie(formData);
@@ -139,11 +139,12 @@ process.stdin.on('data', async () => {
     }
     cook.setCookie('session', jwt, 60 * 60 * 24 * 365);
     cook.setCookie('anyErrors', 'false');
+    cook.setCookie('dataSentFirstTime', 'true');
 
 
 
-    con.commit();
-    con.end();
+    await con.commit();
+    await con.end();
 
 
 

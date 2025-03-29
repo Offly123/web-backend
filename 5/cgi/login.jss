@@ -4,7 +4,7 @@
 
 const { createHash } = require('crypto');
 const mysql = require('mysql2/promise');
-const url = require('url');
+const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
 });
@@ -13,17 +13,18 @@ const myjwt = require('./jwtlib.jss');
 const { showDBError } = require('./hz.jss');
 
 
-process.stdin.on('data', () => {
+let body = '';
+process.stdin.on('data', (chunk) => {
+
+    body += chunk.toString();
 
 }).on('end', async () => {
-
+    
     // console.log('Content-Type: application/json\n');
-
-    // Берём данные из ссылки и записываем в formData
-    let requestURI = process.env.REQUEST_URI;
-    let formData = url.parse(requestURI, true).query;
-
-
+    
+    let formData = querystring.parse(body);
+    
+    
     const con = await mysql.createConnection({
         host: process.env.DBHOST,
         user: process.env.DBUSER,
@@ -31,24 +32,24 @@ process.stdin.on('data', () => {
         database: process.env.DBNAME
     });
     con.beginTransaction();
-
-
-
+    
+    
+    
     // Сравнение отправленного пароля с хэшем пароля в БД
     let userPassword;
     const sqlGetPassword = `
-        SELECT userPassword FROM 
-            passwords 
-        WHERE userLogin = (?)
+    SELECT userPassword FROM 
+    passwords 
+    WHERE userLogin = (?)
     `;
-
+    
     try {
         userPassword = await con.execute(sqlGetPassword, [formData.login]);
     } catch (err) {
         showDBError();
         return;
     }
-
+    
     const providedPassword = createHash('sha256').update(formData.password).digest('base64');
     if (!userPassword[0][0] || providedPassword != userPassword[0][0].userPassword) {
         con.rollback();

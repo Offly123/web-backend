@@ -4,7 +4,7 @@ CREATE TABLE users (
     phoneNumber VARCHAR(15),
     emailAddress VARCHAR(255),
     birthDate DATE,
-    sex ENUM('male', 'female'),
+    sex ENUM('Male', 'Female'),
     biography TEXT
 );
 
@@ -56,6 +56,12 @@ TRUNCATE passwords;
 TRUNCATE jwtKeys;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+--Удалить все таблицы (кроме languages)
+DROP TABLE jwtKeys;
+DROP TABLE userLanguages;
+DROP TABLE passwords;
+DROP TABLE users;
 
 --Вставка в users
 INSERT IGNORE INTO users 
@@ -111,3 +117,11 @@ WHERE userId = ?
 --Удалить языки
 DELETE FROM userLanguages 
 WHERE userId = ?
+
+--Получить основные данные
+SELECT * from users
+WHERE userId = ?
+
+--Получить языки
+SELECT * from userLanguages
+WHERE userid = ?

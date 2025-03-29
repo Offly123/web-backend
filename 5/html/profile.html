@@ -14,7 +14,7 @@
     <title>update-template</title>
 </head>
 <body>
-    <form method="get" action="../cgi/update.jss">
+    <form method="post" action="../cgi/update.jss">
         <div class="head">
             Личный кабинет
         </div>
@@ -72,10 +72,10 @@
     
     
                 <div class="radio-buttons-wrapper" 
-                $sexBorder$>
+                $sexErrorBorder$>
     
                     <div class="btn-wrapper" 
-                    $sexBorder$>
+                    $sexErrorBorder$>
                         <input name="sex" type="radio" id="radio1" class="radio-btn" value="Male" 
                         $sexMale$>
                         <label for="radio1" tabindex="0">М</label>
@@ -86,7 +86,7 @@
                         Укажите ваш пол
                     </p>
     
-                    <div class="btn-wrapper" $sexBorder$>
+                    <div class="btn-wrapper" $sexErrorBorder$>
                         <input name="sex" type="radio" id="radio2" class="radio-btn" value="Female" 
                         $sexFemale$>
                         <label class="TEST" for="radio2" tabindex="0">Ж</label>

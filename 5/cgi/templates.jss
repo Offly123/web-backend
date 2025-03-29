@@ -16,6 +16,7 @@ exports.getHTML = (page) => {
     return page;
 }
 
+
 // Вставляет в base(HTML в виде строки) части template
 // (часть head и весь body)
 // HTML получает в виде строк
@@ -45,10 +46,11 @@ const getBetween = (string, start, end) => {
 }
 
 
-// Вставляет печенье в страницу и удаляет неиспользованные флаги
-exports.returnHTML = (page) => {
-    page = cook.cookiesInPage(page);
-    console.log('Content-Type: text/html; charset=utf-8\n');
+// Получает JSON данных (из куков или БД),
+// вставляет их в страницу и удаляет неиспользованные флаги
+exports.returnHTML = (page, data) => {
+    page = cook.cookiesInPage(page, data);
     page = cook.deleteHTMLFlags(page);
+    console.log('Content-Type: text/html; charset=utf-8\n');
     console.log(page);
 }

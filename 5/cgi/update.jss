@@ -3,7 +3,7 @@
 
 
 const mysql = require('mysql2/promise');
-const url = require('url');
+const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
 });
@@ -12,16 +12,21 @@ const myjwt = require('./jwtlib.jss');
 const { showDBError } = require('./hz.jss');
 
 
-process.stdin.on('data', () => {
+let body = '';
+process.stdin.on('data', (chunk) => {
 
+    body += chunk.toString();
+    
 }).on('end', async () => {
     
     // console.log('Content-Type: application/json\n');
-    
-    let requestURI = process.env.REQUEST_URI;
-    let formData = url.parse(requestURI, true).query;
+
+    let formData = querystring.parse(body);
+
+    cook.formDataToCookie(formData);
     
     // Проверка введённых значений
+    // console.log(body);
     if (!cook.checkValues(formData)) {
         console.log('Location: /web-backend/5\n');
         return;

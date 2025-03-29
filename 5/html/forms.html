@@ -14,7 +14,7 @@
     <title>forms-template</title>
 </head>
 <body>
-    <form id="form-login" class="form-shown" method="get" action="../cgi/login.jss">
+    <form id="form-login" class="form-shown" method="post" action="../cgi/login.jss">
         <div class="head">
             Вход
         </div>
@@ -38,7 +38,7 @@
         </div>
     </form>
     
-    <form id="form-registration" class="form-hidden" method="get" action="../cgi/registration.jss">
+    <form id="form-registration" class="form-hidden" method="post" action="../cgi/registration.jss">
         <div class="head">
             Регистрация
         </div>
@@ -114,7 +114,7 @@
                     $sexErrorBorder$>
                         <input name="sex" type="radio" id="radio2" class="radio-btn" value="Female" 
                         $sexFemale$>
-                        <label class="TEST" for="radio2" tabindex="0">Ж</label>
+                        <label for="radio2" tabindex="0">Ж</label>
                     </div>
     
                 </div>
@@ -201,13 +201,13 @@
                 <label>Краткая биография:</label>
                 <p class="error-text-biography error-text" 
                 $biographyError$>
-                    Биография не длинее 300 символов
+                    Биография не длинее 150 символов
                 </p>
                 <textarea id="mytext" name="biography" placeholder="Биография" required
                 $biographyErrorBorder$>$biography$</textarea>
             </div>
             <div>
-                <input id="agreement" type="checkbox" name="agreement" required>
+                <input id="agreement" type="checkbox" name="agreement" required $agreement$>
                 <label for="agreement">С приказом об отчислении ознакомлен(а)<!--мне лень делать эту кнопку красивой--></label><br>
             </div>
         </div>

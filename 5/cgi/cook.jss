@@ -118,6 +118,10 @@ exports.checkValues = (formData) => {
 
 // Напрямую подставляет значение в HTML
 const insertDirectly = (page, cookieName, data) => {
+    if (data == undefined) {
+        return page;
+    }
+
     page = page.replace('$' + cookieName + '$', data);
     return page;
 }
@@ -125,13 +129,36 @@ const insertDirectly = (page, cookieName, data) => {
 
 // Вставляет значение куки в атрибут value
 const insertValue = (page, cookieName, data) => {
+    if (data == undefined) {   
+        return page;
+    }
+
     page = page.replace('$' + cookieName + '$', 'value="' + data + '"');
     return page;
 }
 
 
-// Добавляет атрибут checked по куки
-const insertChecked = (page, cookieName) => {
+// Добавляет атрибут checked по cookie
+const insertChecked = (page, cookieName, data) => {
+    if (data == undefined) {
+        return page;
+    }
+
+    if (cookieName === 'sex') {
+        page = page.replace('$' + cookieName + data + '$', 'checked');
+        return page;
+    }
+
+    if (cookieName === 'language') {
+        if (data.constructor !== Array) {
+            data = [data];
+        }
+        data.forEach(languageId => {
+            page = page.replace('$language' + languageId + '$', 'checked');
+        });
+        return page;
+    }
+
     page = page.replace('$' + cookieName + '$', 'checked');
     return page;
 }
@@ -145,135 +172,76 @@ const showError = (page, cookieName) => {
 }
 
 
-// получает HTML страницу в виде строки, значение из cookies
-// вставляет в форму, если есть ошибки, то подсвечивает
-//
-// TODO: идея в том чтобы в JSON для каждой куки хранить 
-// функцию, которая обрабатывает её (типа заменить на value,
-// подсветить ошибку если Error и всё такое)
-// Зачем я начал это делать
-
-// Щас не работает сообщение об успешной отправке
-exports.cookiesInPage = (page) => {
-    const allCookies = this.cookiesToJSON();
+// получает HTML страницу в виде строки и JSON данных, которые надо вставить.
+// Заменяет $$ на соответствующие значения cookie
+exports.cookiesInPage = (page, allData) => {
     let anyErrors = false;
-    
-    const cookieFunctions = {
-        
-        // Вставить отправленные данные
-        fullName: (page, data) => {
-            page = insertValue(page, 'fullName', data);
-            return page;
-        },
-        phoneNumber: (page, data) => {
-            page = insertValue(page, 'phoneNumber', data);
-            return page;
-        },
-        emailAddress: (page, data) => {
-            page = insertValue(page, 'emailAddress', data);
-            return page;
-        },
-        birthDate: (page, data) => {
-            page = insertValue(page, 'birthDate', data);
-            return page;
-        },
-        sex: (page, data) => {
-            page = insertChecked(page, 'sex' + data);  
-            return page;
-        },
-        language: (page, data) => {
-            if (data.constructor !== Array) {
-                data = [data];
-            }
-            data.forEach(langId => {
-                page = insertChecked(page, 'language' + langId);
-            });
-            return page;
-        },
-        biography: (page, data) => {
-            page = insertDirectly(page, 'biography', data);
-            return page;
-        },
-        
-        // Подсветить ошибки
-        fullNameError: (page) => {
-            page = showError(page, 'fullNameError');
+
+    const cookiesToInsertValue = [
+        'fullName', 'phoneNumber', 'emailAddress', 'birthDate'
+    ];
+    const cookiesToInsertChecked = [
+        'sex', 'language', 'agreement'
+    ];
+    const cookiesToInsertDirectly = [
+        'biography'
+    ];
+
+    // Вставляем значения, которые в HTML атрибуте value
+    cookiesToInsertValue.forEach((valueCookie) => {
+        page = insertValue(page, valueCookie, allData[valueCookie]);
+    });
+
+    // Вставляем вместо $$ checked
+    cookiesToInsertChecked.forEach((checkedCookie) => {
+        page = insertChecked(page, checkedCookie, allData[checkedCookie]);
+    });
+
+    // Напрямую вставляем значения cookie
+    cookiesToInsertDirectly.forEach((directlyCookie) => {
+        page = insertDirectly(page, directlyCookie, allData[directlyCookie])
+    });
+
+    // Если в имени есть Error, подсвечиваем ошибки
+    for (let errorCookie in allData) {
+        if (errorCookie.includes('Error') && errorCookie != 'anyErrors') {
+            page = showError(page, errorCookie);
             anyErrors = true;
-            return page;
-        },
-        phoneNumberError: (page) => {
-            page = showError(page, 'phoneNumberError');
-            anyErrors = true;
-            return page;
-        },
-        emailAddressError: (page) => {
-            page = showError(page, 'emailAddressError');
-            anyErrors = true;
-            return page;
-        },
-        birthDateError: (page) => {
-            page = showError(page, 'birthDateError');
-            anyErrors = true;
-            return page;
-        },
-        sexError: (page) => {
-            page = showError(page, 'sexError');
-            anyErrors = true;
-            return page;
-        },
-        languageError: (page) => {
-            page = showError(page, 'languageError');
-            anyErrors = true;
-            return page;
-        },
-        biographyError: (page) => {
-            page = showError(page, 'biographyError');
-            anyErrors = true;
-            return page;
-        },
+        }
     }
 
-    // console.log(allCookies);
-    
-    for (let cookieName in allCookies) {
-        
-        // console.log(cookieName);
-        
-        if (cookieFunctions[cookieName] == undefined) {
-            continue;
-        }
-        
-        page = cookieFunctions[cookieName](page, allCookies[cookieName]);
-        
-    }
-    
-    
-    // Если данные отправлены и нет ошибок
+
     let auth;
     let login;
     let password;
-    if (!anyErrors && allCookies.anyErrors != 'false' && allCookies.anyErrors != undefined) {
-        this.setCookie('anyErrors', 'false');
-        
-        // Чтение сгенерированных логина и пароля из файла
-        process.chdir('./cgi');
-        try {
-            auth = fs.readFileSync('auth.txt', 'utf8').split(';');
-        } catch (err) {
-            console.log('Content-Type: application/json\n');
-            console.log(err);
-        }
-        fs.writeFileSync('auth.txt', '');
-        
-        login = auth[0];
-        password = auth[1];
+
+
+    this.setCookie('anyErrors', 'false');
+
+    // Чтение сгенерированных логина и пароля из файла
+    process.chdir('./cgi');
+    try {
+        auth = fs.readFileSync('auth.txt', 'utf8').split(';');
+    } catch (err) {
+        console.log('Content-Type: application/json\n');
+        console.log(err);
     }
-    
+    fs.writeFileSync('auth.txt', '');
+
+    login = auth[0];
+    password = auth[1];
+
+
+    // Высвечиваем сообщение об ошибке или успехе, также
+    // заменяем $$ на сгенерированыне логин и пароль
+    // (страница генерируется в index.jss, там в зависимости от 
+    // значения cookie anyErrors добавится либо попап с ошибкой, либо
+    // с логином паролем)
     page = page.replace('$animateSuccess$', 'class="success-show"');
     page = page.replace('$login$', login);
     page = page.replace('$password$', password);
     page = page.replace('$animateError$', 'class="error-show"');
-    
+
     return page;
 }
 
