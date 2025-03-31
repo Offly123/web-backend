@@ -1,0 +1,73 @@
+@font-face {
+    font-family: "Manrope";
+    src: url("../fonts/Manrope-VariableFont_wght.ttf");
+}
+
+.temp-class {
+    margin: 100px;
+}
+
+p,
+ul,
+li {
+    all: unset;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+
+
+/* SVG шарики */
+
+
+
+.svg-wrapper {
+    z-index: -1;
+    top: 0;
+    left: 0;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.svg {
+    position: absolute;
+    z-index: -1;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#svg1 {
+    top: 400px;
+    right: calc(40vw - 400px);
+}
+
+#svg2 {
+    top: -50px;
+    left: calc(50vw - 300px);
+}
+
+#svg3 {
+    top: 500px;
+    right: calc(50vw + 300px);
+}
+
+
+
+/* BODY */
+
+
+
+body {
+    overflow: hidden;
+    position: relative;
+    font-family: Manrope;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    background-color: #3c3c3c;
+    background-image: linear-gradient(#b763cc, #5a3ebf);
+}

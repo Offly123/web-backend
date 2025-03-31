@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="./">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    $headStart$
+    <link rel="stylesheet" href="../css/forms.css">
+    <script src="../js/forms.js"></script>
+    $style$
+    $headEnd$
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="shortcut icon" href="#">
+    <title>forms-template</title>
+</head>
+<body>
+    <form id="form-login" class="form-shown" method="post" action="../cgi/login.jss">
+        <div class="head">
+            Вход
+        </div>
+        <div class="main">
+            <div class="element">
+                <label>
+                    Логин:
+                </label>
+                <input id="login" name="login" type="text" placeholder="Логин">
+            </div>
+            <div class="element">
+                <label>
+                    Пароль:                    
+                </label>
+                <input id="password" name="password" type="password" placeholder="Пароль">
+            </div>
+        </div>
+        <div class="form-end">
+            <button class="submit-btn" type="submit">Войти</button>
+            <button class="switch-to-registration" type="hehe">Регистрация</button>
+        </div>
+    </form>
+    
+    <form id="form-registration" class="form-hidden" method="post" action="../cgi/registration.jss">
+        <div class="head">
+            Регистрация
+        </div>
+        <div class="main">
+    
+            <div class="element">
+                <label>
+                    ФИО:
+                    <p class="error-text" $fullNameError$>
+                        Только кириллические буквы, не больше 150 символов
+                    </p>
+                </label>
+                <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required $fullName$ $fullNameErrorBorder$>
+            </div>
+    
+            <div class="element">
+                <label>Номер телефона:</label>
+                <p class="error-text" 
+                $phoneNumberError$>
+                    Номер телефона может содержать только цифры
+                </p>
+                <input type="phone" name="phoneNumber" placeholder="88005553535" required 
+                $phoneNumber$ $phoneNumberErrorBorder$>
+            </div>
+    
+            <div class="element">
+                <label>Электронная почта:</label>
+                <p class="error-text" 
+                $emailAddressError$>
+                    Невалидный e-mail
+                </p>
+                <input type="email" name="emailAddress" placeholder="example@somemail.com" required 
+                $emailAddress$ $emailAddressErrorBorder$>
+            </div>
+    
+            <div class="element">
+                <label>
+                    Дата рождения:
+                    <p class="error-text" 
+                    $birthDateError$>
+                    Год не может быть меньше 1900 и больше 2025
+                    </p>
+                </label>
+                <input type="date" name="birthDate" required 
+                $birthDate$ $birthDateErrorBorder$>
+            </div>
+    
+            <div class="element radio">
+    
+                <div class="pol">
+                    <label>
+                        Пол:
+                    </label>
+                </div>
+    
+    
+                <div class="radio-buttons-wrapper" 
+                $sexErrorBorder$>
+    
+                    <div class="btn-wrapper" 
+                    $sexErrorBorder$>
+                        <input name="sex" type="radio" id="radio1" class="radio-btn" value="Male" 
+                        $sexMale$>
+                        <label for="radio1" tabindex="0">М</label>
+                    </div>
+    
+                    <p class="error-text-sex error-text" 
+                    $sexError$>
+                        Укажите ваш пол
+                    </p>
+    
+                    <div class="btn-wrapper" 
+                    $sexErrorBorder$>
+                        <input name="sex" type="radio" id="radio2" class="radio-btn" value="Female" 
+                        $sexFemale$>
+                        <label for="radio2" tabindex="0">Ж</label>
+                    </div>
+    
+                </div>
+    
+            </div>
+    
+            <div class="languages">
+                <label 
+                $languageErrorBorder$>
+                    <p class="error-text-languages error-text" 
+                    $languageError$>
+                        Выберите хотя бы 1 язык
+                    </p>
+                    Любимые языки программирования:
+                </label>
+                <div class="language-btn">
+                    <button class="dont-close" id="toggle-languages" type="button">Языки</button>
+                    <ul class="language-list">
+                        <li class="dont-close">
+                            <input class="dont-close" id="language1" name="language" type="checkbox" value="1" 
+                            $language1$>
+                            <label class="dont-close" for="language1" tabindex="0">Pascal</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language2" name="language" type="checkbox" value="2" 
+                            $language2$>
+                            <label class="dont-close" for="language2" tabindex="0">C</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language3" name="language" type="checkbox" value="3" 
+                            $language3$>
+                            <label class="dont-close" for="language3" tabindex="0">C++</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language4" name="language" type="checkbox" value="4" 
+                            $language4$>
+                            <label class="dont-close" for="language4" tabindex="0">JavaScript</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language5" name="language" type="checkbox" value="5" 
+                            $language5$>
+                            <label class="dont-close" for="language5" tabindex="0">PHP</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language6" name="language" type="checkbox" value="6" 
+                            $language6$>
+                            <label class="dont-close" for="language6" tabindex="0">Python</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language7" name="language" type="checkbox" value="7" 
+                            $language7$>
+                            <label class="dont-close" for="language7" tabindex="0">Java</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language8" name="language" type="checkbox" value="8" 
+                            $language8$>
+                            <label class="dont-close" for="language8" tabindex="0">Haskel</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language9" name="language" type="checkbox" value="9" 
+                            $language9$>
+                            <label class="dont-close" for="language9" tabindex="0">Clojure</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language10" name="language" type="checkbox" value="10" 
+                            $language10$>
+                            <label class="dont-close" for="language10" tabindex="0">Prolog</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language11" name="language" type="checkbox" value="11" 
+                            $language11$>
+                            <label class="dont-close" for="language11" tabindex="0">Scala</label>
+                        </li>
+                        <li class="dont-close">
+                            <input class="dont-close" id="language12" name="language" type="checkbox" value="12" 
+                            $language12$>
+                            <label class="dont-close" for="language12" tabindex="0">Go</label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="element" id="biography">
+                <label>Краткая биография:</label>
+                <p class="error-text-biography error-text" 
+                $biographyError$>
+                    Биография не длинее 150 символов
+                </p>
+                <textarea id="mytext" name="biography" placeholder="Биография" required
+                $biographyErrorBorder$>$biography$</textarea>
+            </div>
+            <div>
+                <input id="agreement" type="checkbox" name="agreement" required $agreement$>
+                <label for="agreement">С приказом об отчислении ознакомлен(а)<!--мне лень делать эту кнопку красивой--></label><br>
+            </div>
+        </div>
+        <div class="form-end">
+            <button class="submit-btn" type="submit">Отправить</button>
+            <button class="switch-to-login">Войти</button>
+        </div>
+    </form>
+
+    $bodyToAppend$
+</body>
+</html>
