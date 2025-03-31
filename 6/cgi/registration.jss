@@ -29,7 +29,7 @@ process.stdin.on('data', (chunk) => {
     
     // При наличии ошибок записывает их в куки
     if (!cook.checkValues(formData)) {
-        console.log('Location: /web-backend/5\n');
+        console.log('Location: /web-backend/6\n');
         // console.log('Content-Type: application/json\n');
         // console.log('inside if');
         return;
@@ -148,5 +148,5 @@ process.stdin.on('data', (chunk) => {
 
 
 
-    console.log('Location: /web-backend/5\n');
+    console.log('Location: /web-backend/6\n');
 });

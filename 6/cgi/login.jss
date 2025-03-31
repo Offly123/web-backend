@@ -56,7 +56,7 @@ process.stdin.on('data', (chunk) => {
         con.end();
         cook.setCookie('wrongLogin', 'true', 1);
         console.log('Cache-Control: max-age=0, no-cache');
-        console.log('Location: /web-backend/5\n');
+        console.log('Location: /web-backend/6\n');
         return;
     }
 
@@ -103,5 +103,5 @@ process.stdin.on('data', (chunk) => {
 
 
     console.log('Cache-Control: max-age=0, no-cache');
-    console.log('Location: /web-backend/5\n');
+    console.log('Location: /web-backend/6\n');
 });

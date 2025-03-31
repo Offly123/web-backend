@@ -28,7 +28,7 @@ process.stdin.on('data', (chunk) => {
     // Проверка введённых значений
     // console.log(body);
     if (!cook.checkValues(formData)) {
-        console.log('Location: /web-backend/5\n');
+        console.log('Location: /web-backend/6\n');
         return;
     }
     
@@ -84,5 +84,5 @@ process.stdin.on('data', (chunk) => {
 
 
 
-    console.log('Location: /web-backend/5\n');
+    console.log('Location: /web-backend/6\n');
 });

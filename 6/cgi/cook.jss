@@ -96,12 +96,25 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (formData.language === undefined && formData.language > 1 && formData.language < 12) {
+    if (formData.language === undefined) {
         this.setCookie('languageError', 'none');
         validValues = false;
     } else {
         this.setCookie('languageError', '', -1);
     }
+
+
+    if (formData.language.constructor != Array) {
+        formData.language = [formData.language];
+    }
+    formData.language.forEach((language) => {
+        if (language < 1 || language > 12) {
+            this.setCookie('languageError', 'none');
+            validValues = false;
+        } else {
+           this.setCookie('languageError', '', -1);
+        }
+    });
 
 
     if (formData.biography.length > 150) {
