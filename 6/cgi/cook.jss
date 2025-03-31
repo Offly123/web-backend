@@ -6,12 +6,12 @@ const fs = require('fs');
 // получает имя, значение и время в секундах
 exports.setCookie = (...args) => {
     if (args.length === 2) {
-        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/5/; httponly');
+        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/; httponly');
         return;
     }
     let timeofDeath = new Date();
     timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
-    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/5/; Expires=' + timeofDeath + '; httponly');
+    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/; Expires=' + timeofDeath + '; httponly');
 }
 
 
@@ -96,7 +96,7 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (formData.language === undefined) {
+    if (formData.language === undefined && formData.language > 1 && formData.language < 12) {
         this.setCookie('languageError', 'none');
         validValues = false;
     } else {
@@ -175,8 +175,7 @@ const showError = (page, cookieName) => {
 // получает HTML страницу в виде строки и JSON данных, которые надо вставить.
 // Заменяет $$ на соответствующие значения cookie
 exports.cookiesInPage = (page, allData) => {
-    let anyErrors = false;
-
+    
     const cookiesToInsertValue = [
         'fullName', 'phoneNumber', 'emailAddress', 'birthDate'
     ];
@@ -186,22 +185,22 @@ exports.cookiesInPage = (page, allData) => {
     const cookiesToInsertDirectly = [
         'biography'
     ];
-
+    
     // Вставляем значения, которые в HTML атрибуте value
     cookiesToInsertValue.forEach((valueCookie) => {
         page = insertValue(page, valueCookie, allData[valueCookie]);
     });
-
+    
     // Вставляем вместо $$ checked
     cookiesToInsertChecked.forEach((checkedCookie) => {
         page = insertChecked(page, checkedCookie, allData[checkedCookie]);
     });
-
+    
     // Напрямую вставляем значения cookie
     cookiesToInsertDirectly.forEach((directlyCookie) => {
         page = insertDirectly(page, directlyCookie, allData[directlyCookie])
     });
-
+    
     // Если в имени есть Error, подсвечиваем ошибки
     for (let errorCookie in allData) {
         if (errorCookie.includes('Error') && errorCookie != 'anyErrors') {
@@ -209,28 +208,30 @@ exports.cookiesInPage = (page, allData) => {
             anyErrors = true;
         }
     }
-
-
+    
+    
     let auth;
     let login;
     let password;
-
-
+    
+    
     this.setCookie('anyErrors', 'false');
-
+    
     // Чтение сгенерированных логина и пароля из файла
     process.chdir('./cgi');
     try {
         auth = fs.readFileSync('auth.txt', 'utf8').split(';');
+        fs.writeFileSync('auth.txt', '');
     } catch (err) {
         console.log('Content-Type: application/json\n');
         console.log(err);
     }
-    fs.writeFileSync('auth.txt', '');
-
-    login = auth[0];
-    password = auth[1];
-
+    
+    if (auth != undefined) {
+        login = auth[0];
+        password = auth[1];
+    }
+    
 
     // Высвечиваем сообщение об ошибке или успехе, также
     // заменяем $$ на сгенерированыне логин и пароль

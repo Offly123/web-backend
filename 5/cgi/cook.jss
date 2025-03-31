@@ -96,7 +96,7 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (formData.language === undefined) {
+    if (formData.language === undefined && formData.language > 1 && formData.language < 12) {
         this.setCookie('languageError', 'none');
         validValues = false;
     } else {

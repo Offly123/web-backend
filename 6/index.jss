@@ -16,32 +16,26 @@ process.stdin.on('data', () => {
 
     // console.log('Content-Type: application/json\n');
 
-    // Логин: aEKCN1U0w3
-
-    // Пароль: OMu2EK5ua3
-
-
     // HTML с задним фоном
     let base = html.getHTML('base.html');
-
-
+    
     const jwt = cook.cookiesToJSON().session;
     const anyErrors = cook.cookiesToJSON().anyErrors;
     const dataSentFirstTime = cook.cookiesToJSON().dataSentFirstTime;
-
+    
     if (anyErrors === 'false' && dataSentFirstTime === 'true') {
         cook.deleteRegistrationData();
         base = html.addTemplate(base, html.getHTML('popup.html'));
     }
-
-
+    
+    
     // Если неправильный логин/пароль добавляем окно с ошибкой
     let wrongLogin = cook.cookiesToJSON().wrongLogin;
     if (wrongLogin === 'true') {
         base = html.addTemplate(base, html.getHTML('popup-error.html'));
     }
-
-
+    
+    
     // Если отсутствует JWT - возвращает HTML в формами
     if (!jwt) {
         base = html.addTemplate(base, html.getHTML('forms.html'));
@@ -49,11 +43,11 @@ process.stdin.on('data', () => {
         html.returnHTML(base, data);
         return;
     }
-
-
+    
+    
     let decoded = myjwt.decodeJWT(jwt);
-
-
+    
+    
     const con = await mysql.createConnection({
         host: process.env.DBHOST,
         user: process.env.DBUSER,
@@ -61,9 +55,9 @@ process.stdin.on('data', () => {
         database: process.env.DBNAME
     });
     con.beginTransaction();
-
-
-
+    
+    
+    
     // Если есть валидный JWT - возвращаем личный кабинет, 
     // иначе логин и регистрацию
     const sqlGetSecret = `
@@ -73,14 +67,14 @@ process.stdin.on('data', () => {
     `;
     let userId = decoded[1].userId;
     let secret;
-
+    
     try {
         secret = await con.execute(sqlGetSecret, [userId]);
     } catch (err) {
         showDBError(con, err);
         return;
     }
-
+    
     // Если JWT не валидный - удаляем его и возвращаем 
     // HTML с формами
     if (secret[0][0] == undefined || !myjwt.isValideJWT(decoded, secret[0][0].jwtKey)) {
