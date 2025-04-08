@@ -104,6 +104,8 @@ exports.checkValues = (formData) => {
     }
 
 
+    // Проверка, что выбран допустимый язык (чтобы
+    // никто в коде HTML не изменил значение)
     if (formData.language.constructor != Array) {
         formData.language = [formData.language];
     }
