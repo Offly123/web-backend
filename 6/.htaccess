@@ -1,1 +1,19 @@
-DirectoryIndex index.jss
+#DirectoryIndex main/index.jss
+
+# Включает перенаправление и 
+# устанавливаем рабочую директорию
+RewriteEngine On
+RewriteBase "/web-backend/6/"
+
+# Запрещаем переход напрямую на admin.jss
+#RewriteRule "admin/admin.jss" - [L,R=404]
+# Перенаправляем с admin/ на admin.jss
+RewriteRule "admin(/?)" "admin/admin.jss" [L]
+
+
+# Перенаправляем с /6/ на главную
+RewriteRule "main/" "main/index.jss" [L]
+# Запрещаем переход напрямую на index.jss
+#RewriteRule "main/index.jss" - [R=404,L]
+
+RewriteRule "cgi" - [L,R=404]

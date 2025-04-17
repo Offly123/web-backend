@@ -1,3 +1,6 @@
+
+const mysql = require('mysql2/promise');
+
 // Откатывает транзакцию, закрывает соединение и возвращает 
 // пользователю ошибку
 exports.showDBError = (con, err) => {
@@ -26,4 +29,27 @@ exports.DBDataToJSON = (personalData, languages) => {
     data.birthDate = data.birthDate.toISOString().substr(0, 10);
 
     return data;
+}
+
+exports.connectToDB = async () => {
+    let con;
+
+    try {
+        con = mysql.createConnection({
+            host: process.env.DBHOST,
+            user: process.env.DBUSER,
+            password: process.env.DBPSWD,
+            database: process.env.DBNAME
+        });
+    } catch (err) {
+        console.log('Content-Type: application/json\n');
+        console.log(err);
+    }
+
+    return con;
+}
+
+
+exports.validateHTTPAuth = async () => {
+    
 }

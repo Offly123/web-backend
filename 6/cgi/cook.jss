@@ -101,22 +101,19 @@ exports.checkValues = (formData) => {
         validValues = false;
     } else {
         this.setCookie('languageError', '', -1);
-    }
-
-
-    // Проверка, что выбран допустимый язык (чтобы
-    // никто в коде HTML не изменил значение)
-    if (formData.language.constructor != Array) {
-        formData.language = [formData.language];
-    }
-    formData.language.forEach((language) => {
-        if (language < 1 || language > 12) {
-            this.setCookie('languageError', 'none');
-            validValues = false;
-        } else {
-           this.setCookie('languageError', '', -1);
+        
+        if (formData.language.constructor != Array) {
+            formData.language = [formData.language];
         }
-    });
+        formData.language.forEach((language) => {
+            if (language < 1 || language > 12) {
+                this.setCookie('languageError', 'none');
+                validValues = false;
+            } else {
+                this.setCookie('languageError', '', -1);
+            }
+        });
+    }
 
 
     if (formData.biography.length > 150) {
@@ -233,9 +230,8 @@ exports.cookiesInPage = (page, allData) => {
     this.setCookie('anyErrors', 'false');
     
     // Чтение сгенерированных логина и пароля из файла
-    process.chdir('./cgi');
     try {
-        auth = fs.readFileSync('auth.txt', 'utf8').split(';');
+        auth = fs.readFileSync('../../../auth.txt', 'utf8').split(';');
         fs.writeFileSync('auth.txt', '');
     } catch (err) {
         console.log('Content-Type: application/json\n');
@@ -258,12 +254,6 @@ exports.cookiesInPage = (page, allData) => {
     page = page.replace('$password$', password);
     page = page.replace('$animateError$', 'class="error-show"');
 
-    return page;
-}
-
-
-exports.deleteHTMLFlags = (page) => {
-    page = page.replace(/\$.*?\$/g, '');
     return page;
 }
 

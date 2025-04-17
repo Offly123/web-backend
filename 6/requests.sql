@@ -34,6 +34,11 @@ CREATE TABLE languages (
     languageName VARCHAR(100) NOT NULL UNIQUE
 );
 
+CREATE TABLE adminPasswords (
+    adminLogin VARCHAR(50),
+    adminPassword VARCHAR(100)
+);
+
 INSERT IGNORE INTO languages (languageId, languageName) values ('Pascal', 1);
 INSERT IGNORE INTO languages (languageId, languageName) values ('C', 2);
 INSERT IGNORE INTO languages (languageId, languageName) values ('C++', 3);
@@ -54,6 +59,7 @@ TRUNCATE users;
 TRUNCATE userLanguages;
 TRUNCATE passwords;
 TRUNCATE jwtKeys;
+TRUNCATE adminPassword;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -125,3 +131,9 @@ WHERE userId = ?
 --Получить языки
 SELECT * from userLanguages
 WHERE userid = ?
+
+--Получить количество пользователей для каждого языка
+SELECT COUNT(userId), languageName FROM 
+    (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
+GROUP BY userLanguages.languageId
+ORDER BY COUNT(userId) DESC;

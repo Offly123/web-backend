@@ -8,9 +8,9 @@ const fs = require('fs');
 require('dotenv').config({
     path: "../../../../.env"
 });
-const cook = require('./cook.jss');
-const myjwt = require('./jwtlib.jss');
-const { showDBError } = require('./hz.jss');
+const cook = require('./cgi/cook.jss');
+const myjwt = require('./cgi/jwtlib.jss');
+const { showDBError, connectToDB } = require('./cgi/hz.jss');
 
 let body = '';
 process.stdin.on('data', (chunk) => {
@@ -20,8 +20,6 @@ process.stdin.on('data', (chunk) => {
     // console.log('Content-Type: application/json\n');
     
     let formData = querystring.parse(body);
-    
-    // console.log('hehe');
 
 
     cook.formDataToCookie(formData);
@@ -36,12 +34,7 @@ process.stdin.on('data', (chunk) => {
     }
 
 
-    const con = await mysql.createConnection({
-        host: process.env.DBHOST,
-        user: process.env.DBUSER,
-        password: process.env.DBPSWD,
-        database: process.env.DBNAME
-    });
+    const con = await connectToDB();
     con.beginTransaction();
 
 
@@ -95,7 +88,12 @@ process.stdin.on('data', (chunk) => {
     let password = cook.generateString(10);
 
     // Запись логина и пароля во временный файл, чтобы отобразить пользователю
-    fs.writeFileSync('auth.txt', login + ';' + password);
+    try {
+        fs.writeFileSync('../../../../auth.txt', login + ';' + password);
+    } catch (err) {
+        console.log('Content-Type: text/hmtl\n');
+        console.log(err);
+    }
 
     password = createHash('sha256').update(password).digest('base64');
     let sqlPasswords = `

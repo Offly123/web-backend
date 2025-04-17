@@ -10,7 +10,7 @@ require('dotenv').config({
 });
 const cook = require('./cook.jss');
 const myjwt = require('./jwtlib.jss');
-const { showDBError } = require('./hz.jss');
+const { showDBError, connectToDB } = require('./hz.jss');
 
 
 let body = '';
@@ -25,12 +25,7 @@ process.stdin.on('data', (chunk) => {
     let formData = querystring.parse(body);
     
     
-    const con = await mysql.createConnection({
-        host: process.env.DBHOST,
-        user: process.env.DBUSER,
-        password: process.env.DBPSWD,
-        database: process.env.DBNAME
-    });
+    const con = await connectToDB();
     con.beginTransaction();
     
     
@@ -59,7 +54,6 @@ process.stdin.on('data', (chunk) => {
         console.log('Location: /web-backend/6\n');
         return;
     }
-
 
     // При правильном пароле берёт из БД ключ для этого пользователя
     // и записывает в куки его JWT на год

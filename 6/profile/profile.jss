@@ -9,7 +9,7 @@ require('dotenv').config({
 });
 const cook = require('./cook.jss');
 const myjwt = require('./jwtlib.jss');
-const { showDBError } = require('./hz.jss');
+const { showDBError, connectToDB } = require('./hz.jss');
 
 
 let body = '';
@@ -32,12 +32,7 @@ process.stdin.on('data', (chunk) => {
         return;
     }
     
-    const con = await mysql.createConnection({
-        host: process.env.DBHOST,
-        user: process.env.DBUSER,
-        password: process.env.DBPSWD,
-        database: process.env.DBNAME
-    });
+    const con = connectToDB();
     con.beginTransaction();
     
     
