@@ -1,5 +1,6 @@
 
 const mysql = require('mysql2/promise');
+const { createHash } = require('crypto');
 
 // Откатывает транзакцию, закрывает соединение и возвращает 
 // пользователю ошибку
@@ -7,7 +8,7 @@ exports.showDBError = (con, err) => {
     con.rollback();
     con.end();
     console.log('Content-Type: application/json\n');
-    console.log('Ошибка в БД:\n', err);
+    console.log('Ошибка в БД:\n' + err);
 }
 
 
@@ -33,11 +34,11 @@ exports.DBDataToJSON = (personalData, languages) => {
 
 exports.connectToDB = async () => {
     let con;
-
+    
     try {
         con = mysql.createConnection({
-            host: process.env.DBHOST,
-            user: process.env.DBUSER,
+            host:     process.env.DBHOST,
+            user:     process.env.DBUSER,
             password: process.env.DBPSWD,
             database: process.env.DBNAME
         });
@@ -52,4 +53,9 @@ exports.connectToDB = async () => {
 
 exports.validateHTTPAuth = async () => {
     
+}
+
+exports.getSHA256 = (str) => {
+    str = createHash('sha256').update(str).digest('base64');
+    return str;
 }

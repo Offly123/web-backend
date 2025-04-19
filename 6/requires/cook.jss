@@ -16,9 +16,9 @@ exports.setCookie = (...args) => {
 
 
 // получает поля формы в виде объекта и устанавливает значения cookies на год
-exports.formDataToCookie = (formData) => {
-    for (let index in formData) {
-        this.setCookie(index, formData[index], 60 * 60 * 24 * 365);
+exports.formDataToCookie = (postData) => {
+    for (let index in postData) {
+        this.setCookie(index, postData[index], 60 * 60 * 24 * 365);
     }
     this.setCookie('anyErrors', 'true');
 }
@@ -187,7 +187,6 @@ const showError = (page, cookieName) => {
 // получает HTML страницу в виде строки и JSON данных, которые надо вставить.
 // Заменяет $$ на соответствующие значения cookie
 exports.cookiesInPage = (page, allData) => {
-    
     const cookiesToInsertValue = [
         'fullName', 'phoneNumber', 'emailAddress', 'birthDate'
     ];
@@ -214,8 +213,9 @@ exports.cookiesInPage = (page, allData) => {
     });
     
     // Если в имени есть Error, подсвечиваем ошибки
+    // console.log(allData);
     for (let errorCookie in allData) {
-        if (errorCookie.includes('Error') && errorCookie != 'anyErrors') {
+        if (errorCookie.includes('Error') && errorCookie !== 'anyErrors') {
             page = showError(page, errorCookie);
             anyErrors = true;
         }
@@ -231,10 +231,11 @@ exports.cookiesInPage = (page, allData) => {
     
     // Чтение сгенерированных логина и пароля из файла
     try {
-        auth = fs.readFileSync('../../../auth.txt', 'utf8').split(';');
-        fs.writeFileSync('auth.txt', '');
+        auth = fs.readFileSync('../auth.txt', 'utf8').split(';');
+        fs.writeFileSync('../auth.txt', '');
     } catch (err) {
         console.log('Content-Type: application/json\n');
+        console.log(process.cwd());
         console.log(err);
     }
     
@@ -246,9 +247,6 @@ exports.cookiesInPage = (page, allData) => {
 
     // Высвечиваем сообщение об ошибке или успехе, также
     // заменяем $$ на сгенерированыне логин и пароль
-    // (страница генерируется в index.jss, там в зависимости от 
-    // значения cookie anyErrors добавится либо попап с ошибкой, либо
-    // с логином паролем)
     page = page.replace('$animateSuccess$', 'class="success-show"');
     page = page.replace('$login$', login);
     page = page.replace('$password$', password);

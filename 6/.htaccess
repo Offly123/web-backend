@@ -1,19 +1,51 @@
-#DirectoryIndex main/index.jss
+DirectoryIndex router.jss
 
-# Включает перенаправление и 
+# Включаем перенаправление и 
 # устанавливаем рабочую директорию
 RewriteEngine On
 RewriteBase "/web-backend/6/"
 
+
+
+# LOGIN
+#
+# Запрещаем переход напрямую на login.jss
+# RewriteRule "login/login.jss" - [L,R=404]
+# Перенаправляем с login/ на login.jss
+RewriteRule "login(?!.*\.(css|js|html))" "login/login.jss" [L]
+
+
+
+# REGISTRATION
+#
+# Запрещаем переход напрямую на registration.jss
+# RewriteRule "registration/registration.jss" - [L,R=404]
+# Перенаправляем с registration/ на registration.jss
+RewriteRule "registration(?!.*\.(css|js))" "registration/registration.jss" [L]
+
+
+
+# PROFILE
+#
+# Запрещаем переход напрямую на profile.jss
+# RewriteRule "profile/profile.jss" - [L,R=404]
+# Перенаправляем с profile/ на profile.jss
+RewriteRule "profile(?!.*\.(css|js))" "profile/profile.jss" [L]
+
+
+
+# ADMIN
+#
 # Запрещаем переход напрямую на admin.jss
-#RewriteRule "admin/admin.jss" - [L,R=404]
+# RewriteRule "admin/admin.jss" - [L,R=404]
 # Перенаправляем с admin/ на admin.jss
-RewriteRule "admin(/?)" "admin/admin.jss" [L]
+RewriteRule "admin(?!.*\.(css|js))" "admin/admin.jss" [L]
 
 
-# Перенаправляем с /6/ на главную
-RewriteRule "main/" "main/index.jss" [L]
-# Запрещаем переход напрямую на index.jss
-#RewriteRule "main/index.jss" - [R=404,L]
 
-RewriteRule "cgi" - [L,R=404]
+# Запрещаем переход по всему, что нельзя показывать
+RewriteRule "node_modules"     - [L,R=404]
+RewriteRule "cgi"              - [L,R=404]
+RewriteRule "requires"         - [L,R=404]
+RewriteRule "requests.sql"     - [L,R=404]
+RewriteRule "auth.txt"         - [L,R=404]

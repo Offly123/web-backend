@@ -1,45 +1,23 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <base href="./">
+    <base href="http://u68757.kubsu-dev.ru/web-backend/6/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
+    <title>registration template</title>
+
     $headStart$
-    <link rel="stylesheet" href="../css/forms.css">
-    <script src="../js/forms.js"></script>
+    <link rel="stylesheet" href="css/registration.css">
+    <script src="js/registration.js"></script>
     $style$
     $headEnd$
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link rel="shortcut icon" href="#">
-    <title>forms-template</title>
+
 </head>
 <body>
-    <a href="./index.jss?query=admin">Я админ</a>
-    <form id="form-login" class="form-shown" method="post" action="./">
-        <div class="head">
-            Вход
-        </div>
-        <div class="main">
-            <div class="element">
-                <label>
-                    Логин:
-                </label>
-                <input id="login" name="login" type="text" placeholder="Логин">
-            </div>
-            <div class="element">
-                <label>
-                    Пароль:                    
-                </label>
-                <input id="password" name="password" type="password" placeholder="Пароль">
-            </div>
-        </div>
-        <div class="form-end">
-            <button class="submit-btn" type="submit">Войти</button>
-            <button class="switch-to-registration" type="hehe">Регистрация</button>
-        </div>
-    </form>
+    <a id="admin" href="/login/?query=admin">Я админ</a>
     
-    <form id="form-registration" class="form-hidden" method="post" action="../registration.jss">
+    <form id="form-registration" class="form-hidden" method="post" action="./registration/">
         <div class="head">
             Регистрация
         </div>
@@ -214,7 +192,7 @@
         </div>
         <div class="form-end">
             <button class="submit-btn" type="submit">Отправить</button>
-            <button class="switch-to-login">Войти</button>
+            <a href="./login/">Войти</a>
         </div>
     </form>
 

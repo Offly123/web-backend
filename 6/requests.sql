@@ -59,7 +59,7 @@ TRUNCATE users;
 TRUNCATE userLanguages;
 TRUNCATE passwords;
 TRUNCATE jwtKeys;
-TRUNCATE adminPassword;
+TRUNCATE adminPasswords;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -68,6 +68,7 @@ DROP TABLE jwtKeys;
 DROP TABLE userLanguages;
 DROP TABLE passwords;
 DROP TABLE users;
+DROP TABLE adminPasswords;
 
 --Вставка в users
 INSERT IGNORE INTO users 
@@ -137,3 +138,12 @@ SELECT COUNT(userId), languageName FROM
     (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
 GROUP BY userLanguages.languageId
 ORDER BY COUNT(userId) DESC;
+
+--Вставить пароль для админа
+INSERT IGNORE INTO adminPasswords
+    (adminLogin, adminPassword)
+values ('admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=');
+
+--Получить пароль админа
+SELECT adminPassword FROM adminPasswords
+WHERE adminLogin = ?

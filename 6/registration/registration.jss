@@ -1,51 +1,88 @@
 #!/usr/bin/env node
 'use strict';
 
+
+
+// Скрипт, отвечающий за обработку регистрационных данных и 
+// отображение страницы с формой регистрации.
+//
+// Если в введённых данных есть ошибки - возвращает страницу 
+// и подсвечивает их. 
+// Если ошибок нет - создаёт JWT, записывает его 
+// в БД, добавляет в куки и перенаправляет на /profile/ .
+
+
+
 const { createHash } = require('crypto');
-const querystring = require('querystring');
 const mysql = require('mysql2/promise');
-const fs = require('fs');
+const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
 });
-const cook = require('./cgi/cook.jss');
-const myjwt = require('./cgi/jwtlib.jss');
-const { showDBError, connectToDB } = require('./cgi/hz.jss');
+const fs = require('fs');
 
-let body = '';
-process.stdin.on('data', (chunk) => {
-    body += chunk.toString();
-}).on('end', async () => {
+const html = require('../requires/templates.jss')
+const cook = require('../requires/cook.jss');
+const myjwt = require('../requires/jwtlib.jss');
+const { showDBError, connectToDB } = require('../requires/hz.jss');
+
+
+
+let postData;
+
+process.stdin
+.on('data', (info) => {
+
+    // Парсим данные из POST
+    postData = querystring.parse(info.toString());
+    
+})
+.on('end', async () => {
+try {
     
     // console.log('Content-Type: application/json\n');
+    // console.log(postData);
     
-    let formData = querystring.parse(body);
-
-
-    cook.formDataToCookie(formData);
-
     
-    // При наличии ошибок записывает их в куки
-    if (!cook.checkValues(formData)) {
-        console.log('Location: /web-backend/6\n');
-        // console.log('Content-Type: application/json\n');
-        // console.log('inside if');
+    console.log('Cache-Control: max-age=0, no-cache, no-store');
+    
+    
+    // HTML с задним фоном и регистрацией
+    let base = html.getHTML('base.html');
+    base = html.addTemplate(base, html.getHTML('registration.html'));
+    
+    
+    // Если в POST ничего нет - возвращает страницу
+    if (!postData) {
+        html.returnHTML(base);
         return;
     }
-
-
+    
+    
+    
+    // При наличии ошибок возвращает страницу, подсвечивая поля
+    cook.formDataToCookie(postData);
+    let cookieList = cook.cookiesToJSON();
+    
+    if (!cook.checkValues(postData)) {
+        
+        html.returnHTML(base, cookieList);
+        
+        return;
+    }
+    
     const con = await connectToDB();
     con.beginTransaction();
-
-
+    
+    
     // Вставка основных данных пользователя в users
     const sqlUsers = `
-        INSERT IGNORE INTO users 
-            (fullName, phoneNumber, emailAddress, birthDate, sex, biography) 
-        values (?, ?, ?, ?, ?, ?)
+    INSERT IGNORE INTO users 
+    (fullName, phoneNumber, emailAddress, birthDate, sex, biography) 
+    values (?, ?, ?, ?, ?, ?)
     `;
     const users = [
-        formData.fullName, formData.phoneNumber, formData.emailAddress, formData.birthDate, formData.sex, formData.biography,
+        postData.fullName, postData.phoneNumber, postData.emailAddress, postData.birthDate, postData.sex, postData.biography,
     ];
     let result;
     try {
@@ -54,9 +91,9 @@ process.stdin.on('data', (chunk) => {
         showDBError(con, err);
         return;
     }
-
-
-
+    
+    
+    
     // Вставка выбранных языков в userLanguages
     let sqlUserLanguages = `
         INSERT IGNORE INTO userLanguages 
@@ -67,12 +104,12 @@ process.stdin.on('data', (chunk) => {
 
     // Если только один язык, всё равно суём его в массив, потому что forEach
     // иначе не заработает
-    if (formData.language.constructor !== Array) {
-        formData.language = [formData.language];
+    if (postData.language.constructor !== Array) {
+        postData.language = [postData.language];
     }
 
     try {
-        await formData.language.forEach(languageId => {
+        await postData.language.forEach(languageId => {
             let userLanguages = [userId, languageId];
             con.execute(sqlUserLanguages, userLanguages);
         });
@@ -89,7 +126,7 @@ process.stdin.on('data', (chunk) => {
 
     // Запись логина и пароля во временный файл, чтобы отобразить пользователю
     try {
-        fs.writeFileSync('../../../../auth.txt', login + ';' + password);
+        fs.writeFileSync('../auth.txt', login + ';' + password);
     } catch (err) {
         console.log('Content-Type: text/hmtl\n');
         console.log(err);
@@ -146,5 +183,9 @@ process.stdin.on('data', (chunk) => {
 
 
 
-    console.log('Location: /web-backend/6\n');
+    console.log('Location: /web-backend/6?query=profile\n');
+} catch (err) {
+    console.log('Content-Type: application/json\n');
+    console.log(err);
+}
 });

@@ -1,0 +1,160 @@
+form {
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 600;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    color: black;
+    backdrop-filter: blur(25px);
+    padding: max(5px, 1vw);
+}
+
+#form-login {
+    width: clamp(200px, 85vw, 350px);
+    height: clamp(50px, 35dvh, 250px);
+}
+
+
+
+/* ЗАГОЛОВОК */
+
+
+
+form>.head {
+    font-weight: 900;
+    height: clamp(30px, 5%, 50px);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+
+
+/* ГЛАВНОЕ */
+
+
+
+form>.main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    height: 70%;
+}
+
+
+
+/* ПОЛЯ ВВОДА */
+
+
+
+form>.main>.element {
+    align-items: center;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+    width: clamp(250px, 90%, 275px);
+    border-radius: 7px;
+    padding: 0px 5px;
+}
+
+.element>label {
+    position: relative;
+    color: black;
+    width: 100%;
+    text-align: center;
+    padding: clamp(2px, 1vw, 4px);
+    padding-bottom: 0;
+}
+
+.element>input {
+    align-self: center;
+    width: 100%;
+    color: black;
+    height: clamp(20px, 15vw, 30px);
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    border: 1px solid black;
+    box-shadow: 0px 0px 0px rgba(255, 255, 255, .5) inset;
+    transition: box-shadow 0.3s, background-color 0.3s;
+    margin-top: 10px;
+}
+
+.element>input:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.element>input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.element>input:focus {
+    outline: none;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+
+
+/* ОТПРАВКА */
+
+
+
+.form-end {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    height: clamp(30px, 5%, 40px);
+}
+
+.submit-btn {
+    font-weight: 600;
+    border: none;
+    border-radius: 100px;
+    height: clamp(30px, 1vw, 70px);
+    width: clamp();
+    background-color: rgba(0, 221, 255, 0.3);
+    transition: all .3s;
+}
+
+.submit-btn:hover {
+    background-color: rgba(0, 255, 200, 0.5);
+}
+
+.submit-btn:focus {
+    outline: none;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+
+
+/* ОШИБКИ */
+
+
+
+.error-text {
+    text-wrap: nowrap;
+    display: none;
+    color: #ff1010;
+    font-size: clamp(6px, 2.5vw, 9px);
+    position: absolute;
+    left: 20px;
+    top: 23px;
+}
+
+.error-text-sex {
+    left: 45px;
+    top: 20px;
+}
+
+.error-text-languages {
+    top: -15px;
+    left: 23px;
+}
+
+.error-text-biography {
+    left: 10px;
+    top: 22px;
+}

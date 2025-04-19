@@ -2,33 +2,47 @@
 'use strict';
 
 
+
 const mysql = require('mysql2/promise');
 const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
 });
-const cook = require('./cook.jss');
-const myjwt = require('./jwtlib.jss');
-const { showDBError, connectToDB } = require('./hz.jss');
+
+const html = require('../requires/templates.jss')
+const cook = require('../requires/cook.jss');
+const myjwt = require('../requires/jwtlib.jss');
+const { showDBError, connectToDB } = require('../requires/hz.jss');
 
 
-let body = '';
-process.stdin.on('data', (chunk) => {
 
-    body += chunk.toString();
-    
-}).on('end', async () => {
+let postData;
+
+process.stdin
+.on('data', (info) => {
+
+    // Парсим данные из POST
+    postData = querystring.parse(info.toString());
+
+})
+.on('end', async () => {
+try {
     
     // console.log('Content-Type: application/json\n');
-
-    let formData = querystring.parse(body);
-
-    cook.formDataToCookie(formData);
+    // console.log(postData);
     
-    // Проверка введённых значений
-    // console.log(body);
-    if (!cook.checkValues(formData)) {
-        console.log('Location: /web-backend/6\n');
+
+    console.log('Cache-Control: max-age=0, no-cache, no-store');
+
+
+    // HTML с задним фоном и логином
+    let base = html.getHTML('base.html');
+    base = html.addTemplate(base, html.getHTML('profile.html'));
+
+
+    // Если в POST ничего нет - возвращает страницу
+    if (!postData) {
+        html.returnHTML(base);
         return;
     }
     
@@ -76,8 +90,8 @@ process.stdin.on('data', (chunk) => {
 
     con.commit();
     con.end();
-
-
-
-    console.log('Location: /web-backend/6\n');
+} catch (err) {
+    console.log('Content-Type: application/json\n');
+    console.log(err);
+}
 });

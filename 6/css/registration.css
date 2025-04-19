@@ -1,7 +1,4 @@
 form {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     flex-direction: column;
     justify-content: space-between;
     font-weight: 600;
@@ -16,11 +13,6 @@ form {
 #form-registration {
     width: clamp(200px, 85vw, 600px);
     height: clamp(50px, 95dvh, 650px);
-}
-
-#form-login {
-    width: clamp(200px, 85vw, 350px);
-    height: clamp(50px, 35dvh, 250px);
 }
 
 

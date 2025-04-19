@@ -57,13 +57,23 @@ html {
 
 
 
+/* ADMIN */
+#admin {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
 /* BODY */
 
 
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
-    position: relative;
     font-family: Manrope;
     min-height: 100vh;
     padding: 0;
