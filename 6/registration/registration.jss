@@ -61,11 +61,10 @@ try {
     
     
     // При наличии ошибок возвращает страницу, подсвечивая поля
-    cook.formDataToCookie(postData);
     let cookieList = cook.cookiesToJSON();
+    cook.formDataToCookie(postData);
     
     if (!cook.checkValues(postData)) {
-        
         html.returnHTML(base, cookieList);
         
         return;

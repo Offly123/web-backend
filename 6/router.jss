@@ -17,25 +17,27 @@
 //
 //
 // TODO: 
-// 1)   На странице логина при неправильных данных 
-//      постоянно вылезает попап с ошибкой
+// При неправильных данных регистрации
+// поля подсвечивает не сразу, а после перезагрузки
+// 
 //
-// 2)   При неправильных данных регистрации
-//      поля подсвечивает не сразу, а после перезагрузки
+// Сделать отображение профиля
+// 
 //
-// 3)   Сделать отображение профиля
-//
-// 4)   Фронтенд для админки :skull:
+// Фронтенд для админки :skull:
 
 
 
-process.stdin.on('data', () => {
+process.stdin
+.on('data', () => {
 
-}).on('end', async () => {
+})
+.on('end', async () => {
+try{
 
     // console.log('Content-Type: application/json\n');
 
-    // Получение значения query из ссылки
+    // Парсим параметры из ссылки
     let path = process.env.REQUEST_URI.split('?');
     if (path[1]) {
         path[1].split('&');
@@ -68,4 +70,8 @@ process.stdin.on('data', () => {
 
 
     console.log('Location: /web-backend/6/login\n');
+} catch (err) {
+    console.log('Content-Type: application/json\n');
+    console.log(err);
+}
 });

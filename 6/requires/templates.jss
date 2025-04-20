@@ -58,9 +58,8 @@ exports.returnHTML = (page, data) => {
     if (!data) {
         data = {};
     }
-    // console.log(data);
     page = cook.cookiesInPage(page, data);
-    // page = this.deleteHTMLFlags(page);
+    page = this.deleteHTMLFlags(page);
     console.log('Content-Type: text/html; charset=utf-8\n');
     // console.log('Content-Type: application/json; charset=utf-8\n');
     console.log(page);

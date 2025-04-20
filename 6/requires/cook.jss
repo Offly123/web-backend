@@ -3,15 +3,35 @@
 const fs = require('fs');
 
 
-// получает имя, значение и время в секундах
+// Если два аргумента - ставит печенье на сессию (до закрытия браузера)
+// Если три, и третий это:
+//      Число  - ставит на указанное кол-во секунд
+//      Строка - ставит для указанной страницы
+// Если четрые:
+//      Третий аргумент    - время
+//      Четвёртый аргумент - путь
 exports.setCookie = (...args) => {
     if (args.length === 2) {
         console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/; httponly');
         return;
     }
+    if (args.length === 3) {
+        if (args[2].constructor === Number) {
+
+            let timeofDeath = new Date();
+            timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
+            console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/; Expires=' + timeofDeath + '; httponly');
+
+            return;
+        }
+
+        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/' + args[2] + '; httponly');
+
+        return;
+    }
     let timeofDeath = new Date();
     timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
-    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/; Expires=' + timeofDeath + '; httponly');
+    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/' + args[3] + '; Expires=' + timeofDeath + '; httponly');
 }
 
 
@@ -226,8 +246,6 @@ exports.cookiesInPage = (page, allData) => {
     let login;
     let password;
     
-    
-    this.setCookie('anyErrors', 'false');
     
     // Чтение сгенерированных логина и пароля из файла
     try {
