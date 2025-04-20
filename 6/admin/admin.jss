@@ -7,10 +7,10 @@ const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
 });
-const html = require('../cgi/templates.jss');
-const cook = require('../cgi/cook.jss');
-const myjwt = require('../cgi/jwtlib.jss');
-const { showDBError, connectToDB, getSHA256 } = require('../cgi/hz.jss');
+const html = require('../requires/templates.jss');
+const cook = require('../requires/cook.jss');
+const myjwt = require('../requires/jwtlib.jss');
+const { showDBError, connectToDB, getSHA256 } = require('../requires/hz.jss');
 
 
 

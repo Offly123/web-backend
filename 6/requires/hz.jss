@@ -8,6 +8,7 @@ exports.showDBError = (con, err) => {
     con.rollback();
     con.end();
     console.log('Content-Type: application/json\n');
+    console.log(err);
     console.log('Ошибка в БД:\n' + err);
 }
 

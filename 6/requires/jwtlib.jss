@@ -47,12 +47,16 @@ exports.createJWT = (payload, secret) => {
 // Получает JWT в виде строки и возвращает его декодированным в 
 // виде массива (0 - голова, 1 - тело).
 exports.decodeJWT = (jwt) => {
-    jwt = jwt.split('.');
-    jwt[0] = Buffer.from(jwt[0], 'base64url').toString('utf8');
-    jwt[1] = Buffer.from(jwt[1], 'base64url').toString('utf8');
-    jwt[0] = JSON.parse(jwt[0]);
-    jwt[1] = JSON.parse(jwt[1]);
-    return jwt;
+    try {
+        jwt = jwt.split('.');
+        jwt[0] = Buffer.from(jwt[0], 'base64url').toString('utf8');
+        jwt[1] = Buffer.from(jwt[1], 'base64url').toString('utf8');
+        jwt[0] = JSON.parse(jwt[0]);
+        jwt[1] = JSON.parse(jwt[1]);
+        return jwt;
+    } catch {
+        return undefined;
+    }
 }
 
 

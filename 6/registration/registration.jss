@@ -30,14 +30,12 @@ const { showDBError, connectToDB } = require('../requires/hz.jss');
 
 let postData;
 
-process.stdin
-.on('data', (info) => {
+process.stdin.on('data', (info) => {
 
     // Парсим данные из POST
     postData = querystring.parse(info.toString());
     
-})
-.on('end', async () => {
+}).on('end', async () => {
 try {
     
     // console.log('Content-Type: application/json\n');
@@ -53,7 +51,10 @@ try {
     
     
     // Если в POST ничего нет - возвращает страницу
+    let cookieList = cook.cookiesToJSON();
+    cook.formDataToCookie(postData);
     if (!postData) {
+        base = cook.cookiesInPage(base, cookieList);
         html.returnHTML(base);
         return;
     }
@@ -61,11 +62,8 @@ try {
     
     
     // При наличии ошибок возвращает страницу, подсвечивая поля
-    let cookieList = cook.cookiesToJSON();
-    cook.formDataToCookie(postData);
-    
     if (!cook.checkValues(postData)) {
-        html.returnHTML(base, cookieList);
+        console.log('Location: /web-backend/6/?query=registration\n');
         
         return;
     }
@@ -181,7 +179,7 @@ try {
     await con.end();
 
 
-
+    cook.deleteRegistrationData();
     console.log('Location: /web-backend/6?query=profile\n');
 } catch (err) {
     console.log('Content-Type: application/json\n');

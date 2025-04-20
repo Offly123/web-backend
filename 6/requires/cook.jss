@@ -70,8 +70,10 @@ exports.deleteRegistrationData = () => {
 }
 
 
-// получает данные формы в виде объекта, меняет <Имя> печенья на <Имя>Error, 
-// если значение плохое
+// получает данные формы в виде JSON
+// Если какое-либо значение кривое - добавляет в куки ошибку и
+// возвращает false,
+// Иначе возвращает true
 exports.checkValues = (formData) => {
     let validValues = true;
     if (!(/^[А-Яа-яЁё\s]+$/.test(formData.fullName)) || formData.fullName.length > 150) {
@@ -136,7 +138,7 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (formData.biography.length > 150) {
+    if (!(/^[А-Яа-яЁёa-zA-Z\.,\s]+$/.test(formData.biography)) || formData.biography.length > 150) {
         this.setCookie('biographyError', 'hehe');
         validValues = false;
     } else {

@@ -139,7 +139,7 @@ SELECT COUNT(userId), languageName FROM
 GROUP BY userLanguages.languageId
 ORDER BY COUNT(userId) DESC;
 
---Вставить пароль для админа
+--Вставить пароль для админа (admin admin)
 INSERT IGNORE INTO adminPasswords
     (adminLogin, adminPassword)
 values ('admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=');

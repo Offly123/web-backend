@@ -2,6 +2,21 @@
 'use strict';
 
 
+// Скрипт, отвечающий за отображение профиля 
+// и обновление данных.
+//
+// Если нет JWT или JWT невалидный - 
+// кидает на регистрацию, удаляя невалидный
+//
+// Если валидный JWT - читает его и вставляет
+// в страницу данные пользователя из БД.
+//
+// Если данные, обновлённые пользователем, 
+// кривые - подсвечивает поля, 
+// иначе обновляет 
+// их в БД
+
+
 
 const mysql = require('mysql2/promise');
 const querystring = require('querystring');
@@ -12,47 +27,146 @@ require('dotenv').config({
 const html = require('../requires/templates.jss')
 const cook = require('../requires/cook.jss');
 const myjwt = require('../requires/jwtlib.jss');
-const { showDBError, connectToDB } = require('../requires/hz.jss');
+const { showDBError, connectToDB, DBDataToJSON } = require('../requires/hz.jss');
 
 
 
 let postData;
 
-process.stdin
-.on('data', (info) => {
+process.stdin.on('data', (info) => {
 
     // Парсим данные из POST
     postData = querystring.parse(info.toString());
 
-})
-.on('end', async () => {
+}).on('end', async () => {
 try {
     
     // console.log('Content-Type: application/json\n');
     // console.log(postData);
+
+    // Логин: vaOIrUzcDN
+
+    // Пароль: AOV38yDmox
     
 
     console.log('Cache-Control: max-age=0, no-cache, no-store');
+    cook.deleteRegistrationData();
 
 
-    // HTML с задним фоном и логином
+    // Если нет JWT - перенаправляем на регистрацию
+    const jwt = cook.cookiesToJSON().session;
+    if (!jwt) {
+        console.log('Location: /web-backend/6/registration\n');
+        return;
+    }
+
+
+    
+    // Расшифровываем JWT и получаем userId
+    let decoded = myjwt.decodeJWT(jwt);
+    let userId;
+    // Если JWT кривой - ставим айди пользователя -1
+    if (decoded) {
+        userId = decoded[1].userId;
+    } else {
+        userId = -1;
+    }
+
+
+    
+    let con = await connectToDB();
+
+
+
+    // Если есть валидный JWT - возвращаем личный кабинет, 
+    // иначе перенаправляем на логин
+    const sqlGetSecret = `
+    SELECT jwtKey FROM 
+    jwtKeys 
+    where userId = (?)
+    `;
+    let secret;
+    
+    try {
+        secret = await con.execute(sqlGetSecret, [userId]);
+    } catch (err) {
+        showDBError(con, err);
+        return;
+    }
+    
+    // Если JWT не валидный - удаляем его и возвращаем 
+    // HTML с формами
+    if (secret[0][0] == undefined || !myjwt.isValideJWT(decoded, secret[0][0].jwtKey)) {
+
+        con.end();
+
+        cook.setCookie('session', '', -1);
+        console.log('Location: /web-backend/6/\n');
+
+        return;
+    }
+    
+
+
+    // Получаем данные пользователя из БД чтобы вставить 
+    // в личный кабинет
+    let sqlGetData = `
+    SELECT * from users
+    WHERE userId = ?
+    `;
+    let sqlGetLanguages = `
+    SELECT languageId from userLanguages
+    WHERE userid = ?
+    `;
+    let data;
+    try {
+        let personalData = await con.execute(sqlGetData, [userId]);
+        let languages = await con.execute(sqlGetLanguages, [userId]);
+        data = DBDataToJSON(personalData, languages);
+    } catch (err) {
+        showDBError(con, err);
+        return;
+    }
+    
+
+    
+    // HTML с задним фоном и профилем
     let base = html.getHTML('base.html');
     base = html.addTemplate(base, html.getHTML('profile.html'));
 
 
-    // Если в POST ничего нет - возвращает страницу
+    // Если были данные были обновлены - добавляем попап
+    let cookieList = cook.cookiesToJSON();
+    if (cookieList.dataUpdated === 'true') {
+        base = html.addTemplate(base, html.getHTML('popup-update.html'));
+    }
+    
+    
+    // Добавляем к данным из БД куки с ошибками, чтобы подсветить
+    data = Object.assign(data, cookieList); 
+    
+    // Если в POST ничего нет - возвращаем страницу
     if (!postData) {
-        html.returnHTML(base);
+        html.returnHTML(base, data);
+        con.end();
         return;
     }
     
-    const con = connectToDB();
+
+    // При наличии ошибок возвращает страницу, подсвечивая поля
+    if (!cook.checkValues(postData)) {
+        console.log('Location: /web-backend/6/?query=profile\n');
+        con.end();
+        return;
+    }
+
+
+    
     con.beginTransaction();
+
     
     
     // Берёт из JWT userId и обновляет данные в users
-    let jwt = cook.cookiesToJSON().session;
-    let userId = myjwt.decodeJWT(jwt)[1].userId;
     let sqlUserData = `
     UPDATE users SET 
     fullName=?, phoneNumber=?, emailAddress=?, birthDate=?, sex=?, biography=? 
@@ -68,19 +182,19 @@ try {
     values (?, ?)
     `;
     let userData = [
-        formData.fullName, formData.phoneNumber, formData.emailAddress, formData.birthDate, formData.sex, formData.biography, userId
+        postData.fullName, postData.phoneNumber, postData.emailAddress, postData.birthDate, postData.sex, postData.biography, userId
     ];
     // Суём в массив если выбран только один язык, чтобы forEach заработал
-    if (formData.language.constructor !== Array) {
-        formData.language = [formData.language];
+    if (postData.language.constructor !== Array) {
+        postData.language = [postData.language];
     }
     
     try {
         con.execute(sqlUserData, userData);
         con.execute(sqlDeleteLanguages, [userId]);
-        formData.language.forEach(lang => {
+        postData.language.forEach(lang => {
             con.execute(sqlInsertLanguages, [userId, lang]);
-        })
+        });
     } catch (err) {
         showDBError();
         return;
@@ -90,7 +204,13 @@ try {
 
     con.commit();
     con.end();
+
+
+    
+    cook.setCookie('dataUpdated', 'true');
+    console.log('Location: /web-backend/6/?query=profile\n');
 } catch (err) {
+    con.end();
     console.log('Content-Type: application/json\n');
     console.log(err);
 }

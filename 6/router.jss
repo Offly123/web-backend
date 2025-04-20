@@ -17,39 +17,29 @@
 //
 //
 // TODO: 
-// При неправильных данных регистрации
-// поля подсвечивает не сразу, а после перезагрузки
-// 
-//
-// Сделать отображение профиля
-// 
-//
-// Фронтенд для админки :skull:
+// ☠ ☠ ☠ ☠ Фронтенд для админки ☠ ☠ ☠ ☠
 
 
 
-process.stdin
-.on('data', () => {
+process.stdin.on('data', () => {
 
-})
-.on('end', async () => {
+}).on('end', async () => {
 try{
 
     // console.log('Content-Type: application/json\n');
 
+    console.log('Cache-Control: max-age=0, no-cache, no-store');
+    
     // Парсим параметры из ссылки
-    let path = process.env.REQUEST_URI.split('?');
-    if (path[1]) {
-        path[1].split('&');
-    }
-
+    let path = process.env.QUERY_STRING.split('&');
+    
     let params = {};
     path.forEach(elem => {
         params[elem.split('=')[0]] = elem.split('=')[1];
     });
-
-
-
+    
+    
+    
     // Перенаправление на /admin/
     if (params.query === 'admin') {
         console.log('Location: /web-backend/6/admin\n');
@@ -65,7 +55,7 @@ try{
     // Перенаправление на /registration/
     if (params.query === 'registration') {
         console.log('Location: /web-backend/6/registration\n');
-        return;   
+        return;
     }
 
 

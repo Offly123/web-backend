@@ -29,14 +29,12 @@ const { showDBError, connectToDB } = require('../requires/hz.jss');
 
 let postData;
 
-process.stdin
-.on('data', (info) => {
+process.stdin.on('data', (info) => {
 
     // Парсим данные из POST
     postData = querystring.parse(info.toString());
 
-})
-.on('end', async () => {
+}).on('end', async () => {
 try {
     
     // console.log('Content-Type: application/json\n');
@@ -58,6 +56,13 @@ try {
     // Если в POST ничего нет - возвращает страницу
     if (!postData) {
         html.returnHTML(base);
+        return;
+    }
+
+
+    // Если есть JWT - перекидывает на profile
+    if (cook.cookiesToJSON().session) {
+        console.log('Location: /web-backend/6/?query=profile\n');
         return;
     }
 
