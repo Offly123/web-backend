@@ -44,9 +44,9 @@ try {
     // console.log('Content-Type: application/json\n');
     // console.log(postData);
 
-    // Логин: vaOIrUzcDN
+    // Логин: aPTvJg4G0S
 
-    // Пароль: AOV38yDmox
+    // Пароль: gQA9JDszdi
     
 
     console.log('Cache-Control: max-age=0, no-cache, no-store');
@@ -139,6 +139,10 @@ try {
     let cookieList = cook.cookiesToJSON();
     if (cookieList.dataUpdated === 'true') {
         base = html.addTemplate(base, html.getHTML('popup-update.html'));
+    }
+    if (cookieList.dataSentFirstTime === 'true') {
+        base = html.addTemplate(base, html.getHTML('popup.html'));
+        cook.setCookie('dataSentFirstTime', '', -1);
     }
     
     

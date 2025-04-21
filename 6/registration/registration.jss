@@ -39,6 +39,7 @@ process.stdin.on('data', (info) => {
 try {
     
     // console.log('Content-Type: application/json\n');
+    // console.log(process);  
     // console.log(postData);
     
     
