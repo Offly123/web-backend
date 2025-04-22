@@ -5,16 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#">
-    $headStart$
-    <link rel="stylesheet" href="css/admin.css">
-    <script src="js/admin.js"></script>
-    $style$
-    $headEnd$
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <title>Admin</title>
+
+    $styleStart$
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js"></script>
+    $styleEnd$
 </head>
 <body>
-    yo
+    <h1>
+        Админка
+    </h1>
+
+    <section id="languages">
+        <div id="head">
+            Топ любимых языков
+        </div>
+        <div id="main">
+            $languageList$
+        </div>
+    </section>
 
     $bodyToAppend$
 </body>

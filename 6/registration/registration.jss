@@ -48,7 +48,8 @@ try {
     
     // HTML с задним фоном и регистрацией
     let base = html.getHTML('base.html');
-    base = html.addTemplate(base, html.getHTML('registration.html'));
+    base = html.addBody(base, 'registration.html');
+    base = html.addStyle(base, 'registration.html');
     
     
     // Если в POST ничего нет - возвращает страницу

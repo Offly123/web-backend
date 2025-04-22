@@ -46,9 +46,11 @@ try {
 
     // HTML с задним фоном и логином
     let base = html.getHTML('base.html');
-    base = html.addTemplate(base, html.getHTML('login.html'));
+    base = html.addBody(base, 'login.html');
+    base = html.addStyle(base, 'login.html');
     if (cook.cookiesToJSON().wrongLogin === 'true') {
-        base = html.addTemplate(base, html.getHTML('popup-error.html'));
+        base = html.addBody(base, 'popup-error.html');
+        base = html.addStyle(base, 'popup-error.html');
         cook.setCookie('wrongLogin', 'false');
     }
 

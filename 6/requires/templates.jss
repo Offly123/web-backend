@@ -17,19 +17,68 @@ exports.getHTML = (page) => {
 }
 
 
-// Вставляет в base(HTML в виде строки) части append
-// (часть head и весь body)
-// HTML получает в виде строк
-exports.addTemplate = (base, append) => {
-    style = getBetween(append, '$headStart$', '$headEnd$');
-    body = getBetween(append, '<body>', '</body>');
+// Добавляет всё тело к base от выбранного HTML
+exports.addBody = (base, appendName) => {
+    let append = this.getHTML(appendName);
 
+    let body = getBetween(append, '<body>', '</body>');
 
-    base = base.replace('$style$', style);
-    base = base.replace('$bodyToAppend$', body);
-
+    base = base.replace('$bodyToAppend$', body + '\n$bodyToAppend$\n');
 
     return base;
+}
+
+
+// Добавляет стили из выбранного HTML
+exports.addStyle = (base, appendName) => {
+    let append = this.getHTML(appendName);
+
+    let style = getBetween(append, '$styleStart$', '$styleEnd$');
+
+    base = base.replace('$style$', style + '$style$');
+
+    return base;
+}
+
+
+// Добавляет к base вместо place весь body
+exports.addInsteadOf = (base, append, place) => {
+    // let append = this.getHTML(appendName);
+
+    let body = getBetween(append, '<body>', '</body>');
+
+    base = base.replace(place, body);
+
+    return base;
+}
+
+
+// Все данные массива JSON или JSON в page
+exports.insertData = (page, data) => {
+    try {
+        // console.log(data);
+        if (data.constructor !== Array) {
+            data = [data];
+        }
+        
+        data.forEach(element => {
+            // console.log(element);
+            if (element.constructor !== Object) {
+                throw new Error('Only Array:Object or Object type');
+            }
+            
+            for (let index in element) {
+                // console.log(index);
+                page = page.replace('$' + index + '$', element[index]);
+                page = page.replace('$' + data[index] + '$', element[index]);
+            }
+        });
+        
+        return page;
+    } catch (err) {
+        console.log('Content-Type: application/json\n');
+        console.log(err);
+    }
 }
 
 
@@ -65,9 +114,6 @@ exports.returnHTML = (page, data) => {
     console.log(page);
 }
 
+// Логин: hDy6T5BUAW
 
-// Должно получить HTML в виде строки и всталвять 
-// все записи пользователей
-exports.insertUsersInfo = (page, userData) => {
-    
-}
+// Пароль: Wd1EttDiMF

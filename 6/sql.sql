@@ -39,18 +39,18 @@ CREATE TABLE adminPasswords (
     adminPassword VARCHAR(100)
 );
 
-INSERT IGNORE INTO languages (languageId, languageName) values ('Pascal', 1);
-INSERT IGNORE INTO languages (languageId, languageName) values ('C', 2);
-INSERT IGNORE INTO languages (languageId, languageName) values ('C++', 3);
-INSERT IGNORE INTO languages (languageId, languageName) values ('JavaScript', 4);
-INSERT IGNORE INTO languages (languageId, languageName) values ('PHP', 5);
-INSERT IGNORE INTO languages (languageId, languageName) values ('Python', 6);
-INSERT IGNORE INTO languages (languageId, languageName) values ('Java', 7);
-INSERT IGNORE INTO languages (languageId, languageName) values ('Haskel', 8);
-INSERT IGNORE INTO languages (languageId, languageName) values ('Clojure', 9);
-INSERT IGNORE INTO languages (languageId, languageName) values ('Prolog', 10);
-INSERT IGNORE INTO languages (languageId, languageName) values ('Scala', 11);
-INSERT IGNORE INTO languages (languageId, languageName) values ('Go', 12);
+INSERT IGNORE INTO languages (languageId, languageName) values (1,  'Pascal');
+INSERT IGNORE INTO languages (languageId, languageName) values (2,  'C');
+INSERT IGNORE INTO languages (languageId, languageName) values (3,  'C++');
+INSERT IGNORE INTO languages (languageId, languageName) values (4,  'JavaScript');
+INSERT IGNORE INTO languages (languageId, languageName) values (5,  'PHP');
+INSERT IGNORE INTO languages (languageId, languageName) values (6,  'Python');
+INSERT IGNORE INTO languages (languageId, languageName) values (7,  'Java');
+INSERT IGNORE INTO languages (languageId, languageName) values (8,  'Haskel');
+INSERT IGNORE INTO languages (languageId, languageName) values (9,  'Clojure');
+INSERT IGNORE INTO languages (languageId, languageName) values (10, 'Prolog');
+INSERT IGNORE INTO languages (languageId, languageName) values (11, 'Scala');
+INSERT IGNORE INTO languages (languageId, languageName) values (12, 'Go');
 
 --Очистить все таблицы (кроме languages)
 SET FOREIGN_KEY_CHECKS = 0;
@@ -134,15 +134,19 @@ SELECT * from userLanguages
 WHERE userid = ?
 
 --Получить количество пользователей для каждого языка
-SELECT COUNT(userId), languageName FROM 
+SELECT COUNT(userId) as count, languageName FROM 
     (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
 GROUP BY userLanguages.languageId
 ORDER BY COUNT(userId) DESC;
 
---Вставить пароль для админа (admin admin)
+SELECT languageName, COUNT(userID) as count FROM 
+    (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
+GROUP BY userLanguages.languageId;
+
+--Вставить пароль для админа (admin yooo)
 INSERT IGNORE INTO adminPasswords
     (adminLogin, adminPassword)
-values ('admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=');
+values ('admin', 'T80ooqC+Mi87ZhozjoOuMIBaaiO/9bM6CUaPGA15aXw=');
 
 --Получить пароль админа
 SELECT adminPassword FROM adminPasswords

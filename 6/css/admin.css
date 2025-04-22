@@ -1,0 +1,40 @@
+body {  
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+
+
+/* ЗАГОЛОВОК */
+
+
+
+h1 {
+    font-size: clamp(25px, 10vw, 70px);
+}
+
+
+
+/* ЯЗЫКИ */
+
+
+
+#languages {
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 600;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    color: black;
+    backdrop-filter: blur(25px);
+    padding: max(5px, 1vw);
+    width: clamp(200px, 60vw, 400px);
+}
+
+#languages > #head {
+    font-weight: 900;
+    height: clamp(30px, 5%, 50px);
+    font-size: 1.8rem;
+    text-align: center;
+}

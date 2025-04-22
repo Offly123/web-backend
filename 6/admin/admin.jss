@@ -2,6 +2,23 @@
 'use strict';
 
 
+// Скрипт, отвечающий за отображение админки
+//
+// Сначала кидает HTTP авторизацию:
+//      Если логин/пароль кривые - кидаем 401 Unauthorized
+//
+// Если всё ок - делаем запросы в БД, получаем статистику 
+// по языкам и все логины пользователей
+//
+// Вставляем языки в таблицу и выводим пользователей
+// Если нажали на изменение данных
+// Хз ещё, либо перезагружаем страницу с ?query=userId, потом вставляя данные пользователя
+//         либо на фронте джаваскриптом заменить список пользователей 
+//              на данные одного выбранного
+
+
+
+
 const mysql = require('mysql2/promise');
 const querystring = require('querystring');
 require('dotenv').config({
@@ -21,6 +38,7 @@ process.stdin.on('data', () => {
     // console.log('Content-Type: application/json\n');
     
     
+    // Если через HTTP не отправлены логин/пароль - кидаем HTTP авторизацию
     console.log('Cache-Control: max-age=0, no-cache');
     if (!process.env.HTTP_AUTHORIZATION) {
         console.log('Status: 401 Unauthorized');
@@ -42,22 +60,55 @@ process.stdin.on('data', () => {
         adminPassword = await con.execute(sqlAdminPassword, [adminAuthData[0]]);
         adminPassword = adminPassword[0][0].adminPassword;
     } catch (err) {
-        console.log('Content-Type: application/json\n');
-        console.log(err);
+        showDBError(con, err);
+        return;
     }
-
-    con.end();
 
 
     
+    // Если неправильный логин пароль - кидаем 403
     if (getSHA256(adminAuthData[1]) !== adminPassword) {
+        con.end();
         console.log('Status: 403 Forbidden\n');
         return;
     }
 
 
-    let base = html.getHTML('base.html');
-    base = html.addTemplate(base, html.getHTML('admin.html'));
 
+    // Получаем данные о пользователях и статистику языков
+    let sqlLanguageInfo = `
+    SELECT COUNT(userId) as languageCount, languageName FROM 
+    (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
+    GROUP BY userLanguages.languageId
+    ORDER BY COUNT(userId) DESC;
+    `;
+    let languageInfo;
+    try {
+        languageInfo = await con.execute(sqlLanguageInfo);
+        languageInfo = languageInfo[0];
+    } catch (err) {
+        showDBError(con, err);
+        console.log(err);
+    }
+
+
+    
+    con.end();
+
+
+
+    // Добавляем страницу админки
+    let base = html.getHTML('base.html');
+    base = html.addBody(base, 'admin.html');
+    base = html.addStyle(base, 'admin.html');
+
+    // Добавляем список языков
+    languageInfo.forEach(language => {
+        let languages = html.getHTML('language.html');
+        languages = html.insertData(languages, language);
+        base = html.addInsteadOf(base, languages, '$languageList$');
+    });
+    base = html.addStyle(base, 'language.html');
+    
     html.returnHTML(base);
 });

@@ -132,16 +132,19 @@ try {
     
     // HTML с задним фоном и профилем
     let base = html.getHTML('base.html');
-    base = html.addTemplate(base, html.getHTML('profile.html'));
+    base = html.addBody(base, 'profile.html');
+    base = html.addStyle(base, 'profile.html');
 
 
     // Если были данные были обновлены - добавляем попап
     let cookieList = cook.cookiesToJSON();
     if (cookieList.dataUpdated === 'true') {
-        base = html.addTemplate(base, html.getHTML('popup-update.html'));
+        base = html.addBody(base, 'popup-update.html');
+        base = html.addStyle(base, 'popup-update.html');
     }
     if (cookieList.dataSentFirstTime === 'true') {
-        base = html.addTemplate(base, html.getHTML('popup.html'));
+        base = html.addBody(base, 'popup.html');
+        base = html.addStyle(base, 'popup.html');
         cook.setCookie('dataSentFirstTime', '', -1);
     }
     
