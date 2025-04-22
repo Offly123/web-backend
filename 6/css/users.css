@@ -1,0 +1,29 @@
+.user-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    margin: 7px;
+}
+
+.user-data {
+    width: 14%;
+    text-align: center;
+}
+
+@media screen and (max-width: 1100px) {
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 5px;
+    }
+    
+    .user-data {
+        width: 14%;
+        text-align: center;
+    }
+}

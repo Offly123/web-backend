@@ -75,7 +75,11 @@ process.stdin.on('data', () => {
 
 
 
-    // Получаем данные о пользователях и статистику языков
+    // Получаем логины пользователей и статистику языков
+    let sqlUsersInfo = `
+    SELECT users.userId, userLogin, fullName, phoneNumber, emailAddress, birthDate, sex, biography FROM (
+    users JOIN passwords ON users.userId = passwords.userId 
+    );`
     let sqlLanguageInfo = `
     SELECT COUNT(userId) as languageCount, languageName FROM 
     (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
@@ -83,7 +87,11 @@ process.stdin.on('data', () => {
     ORDER BY COUNT(userId) DESC;
     `;
     let languageInfo;
+    let usersInfo;
     try {
+        usersInfo    = await con.execute(sqlUsersInfo);
+        usersInfo    = usersInfo[0];
+
         languageInfo = await con.execute(sqlLanguageInfo);
         languageInfo = languageInfo[0];
     } catch (err) {
@@ -101,6 +109,14 @@ process.stdin.on('data', () => {
     let base = html.getHTML('base.html');
     base = html.addBody(base, 'admin.html');
     base = html.addStyle(base, 'admin.html');
+    
+    // Добавляем пользователей
+    usersInfo.forEach(user => {
+        let users = html.getHTML('users.html');
+        users = html.insertData(users, user);
+        base = html.addInsteadOf(base, users, '$users$')
+    }); 
+    base = html.addStyle(base, 'users.html');
 
     // Добавляем список языков
     languageInfo.forEach(language => {

@@ -92,7 +92,7 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (!(/^[0-9a-zA-Z\-_]+@[0-9a-zA-Z\-_]+\.[a-z]+$/.test(formData.emailAddress))) {
+    if (!(/^[0-9a-zA-Z\-_]+@[0-9a-zA-Z\-_]+\.[a-z]+$/.test(formData.emailAddress)) || formData.emailAddress.length > 50) {
         this.setCookie('emailAddressError', formData.emailAddress);
         validValues = false;
     } else {

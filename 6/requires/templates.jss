@@ -53,26 +53,17 @@ exports.addInsteadOf = (base, append, place) => {
 }
 
 
-// Все данные массива JSON или JSON в page
+// Вставляем все данные JSON в page
 exports.insertData = (page, data) => {
     try {
-        // console.log(data);
-        if (data.constructor !== Array) {
+        if (data.constructor !== Object) {
             data = [data];
         }
-        
-        data.forEach(element => {
-            // console.log(element);
-            if (element.constructor !== Object) {
-                throw new Error('Only Array:Object or Object type');
-            }
-            
-            for (let index in element) {
-                // console.log(index);
-                page = page.replace('$' + index + '$', element[index]);
-                page = page.replace('$' + data[index] + '$', element[index]);
-            }
-        });
+
+        for (let index in data) {
+            page = page.replace('$' + index + '$', data[index]);
+            page = page.replace('$' + data[index] + '$', data[index]);
+        }
         
         return page;
     } catch (err) {

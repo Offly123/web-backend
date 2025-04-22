@@ -116,6 +116,12 @@ SELECT * FROM
     users 
 WHERE userId = (?)
 
+
+
+--ОБНОВЛЕНИЕ
+
+
+
 --Обновить данные
 UPDATE users SET 
     fullName = ?, phoneNumber = ?, emailAddress = ?, birthDate = ?, sex = ?, biography = ? 
@@ -133,15 +139,21 @@ WHERE userId = ?
 SELECT * from userLanguages
 WHERE userid = ?
 
+
+
+--АДМИНКА
+
+
+--Получить логины пользователей и их данные
+SELECT users.userId, userLogin, fullName, phoneNumber, emailAddress, birthDate, sex, biography FROM (
+    users JOIN passwords ON users.userId = passwords.userId 
+);
+
 --Получить количество пользователей для каждого языка
-SELECT COUNT(userId) as count, languageName FROM 
+SELECT COUNT(userId) AS count, languageName FROM 
     (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
 GROUP BY userLanguages.languageId
 ORDER BY COUNT(userId) DESC;
-
-SELECT languageName, COUNT(userID) as count FROM 
-    (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
-GROUP BY userLanguages.languageId;
 
 --Вставить пароль для админа (admin yooo)
 INSERT IGNORE INTO adminPasswords
