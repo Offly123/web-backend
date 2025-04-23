@@ -40,6 +40,11 @@ h1 {
     text-align: center;
 }
 
+#lang-main {
+    display: flex;
+    flex-direction: column;
+}
+
 
 
 /* ПОЛЬЗОВАТЕЛИ */
@@ -68,7 +73,27 @@ h1 {
 }
 
 #users-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    gap: 10px;
+}
+
+
+
+@media screen and (max-width: 1100px) {
+    #users-main {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        align-content: space-evenly;
+    }
+}
+
+
+
+@media screen and (max-width: 600px) {
+    #users-main {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-content: space-evenly;
+    }
 }

@@ -26,7 +26,7 @@ process.stdin.on('data', () => {
 }).on('end', async () => {
 try{
 
-    // console.log('Content-Type: application/json\n');
+    // console.log('Content-Type: application/json\n');    
 
     console.log('Cache-Control: max-age=0, no-cache, no-store');
     

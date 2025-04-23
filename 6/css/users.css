@@ -1,17 +1,20 @@
-.user-info {
-    display: flex;
+/* .user-info {
+    flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 5px;
     background-color: rgba(255, 255, 255, .2);
     border-radius: 10px;
-    margin: 7px;
-}
+    margin: 5px;
+} */
 
 .user-data {
-    width: 14%;
+    position: relative;
+    flex-wrap: wrap;
     text-align: center;
 }
+
+
 
 @media screen and (max-width: 1100px) {
     .user-info {
@@ -23,7 +26,22 @@
     }
     
     .user-data {
-        width: 14%;
+        text-align: center;
+    }
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 5px;
+    }
+    
+    .user-data {
         text-align: center;
     }
 }

@@ -2,7 +2,6 @@
     display: flex;
     align-items: center;
     align-content: center;
-    text-justify: center;
     font-size: 20px;
     height: clamp(10px, 20vw, 40px);
     background-color: rgba(255, 255, 255, .2);

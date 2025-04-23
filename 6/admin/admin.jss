@@ -77,7 +77,7 @@ process.stdin.on('data', () => {
 
     // Получаем логины пользователей и статистику языков
     let sqlUsersInfo = `
-    SELECT users.userId, userLogin, fullName, phoneNumber, emailAddress, birthDate, sex, biography FROM (
+    SELECT users.userId, userLogin, fullName, phoneNumber, emailAddress, DATE_FORMAT(birthDate, "%d %m %Y") as birthDate, sex, biography FROM (
     users JOIN passwords ON users.userId = passwords.userId 
     );`
     let sqlLanguageInfo = `
@@ -91,20 +91,20 @@ process.stdin.on('data', () => {
     try {
         usersInfo    = await con.execute(sqlUsersInfo);
         usersInfo    = usersInfo[0];
-
+        
         languageInfo = await con.execute(sqlLanguageInfo);
         languageInfo = languageInfo[0];
     } catch (err) {
         showDBError(con, err);
         console.log(err);
     }
-
-
+    
+    
     
     con.end();
-
-
-
+    
+    
+    
     // Добавляем страницу админки
     let base = html.getHTML('base.html');
     base = html.addBody(base, 'admin.html');
@@ -117,7 +117,7 @@ process.stdin.on('data', () => {
         base = html.addInsteadOf(base, users, '$users$')
     }); 
     base = html.addStyle(base, 'users.html');
-
+    
     // Добавляем список языков
     languageInfo.forEach(language => {
         let languages = html.getHTML('language.html');
