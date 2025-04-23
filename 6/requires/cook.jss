@@ -110,7 +110,7 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (formData.sex === undefined) {
+    if (formData.sex !== 'Male' || formData.sex !== 'Female') {
         this.setCookie('sexError', 'none');
         validValues = false;
     } else {
@@ -152,6 +152,9 @@ exports.checkValues = (formData) => {
 
 // Напрямую подставляет значение в HTML
 const insertDirectly = (page, cookieName, data) => {
+    if (data) {
+        data = data.replace(/<.*?>/g, '');
+    }
     if (data == undefined) {
         return page;
     }

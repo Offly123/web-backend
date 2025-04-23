@@ -27,11 +27,14 @@
 
 .user-data > a {
     background-color: rgba(248, 239, 0, 0.685);
+    height: 30px;
+    width: 30px;
     border-radius: 5px;
-    padding: none;
 }
 
 .user-data > button {
+    height: 30px;
+    width: 30px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
