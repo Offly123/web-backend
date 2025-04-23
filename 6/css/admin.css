@@ -61,7 +61,7 @@ h1 {
     color: black;
     backdrop-filter: blur(25px);
     padding: max(5px, 1vw);
-    width: clamp(200px, 80vw, 1000px);
+    width: clamp(200px, 80vw, 600px);
     margin-bottom: 50px;
 }
 
@@ -73,27 +73,6 @@ h1 {
 }
 
 #users-main {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto;
-    gap: 10px;
-}
-
-
-
-@media screen and (max-width: 1100px) {
-    #users-main {
-        display: grid;
-        grid-template-columns: auto auto auto auto;
-        align-content: space-evenly;
-    }
-}
-
-
-
-@media screen and (max-width: 600px) {
-    #users-main {
-        display: grid;
-        grid-template-columns: auto auto;
-        align-content: space-evenly;
-    }
+    display: flex;
+    flex-direction: column;
 }
