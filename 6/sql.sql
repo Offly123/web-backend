@@ -168,7 +168,7 @@ ORDER BY COUNT(userId) DESC;
 --Вставить пароль для админа (admin yooo)
 INSERT IGNORE INTO adminPasswords
     (adminLogin, adminPassword)
-values ('admin', 'FfexT67Mhz6Td2oJclo2r6os+iyRlW30p97DgHspTDQ=');
+values ('admin', 'ZGgjswm5hOo83HmjMOvs6hDoWLFP+RXvPTtiF9t1nB8=');
 
 --Получить пароль админа
 SELECT adminPassword FROM adminPasswords
@@ -180,3 +180,6 @@ JOIN passwords p ON u.userId = p.userId
 JOIN userLanguages ul ON u.userId = ul.userId
 JOIN jwtKeys jk ON u.userId = jk.userId
 WHERE u.userId=?
+
+--Удалить админа
+delete from adminPasswords where adminLogin='admin';
