@@ -21,6 +21,8 @@
 
 
 
+const cook = require('./requires/cook.jss');
+
 process.stdin.on('data', () => {
 
 }).on('end', async () => {
@@ -55,6 +57,10 @@ try{
     if (params.query === 'registration') {
         console.log('Location: /web-backend/6/registration\n');
         return;
+    }
+
+    if (params.query === 'exit') {
+        cook.setCookie('session', '', -1);
     }
 
 

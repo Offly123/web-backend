@@ -2,7 +2,6 @@
 
 
 const { createHmac } = require('crypto');
-const mysql = require('mysql2/promise');
 
 
 // Получает объект данных и создаёт paylod (iat текущая дата, exp на +1 год)

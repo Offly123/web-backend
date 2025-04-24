@@ -339,6 +339,10 @@ form>.main>.element {
     height: clamp(30px, 5%, 40px);
 }
 
+.form-end > a {
+    color: red;
+}
+
 .submit-btn {
     font-weight: 600;
     border: none;

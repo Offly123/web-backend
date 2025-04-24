@@ -22,6 +22,7 @@
 }
 
 .user-data > p {
+    text-overflow: ellipsis;
     margin-right: 10px;
 }
 

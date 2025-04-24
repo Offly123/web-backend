@@ -85,8 +85,8 @@ INSERT IGNORE INTO passwords
     (userId, userLogin, userPassword) 
 values (?, ?, ?)
 
---Вставка в jwtLeys
-INSERT IGNORE INTO jwtLeys 
+--Вставка в jwtKeys
+INSERT IGNORE INTO jwtKeys 
     (userId, jwtKey) 
 values (?, ?)
 
@@ -144,10 +144,20 @@ WHERE userid = ?
 --АДМИНКА
 
 
---Получить логины пользователей и их данные
-SELECT users.userId, userLogin, fullName, phoneNumber, emailAddress, birthDate, sex, biography FROM (
-    users JOIN passwords ON users.userId = passwords.userId 
-);
+
+--Получить логины пользователей и их данные (языки строкой через запятую)
+SELECT 
+    u.userId, userLogin, 
+    fullName, phoneNumber, emailAddress, 
+    DATE_FORMAT(birthDate, "%d %m %Y") as birthDate, 
+    sex, biography, 
+    GROUP_CONCAT(l.languageName) AS languages
+FROM users u 
+JOIN passwords p ON u.userId = p.userId 
+JOIN userLanguages ul ON u.userId = ul.userId
+JOIN languages l ON ul.languageId = l.languageId
+GROUP BY u.userId, userLogin, fullName, phoneNumber, emailAddress, birthDate, sex, biography
+
 
 --Получить количество пользователей для каждого языка
 SELECT COUNT(userId) AS count, languageName FROM 
@@ -163,3 +173,16 @@ values ('admin', 'T80ooqC+Mi87ZhozjoOuMIBaaiO/9bM6CUaPGA15aXw=');
 --Получить пароль админа
 SELECT adminPassword FROM adminPasswords
 WHERE adminLogin = ?
+
+
+SELECT 
+    u.userId,
+    GROUP_CONCAT(l.languageName) AS languages
+FROM 
+    users u
+JOIN 
+    userLanguages ul ON u.userId = ul.userId
+JOIN 
+    languages l ON ul.languageId = l.languageId
+GROUP BY 
+    u.userId;

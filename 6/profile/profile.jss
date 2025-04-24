@@ -18,7 +18,6 @@
 
 
 
-const mysql = require('mysql2/promise');
 const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
@@ -43,11 +42,6 @@ try {
     
     // console.log('Content-Type: application/json\n');
     // console.log(postData);
-
-    // Логин: aPTvJg4G0S
-
-    // Пароль: gQA9JDszdi
-    
 
     console.log('Cache-Control: max-age=0, no-cache, no-store');
     cook.deleteRegistrationData();

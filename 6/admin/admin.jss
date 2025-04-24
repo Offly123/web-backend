@@ -19,14 +19,10 @@
 
 
 
-const mysql = require('mysql2/promise');
-const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
 });
 const html = require('../requires/templates.jss');
-const cook = require('../requires/cook.jss');
-const myjwt = require('../requires/jwtlib.jss');
 const { showDBError, connectToDB, getSHA256 } = require('../requires/hz.jss');
 
 
@@ -75,25 +71,34 @@ process.stdin.on('data', () => {
 
 
 
-    // Получаем логины пользователей и статистику языков
+    // Получаем логины пользователей и статистику языков (языки строкой через запятую)
     let sqlUsersInfo = `
-    SELECT users.userId, userLogin, fullName, phoneNumber, emailAddress, DATE_FORMAT(birthDate, "%d %m %Y") as birthDate, sex, biography FROM (
-    users JOIN passwords ON users.userId = passwords.userId 
-    );`
-    let sqlLanguageInfo = `
+    SELECT 
+        u.userId, userLogin, 
+        fullName, phoneNumber, emailAddress, 
+        DATE_FORMAT(birthDate, "%d %m %Y") as birthDate, 
+        sex, biography, 
+        GROUP_CONCAT(l.languageName) AS languages
+    FROM users u 
+        JOIN passwords p ON u.userId = p.userId 
+        JOIN userLanguages ul ON u.userId = ul.userId
+        JOIN languages l ON ul.languageId = l.languageId
+    GROUP BY u.userId, userLogin, fullName, phoneNumber, emailAddress, birthDate, sex, biography
+    `;
+    let sqlLanguageStatistics = `
     SELECT COUNT(userId) as languageCount, languageName FROM 
     (userLanguages JOIN languages ON userLanguages.languageId = languages.languageId)
     GROUP BY userLanguages.languageId
     ORDER BY COUNT(userId) DESC;
     `;
-    let languageInfo;
+    let languageStatistics;
     let usersInfo;
     try {
         usersInfo    = await con.execute(sqlUsersInfo);
         usersInfo    = usersInfo[0];
         
-        languageInfo = await con.execute(sqlLanguageInfo);
-        languageInfo = languageInfo[0];
+        languageStatistics = await con.execute(sqlLanguageStatistics);
+        languageStatistics = languageStatistics[0];
     } catch (err) {
         showDBError(con, err);
         console.log(err);
@@ -112,6 +117,7 @@ process.stdin.on('data', () => {
     
     // Добавляем пользователей
     usersInfo.forEach(user => {
+        user.languages = user.languages.replace(/,/g, ', ');
         let users = html.getHTML('users.html');
         users = html.insertData(users, user);
         base = html.addInsteadOf(base, users, '$users$')
@@ -119,7 +125,7 @@ process.stdin.on('data', () => {
     base = html.addStyle(base, 'users.html');
     
     // Добавляем список языков
-    languageInfo.forEach(language => {
+    languageStatistics.forEach(language => {
         let languages = html.getHTML('language.html');
         languages = html.insertData(languages, language);
         base = html.addInsteadOf(base, languages, '$languageList$');

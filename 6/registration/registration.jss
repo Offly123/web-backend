@@ -14,7 +14,6 @@
 
 
 const { createHash } = require('crypto');
-const mysql = require('mysql2/promise');
 const querystring = require('querystring');
 require('dotenv').config({
     path: "../../../../.env"
@@ -172,7 +171,6 @@ try {
         return;
     }
     cook.setCookie('session', jwt, 60 * 60 * 24 * 365);
-    cook.setCookie('anyErrors', 'false');
     cook.setCookie('dataSentFirstTime', 'true');
 
 

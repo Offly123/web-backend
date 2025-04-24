@@ -38,9 +38,8 @@ exports.setCookie = (...args) => {
 // получает поля формы в виде объекта и устанавливает значения cookies на год
 exports.formDataToCookie = (postData) => {
     for (let index in postData) {
-        this.setCookie(index, postData[index], 60 * 60 * 24 * 365);
+        this.setCookie(index, postData[index]);
     }
-    this.setCookie('anyErrors', 'true');
 }
 
 
@@ -110,7 +109,7 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (formData.sex !== 'Male' || formData.sex !== 'Female') {
+    if (formData.sex !== 'Male' && formData.sex !== 'Female') {
         this.setCookie('sexError', 'none');
         validValues = false;
     } else {
@@ -240,9 +239,8 @@ exports.cookiesInPage = (page, allData) => {
     // Если в имени есть Error, подсвечиваем ошибки
     // console.log(allData);
     for (let errorCookie in allData) {
-        if (errorCookie.includes('Error') && errorCookie !== 'anyErrors') {
+        if (errorCookie.includes('Error')) {
             page = showError(page, errorCookie);
-            anyErrors = true;
         }
     }
     
