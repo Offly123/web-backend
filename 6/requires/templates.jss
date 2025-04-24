@@ -57,7 +57,7 @@ exports.addInsteadOf = (base, append, place) => {
 exports.insertData = (page, data) => {
     try {
         if (data.constructor !== Object) {
-            data = [data];
+            throw new Error('Only Object type');
         }
 
         for (let index in data) {

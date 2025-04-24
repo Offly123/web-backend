@@ -168,21 +168,15 @@ ORDER BY COUNT(userId) DESC;
 --Вставить пароль для админа (admin yooo)
 INSERT IGNORE INTO adminPasswords
     (adminLogin, adminPassword)
-values ('admin', 'T80ooqC+Mi87ZhozjoOuMIBaaiO/9bM6CUaPGA15aXw=');
+values ('admin', 'FfexT67Mhz6Td2oJclo2r6os+iyRlW30p97DgHspTDQ=');
 
 --Получить пароль админа
 SELECT adminPassword FROM adminPasswords
 WHERE adminLogin = ?
 
-
-SELECT 
-    u.userId,
-    GROUP_CONCAT(l.languageName) AS languages
-FROM 
-    users u
-JOIN 
-    userLanguages ul ON u.userId = ul.userId
-JOIN 
-    languages l ON ul.languageId = l.languageId
-GROUP BY 
-    u.userId;
+--Удалить все данные пользователя
+DELETE u, p, ul, jk FROM users u 
+JOIN passwords p ON u.userId = p.userId 
+JOIN userLanguages ul ON u.userId = ul.userId
+JOIN jwtKeys jk ON u.userId = jk.userId
+WHERE u.userId=?

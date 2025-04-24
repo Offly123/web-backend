@@ -69,6 +69,42 @@ process.stdin.on('data', () => {
         return;
     }
 
+    
+    // Парсим параметры из ссылки
+    let path = process.env.QUERY_STRING.split('&');
+
+    let params = {};
+    path.forEach(elem => {
+        params[elem.split('=')[0]] = elem.split('=')[1];
+    });
+
+    // Если в ссылке есть параметр delete, удаляем пользователя
+    if (params.query === 'delete') {
+        let sqlDeleteUser = `
+        DELETE u, p, ul, jk FROM users u 
+        JOIN passwords p ON u.userId = p.userId 
+        JOIN userLanguages ul ON u.userId = ul.userId
+        JOIN jwtKeys jk ON u.userId = jk.userId
+        WHERE u.userId=?
+        `;
+        let deleteResponse = {
+            deleted: 'true'
+        };
+        try {
+            
+            await con.execute(sqlDeleteUser, [params.userId]);
+
+
+        } catch (err) {
+            console.log('Status: 500');
+            deleteResponse.deleted = 'false';
+        } finally {
+            console.log('Content-Type: application/json\n');
+            console.log(JSON.stringify(deleteResponse));
+            con.end();
+            return;
+        }
+    }
 
 
     // Получаем логины пользователей и статистику языков (языки строкой через запятую)

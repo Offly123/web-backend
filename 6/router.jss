@@ -37,7 +37,7 @@ try{
     let params = {};
     path.forEach(elem => {
         params[elem.split('=')[0]] = elem.split('=')[1];
-    });
+    }); 
     
     
     
