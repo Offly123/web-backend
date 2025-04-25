@@ -136,7 +136,7 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (!(/^[А-Яа-яЁёa-zA-Z\.,\s]+$/.test(formData.biography)) || formData.biography.length > 150) {
+    if (!formData.biography || !(/^[А-Яа-яЁёa-zA-Z\.,\s]+$/.test(formData.biography)) || formData.biography.length > 150) {
         this.setCookie('biographyError', 'hehe');
         validValues = false;
     } else {
