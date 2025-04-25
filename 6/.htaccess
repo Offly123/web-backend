@@ -43,6 +43,15 @@ RewriteRule "admin(?!.*\.(css|js))" "admin/admin.jss" [L]
 
 
 
+# EDIT
+#
+# Запрещаем переход напрямую на edit.jss
+# RewriteRule "edit/edit.jss" - [L,R=404]
+# Перенаправляем с edit/ на edit.jss
+RewriteRule "edit(?!.*\.(css|js))" "edit/edit.jss" [L]
+
+
+
 # Запрещаем переход по всему, что нельзя показывать
 RewriteRule "node_modules"     - [L,R=404]
 RewriteRule "requires"         - [L,R=404]

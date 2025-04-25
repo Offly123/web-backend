@@ -218,7 +218,7 @@ exports.cookiesInPage = (page, allData) => {
         'sex', 'language', 'agreement'
     ];
     const cookiesToInsertDirectly = [
-        'biography'
+        'biography', 'userLogin'
     ];
     
     // Вставляем значения, которые в HTML атрибуте value

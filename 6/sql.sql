@@ -165,7 +165,7 @@ SELECT COUNT(userId) AS count, languageName FROM
 GROUP BY userLanguages.languageId
 ORDER BY COUNT(userId) DESC;
 
---Вставить пароль для админа (admin yooo)
+--Вставить пароль для админа (admin yo)
 INSERT IGNORE INTO adminPasswords
     (adminLogin, adminPassword)
 values ('admin', 'ZGgjswm5hOo83HmjMOvs6hDoWLFP+RXvPTtiF9t1nB8=');

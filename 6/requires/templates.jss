@@ -61,8 +61,7 @@ exports.insertData = (page, data) => {
         }
 
         for (let index in data) {
-            page = page.replace('$' + index + '$', data[index]);
-            page = page.replace('$' + data[index] + '$', data[index]);
+            page = page.replaceAll('$' + index + '$', data[index]);
         }
         
         return page;

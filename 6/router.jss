@@ -59,6 +59,11 @@ try{
         return;
     }
 
+    if (params.query === 'edit') {
+        console.log('Location: /web-backend/6/admin/edit/\n');
+        return;
+    }
+
     if (params.query === 'exit') {
         cook.setCookie('session', '', -1);
     }
