@@ -99,11 +99,13 @@ exports.checkValues = (formData) => {
     }
 
 
-    let birthYear = formData.birthDate.split('-')[0];
-    let currentYear = new Date().getFullYear();
-    if (!(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(formData.birthDate)) || birthYear < 1900 || birthYear > currentYear) {
-        this.setCookie('birthDateError', formData.birthDate);
-        validValues = false;
+    if (!(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(formData.birthDate))) {
+        let birthYear = formData.birthDate.split('-')[0];
+        let currentYear = new Date().getFullYear();
+        if (birthYear < 1900 || birthYear > currentYear) {
+            this.setCookie('birthDateError', formData.birthDate);
+            validValues = false;
+        }
     } else {
         this.setCookie('birthDateError', '', -1);
     }
