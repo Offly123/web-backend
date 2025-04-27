@@ -59,11 +59,13 @@ try{
         return;
     }
 
+    // Перенаправление на /edit/
     if (params.query === 'edit') {
         console.log('Location: /web-backend/6/admin/edit/\n');
         return;
     }
 
+    // Выход из профиля (удаления JWT из cookie)
     if (params.query === 'exit') {
         cook.setCookie('session', '', -1);
     }

@@ -132,7 +132,7 @@ try {
     const JWTInfo = {
         'userId': userId
     }
-    const jwt = myjwt.createJWT(JWTInfo, secret);
+    const jwt = myjwt.createJWT(JWTInfo, secret, 60 * 60 * 24 * 7);
     cook.setCookie('session', jwt, 60 * 60 * 24 * 7);
 
 

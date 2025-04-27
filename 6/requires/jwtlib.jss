@@ -4,11 +4,11 @@
 const { createHmac } = require('crypto');
 
 
-// Получает объект данных и создаёт paylod (iat текущая дата, exp на +1 год)
-const createPayload = (info) => {
+// Получает JSON данных и время действия в секундах, создаёт payload
+const createPayload = (info, lifeTime) => {
     let payload = {
         'iat': Math.floor(Date.now() / 1000),
-        'exp': Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365
+        'exp': Math.floor(Date.now() / 1000) + lifeTime
     }
 
     for (let field in info) {
@@ -28,13 +28,13 @@ const createSignature = (header, payload, secret) => {
 
 
 // Получает JSON и секретный ключ, выдаёт jwt
-exports.createJWT = (payload, secret) => {
+exports.createJWT = (payload, secret, lifeTime) => {  
     let header = {
         'alg': 'HS256',
         'typ': 'JWT'
     };
     header = Buffer.from(JSON.stringify(header)).toString('base64url');
-    payload = createPayload(payload);
+    payload = createPayload(payload, lifeTime);
     payload = Buffer.from(JSON.stringify(payload)).toString('base64url');
     
     let signature = createSignature(header, payload, secret);
@@ -59,11 +59,17 @@ exports.decodeJWT = (jwt) => {
 }
 
 
-// Получает JWT в виде массива и ключ
+// Получает декодированный JWT в виде массива и ключ
 exports.isValideJWT = (decoded, secret) => {
-    if (secret[0][0] == undefined) {
+    // Если не передали ключ (в БД нет такого)
+    if (secret == undefined) {
         return false;
     }
+    // Если истекла дата - невалидный
+    if ((decoded[1].exp - 1) < (Date.now() / 1000)) {
+        return false;
+    }
+
     let header = JSON.stringify(decoded[0]);
     header = Buffer.from(header).toString('base64url');
     let payload = JSON.stringify(decoded[1]);

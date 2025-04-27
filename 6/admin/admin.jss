@@ -2,6 +2,7 @@
 'use strict';
 
 
+
 // Скрипт, отвечающий за отображение админки
 //
 // Сначала кидает HTTP авторизацию:
@@ -18,20 +19,28 @@
 
 
 
+const querystring = require('querystring');
 
 require('dotenv').config({
     path: "../../../../.env"
 });
+const cook = require('../requires/cook.jss');
+const myjwt = require('../requires/jwtlib.jss');
 const html = require('../requires/templates.jss');
 const { showDBError, connectToDB, getSHA256 } = require('../requires/hz.jss');
 
 
+let postData;
+process.stdin.on('data', (info) => {
 
-process.stdin.on('data', () => {
+    postData = JSON.parse(info.toString());
     
 }).on('end', async () => {
+try {
+
     
     // console.log('Content-Type: application/json\n');
+    // console.log(postData);
     
     
     // Если через HTTP не отправлены логин/пароль - кидаем HTTP авторизацию
@@ -78,8 +87,36 @@ process.stdin.on('data', () => {
         params[elem.split('=')[0]] = elem.split('=')[1];
     });
 
-    // Если в ссылке есть параметр delete, удаляем пользователя
+    // Если в ссылке есть параметр delete, проверяем наличие jwt и
+    // удаляем пользователя
     if (params.query === 'delete') {
+
+        let deleteResponse = {
+            deleted: 'true'
+        };
+
+        // Если нет JWT или он не валидный - возвращаем 500
+        let adminJwt = postData.token;
+        let decodedJWT = myjwt.decodeJWT(adminJwt);
+        if (!adminJwt || !myjwt.isValideJWT(decodedJWT, 'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=')) {
+            deleteResponse.deleted = 'false';
+            console.log('Status: 500');
+            console.log('Content-Type: application/json\n');
+            console.log(JSON.stringify(deleteResponse));
+            con.end();
+            return;
+        }
+
+        // Генерируем новый токен на 10 минут
+        let newToken = myjwt.createJWT(
+            {}, 
+            'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=', 
+            60 * 10
+        );
+        deleteResponse.newToken = newToken;
+
+
+        // Если удаление прошло успешно - кидаем 200, иначе 500
         let sqlDeleteUser = `
         DELETE u, p, ul, jk FROM users u 
         JOIN passwords p ON u.userId = p.userId 
@@ -87,17 +124,13 @@ process.stdin.on('data', () => {
         JOIN jwtKeys jk ON u.userId = jk.userId
         WHERE u.userId=?
         `;
-        let deleteResponse = {
-            deleted: 'true'
-        };
         try {
             
-            await con.execute(sqlDeleteUser, [params.userId]);
-
+            await con.execute(sqlDeleteUser, [postData.userId]);
 
         } catch (err) {
-            console.log('Status: 500');
             deleteResponse.deleted = 'false';
+            console.log('Status: 500');
         } finally {
             console.log('Content-Type: application/json\n');
             console.log(JSON.stringify(deleteResponse));
@@ -119,7 +152,7 @@ process.stdin.on('data', () => {
         JOIN passwords p ON u.userId = p.userId 
         JOIN userLanguages ul ON u.userId = ul.userId
         JOIN languages l ON ul.languageId = l.languageId
-    GROUP BY u.userId, userLogin, fullName, phoneNumber, emailAddress, birthDate, sex, biography
+    GROUP BY u.userId
     `;
     let sqlLanguageStatistics = `
     SELECT COUNT(userId) as languageCount, languageName FROM 
@@ -168,5 +201,17 @@ process.stdin.on('data', () => {
     });
     base = html.addStyle(base, 'language.html');
     
+    // Добавляем JWT на 5 минут
+    let adminJwt = myjwt.createJWT(
+        {}, 
+        'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=', 
+        60 * 5
+    );
+    base = html.insertData(base, {jwt: adminJwt});
+
     html.returnHTML(base);
+} catch (err) {
+    console.log('Content-Type: application/json');
+    console.log(err);
+}
 });
