@@ -19,28 +19,24 @@
 
 
 
-const querystring = require('querystring');
-
 require('dotenv').config({
     path: "../../../../.env"
 });
-const cook = require('../requires/cook.jss');
 const myjwt = require('../requires/jwtlib.jss');
 const html = require('../requires/templates.jss');
+const { getLinkParams, parseURLEncodedData } = require('../requires/httpdata.jss');
 const { showDBError, connectToDB, getSHA256 } = require('../requires/hz.jss');
 
+try {
 
 let postData;
 process.stdin.on('data', (info) => {
-
-    postData = JSON.parse(info.toString());
+    
+    postData += info;
     
 }).on('end', async () => {
-try {
 
-    
     // console.log('Content-Type: application/json\n');
-    // console.log(postData);
     
     
     // Если через HTTP не отправлены логин/пароль - кидаем HTTP авторизацию
@@ -49,17 +45,17 @@ try {
         console.log('Status: 401 Unauthorized');
         console.log('WWW-Authenticate: Basic realm="admin"\n');
     }
-
-
+    
+    
     const adminAuthData = Buffer.from(process.env.HTTP_AUTHORIZATION, 'base64url').toString('utf-8').split(':');
     
     let sqlAdminPassword = `
     SELECT adminPassword FROM adminPasswords
     WHERE adminLogin = ?
     `;
-
+    
     let con = await connectToDB();
-
+    
     let adminPassword;
     try {
         adminPassword = await con.execute(sqlAdminPassword, [adminAuthData[0]]);
@@ -68,8 +64,8 @@ try {
         showDBError(con, err);
         return;
     }
-
-
+    
+    
     
     // Если неправильный логин пароль - кидаем 403
     if (getSHA256(adminAuthData[1]) !== adminPassword) {
@@ -77,73 +73,72 @@ try {
         console.log('Status: 403 Forbidden\n');
         return;
     }
-
     
-    // Парсим параметры из ссылки
-    let path = process.env.QUERY_STRING.split('&');
-
-    let params = {};
-    path.forEach(elem => {
-        params[elem.split('=')[0]] = elem.split('=')[1];
-    });
-
-    // Если в ссылке есть параметр delete, проверяем наличие jwt и
-    // удаляем пользователя
-    if (params.query === 'delete') {
-
+    
+    if (postData) {
+        // Парсим параметры из ссылки и из POST данных
+        postData = parseURLEncodedData(postData);
+        
         let deleteResponse = {
             deleted: 'true'
         };
-
-        // Если нет JWT или он не валидный - возвращаем 500
+        
+        
         let adminJwt = postData.token;
-        let decodedJWT = myjwt.decodeJWT(adminJwt);
-        if (!adminJwt || !myjwt.isValideJWT(decodedJWT, 'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=')) {
+        let decodedJwt = myjwt.decodeJWT(adminJwt);
+        
+        
+        // Если нет JWT или он не валидный - возвращаем 403
+        if (!adminJwt || !myjwt.isValideJWT(decodedJwt, 'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=')) {
             deleteResponse.deleted = 'false';
             console.log('Status: 403');
             console.log('Content-Type: application/json\n');
-            console.log(JSON.stringify(deleteResponse));
             con.end();
             return;
         }
-
-        // Генерируем новый токен на 10 минут
+        
+        
+        // Генерируем новый токен на 5 минут
         let newToken = myjwt.createJWT(
             {}, 
             'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=', 
-            60 * 10
+            60 * 5
         );
         deleteResponse.newToken = newToken;
-
-
-        // Если удаление прошло успешно - кидаем 200, иначе 500
+        
+        
+        // Если удаление прошло успешно - кидаем 200, иначе 403
         let sqlDeleteUser = `
         DELETE u, p, ul, jk FROM users u 
         JOIN passwords p ON u.userId = p.userId 
-        JOIN userLanguages ul ON u.userId = ul.userId
-        JOIN jwtKeys jk ON u.userId = jk.userId
+        JOIN userLanguages ul ON u.userId = ul.userId 
+        JOIN jwtKeys jk ON u.userId = jk.userId 
         WHERE u.userId=?
         `;
         try {
             
             await con.execute(sqlDeleteUser, [postData.userId]);
-
+            
         } catch (err) {
             deleteResponse.deleted = 'false';
             console.log('Status: 403');
         } finally {
+            con.end();
+            if (postData.js === 'disabled') {
+                console.log('Location: /web-backend/6/admin/\n');
+                return;
+            }
             console.log('Content-Type: application/json\n');
             console.log(JSON.stringify(deleteResponse));
-            con.end();
             return;
         }
     }
-
-
+    
+    
     // Получаем логины пользователей и статистику языков (языки строкой через запятую)
     let sqlUsersInfo = `
     SELECT 
-        u.userId, userLogin, 
+    u.userId, userLogin, 
         fullName, phoneNumber, emailAddress, 
         DATE_FORMAT(birthDate, "%d %m %Y") as birthDate, 
         sex, biography, 
@@ -210,8 +205,8 @@ try {
     base = html.insertData(base, {jwt: adminJwt});
 
     html.returnHTML(base);
+});
 } catch (err) {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');
 }
-});

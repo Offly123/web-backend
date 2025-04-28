@@ -16,11 +16,12 @@
 //
 //
 //
-// TODO: 
-// ☠ ☠ ☠ ☠ Фронтенд для админки ☠ ☠ ☠ ☠
+// TODO:
+// Добавить пользователям JWT в HTML
 
 
 
+const { getLinkParams } = require('./requires/httpdata.jss');
 const cook = require('./requires/cook.jss');
 
 process.stdin.on('data', () => {
@@ -32,12 +33,7 @@ try{
     console.log('Cache-Control: max-age=0, no-cache, no-store');
     
     // Парсим параметры из ссылки
-    let path = process.env.QUERY_STRING.split('&');
-    
-    let params = {};
-    path.forEach(elem => {
-        params[elem.split('=')[0]] = elem.split('=')[1];
-    }); 
+    let params = getLinkParams();
     
     
     
@@ -61,7 +57,7 @@ try{
 
     // Перенаправление на /edit/
     if (params.query === 'edit') {
-        console.log('Location: /web-backend/6/admin/edit/\n');
+        console.log('Location: /web-backend/6/edit/\n');
         return;
     }
 
@@ -74,6 +70,6 @@ try{
     console.log('Location: /web-backend/6/login\n');
 } catch (err) {
     console.log('Content-Type: application/json\n');
-    console.log(err);
+    console.log('Something went wrong');
 }
 });

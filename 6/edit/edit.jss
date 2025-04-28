@@ -9,6 +9,7 @@ require('dotenv').config({
 
 const html = require('../requires/templates.jss')
 const cook = require('../requires/cook.jss');
+const { getLinkParams } = require('../requires/httpdata.jss');
 const { showDBError, connectToDB, DBDataToJSON, getSHA256 } = require('../requires/hz.jss');
 
 

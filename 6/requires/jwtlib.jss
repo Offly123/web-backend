@@ -44,7 +44,7 @@ exports.createJWT = (payload, secret, lifeTime) => {
 
 
 // Получает JWT в виде строки и возвращает его декодированным в 
-// виде массива (0 - голова, 1 - тело).
+// виде массива (0 - голова, 1 - тело, 2 - подпись).
 exports.decodeJWT = (jwt) => {
     try {
         jwt = jwt.split('.');

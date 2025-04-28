@@ -8,13 +8,14 @@
     <title>profile template</title>
 
     $styleStart$
+    <meta name="userToken" content="$jwt$">
     <link rel="stylesheet" href="css/profile.css">
     <script src="js/forms.js"></script>
     $styleEnd$
 
 </head>
 <body>
-    <form method="post" action="./profile/">
+    <form method="post" action="./profile/?$jwt$">
         <div class="head">
             Личный кабинет
         </div>
