@@ -100,7 +100,7 @@ try {
         let decodedJWT = myjwt.decodeJWT(adminJwt);
         if (!adminJwt || !myjwt.isValideJWT(decodedJWT, 'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=')) {
             deleteResponse.deleted = 'false';
-            console.log('Status: 500');
+            console.log('Status: 403');
             console.log('Content-Type: application/json\n');
             console.log(JSON.stringify(deleteResponse));
             con.end();
@@ -130,7 +130,7 @@ try {
 
         } catch (err) {
             deleteResponse.deleted = 'false';
-            console.log('Status: 500');
+            console.log('Status: 403');
         } finally {
             console.log('Content-Type: application/json\n');
             console.log(JSON.stringify(deleteResponse));
