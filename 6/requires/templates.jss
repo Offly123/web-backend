@@ -8,9 +8,9 @@ exports.getHTML = (page) => {
     process.chdir(process.env.DOCUMENT_ROOT + '/web-backend/6/html');
     try {
         page = fs.readFileSync(page, 'utf-8');
-    } catch {
+    } catch (err) {
         console.log('Content-Type: application/json\n');
-        console.log('file ' + page + ' not found');
+        console.log('Something went wrong');
     }
     process.chdir(currentDir);
     return page;
@@ -67,7 +67,7 @@ exports.insertData = (page, data) => {
         return page;
     } catch (err) {
         console.log('Content-Type: application/json\n');
-        console.log(err);
+        console.log('Something went wrong');
     }
 }
 

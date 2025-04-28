@@ -185,6 +185,6 @@ try {
 } catch (err) {
     con.end();
     console.log('Content-Type: application/json\n');
-    console.log(err);
+    console.log('Something went wrong');
 }
 });

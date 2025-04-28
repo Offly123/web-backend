@@ -255,8 +255,7 @@ exports.cookiesInPage = (page, allData) => {
         fs.writeFileSync('../auth.txt', '');
     } catch (err) {
         console.log('Content-Type: application/json\n');
-        console.log(process.cwd());
-        console.log(err);
+        console.log('Something went wrong');
     }
     
     if (auth != undefined) {

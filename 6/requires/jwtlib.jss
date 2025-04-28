@@ -61,6 +61,10 @@ exports.decodeJWT = (jwt) => {
 
 // Получает декодированный JWT в виде массива и ключ
 exports.isValideJWT = (decoded, secret) => {
+    // Если JWT undefined
+    if (decoded == undefined) {
+        return false;
+    }
     // Если не передали ключ (в БД нет такого)
     if (secret == undefined) {
         return false;

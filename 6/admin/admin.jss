@@ -211,7 +211,7 @@ try {
 
     html.returnHTML(base);
 } catch (err) {
-    console.log('Content-Type: application/json');
-    console.log(err);
+    console.log('Content-Type: application/json\n');
+    console.log('Something went wrong');
 }
 });

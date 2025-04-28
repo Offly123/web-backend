@@ -145,6 +145,6 @@ try {
     console.log('Location: /web-backend/6/profile\n');
 } catch (err) {
     console.log('Content-Type: application/json\n');
-    console.log(err);
+    console.log('Something went wrong');
 }
 });

@@ -55,5 +55,5 @@ RewriteRule "edit(?!.*\.(css|js))" "edit/edit.jss" [L]
 # Запрещаем переход по всему, что нельзя показывать
 RewriteRule "node_modules"     - [L,R=404]
 RewriteRule "requires"         - [L,R=404]
-RewriteRule "requests.sql"     - [L,R=404]
+RewriteRule "sql.sql"     - [L,R=404]
 RewriteRule "auth.txt"         - [L,R=404]

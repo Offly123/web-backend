@@ -45,7 +45,7 @@ exports.connectToDB = async () => {
         });
     } catch (err) {
         console.log('Content-Type: application/json\n');
-        console.log(err);
+        console.log('Something went wrong');
     }
 
     return con;
