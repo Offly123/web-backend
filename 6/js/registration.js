@@ -16,15 +16,18 @@ $(document).ready(function () {
     $(".language-list").on({
         focusout: function (event) {
             if ($(event.relatedTarget)[0] == undefined ||
-                ($(event.relatedTarget)[0].className != "language-label" &&
-                $(event.relatedTarget)[0].className != "dont-close"))
+               ($(event.relatedTarget)[0].className != "language-label" &&
+                $(event.relatedTarget)[0].className != "dont-close"
+            )) {
                 $(".language-list").removeClass("show-languages");
+            }
         }
     });
     
     $(document).click(function (event) {
         if ($(event.target)[0] == undefined ||
-            ($(event.target)[0].className != "dont-close")) {
+           ($(event.target)[0].className != "dont-close"
+        )) {
             $(".language-list").removeClass("show-languages");
         }
     });

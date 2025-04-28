@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <base href="../">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="#">
     <title>profile template</title>
 
     $styleStart$
-    <meta name="userToken" content="$jwt$">
+    <meta name="token" content="$jwt$">
     <link rel="stylesheet" href="css/profile.css">
-    <script src="js/forms.js"></script>
+    <script src="js/profile.js"></script>
     $styleEnd$
 
 </head>
 <body>
-    <form method="post" action="./profile/?$jwt$">
+    <form method="post" action="./profile/?token=$jwt$">
         <div class="head">
             Личный кабинет
         </div>
