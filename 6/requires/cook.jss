@@ -136,8 +136,12 @@ exports.checkValues = (formData) => {
     }
 
 
-    if (!formData.biography || !(/^[А-Яа-яЁёa-zA-Z\.,\s]+$/.test(formData.biography)) || formData.biography.length > 150) {
-        this.setCookie('biographyError', 'hehe');
+    // Валидация биографии
+    if (!formData.biography || 
+        !(/^[А-Яа-яЁёa-zA-Z\.,\s]+$/.test(formData.biography)) || 
+        formData.biography.length > 150
+    ) {
+        this.setCookie('biographyError', 'true');
         validValues = false;
     } else {
         this.setCookie('biographyError', '', -1);

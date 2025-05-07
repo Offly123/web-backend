@@ -1,0 +1,393 @@
+form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(200px, 85vw, 600px);
+    height: clamp(50px, 95dvh, 650px);
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 600;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    color: black;
+    backdrop-filter: blur(25px);
+    padding: max(5px, 1vw);
+}
+
+
+
+/* ЗАГОЛОВОК */
+
+
+
+form>.head {
+    font-weight: 900;
+    height: clamp(30px, 5%, 50px);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+
+
+/* ГЛАВНОЕ */
+
+
+
+form>.main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    height: 90%;
+}
+
+
+
+/* ПОЛЯ ВВОДА */
+
+
+
+form>.main>.element {
+    align-items: center;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+    width: clamp(250px, 90%, 275px);
+    border-radius: 7px;
+    padding: 0px 5px;
+}
+
+.element>label {
+    position: relative;
+    color: black;
+    width: 100%;
+    text-align: center;
+    padding: clamp(2px, 1vw, 4px);
+    padding-bottom: 0;
+}
+
+.element>input {
+    align-self: center;
+    width: 100%;
+    color: black;
+    height: clamp(20px, 15vw, 30px);
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    border: 1px solid black;
+    box-shadow: 0px 0px 0px rgba(255, 255, 255, .5) inset;
+    transition: box-shadow 0.3s, background-color 0.3s;
+    margin-top: 10px;
+}
+
+.element>input:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.element>input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.element>input:focus {
+    outline: none;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+.radio {
+    align-self: center;
+    width: clamp(0px, 80%, 300px);
+    height: clamp(60px, 10%, 70px);
+}
+
+.radio>.pol {
+    width: 20%;
+    text-align: center;
+    position: relative;
+}
+
+
+
+.radio>.radio-buttons-wrapper {
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 100px;
+    width: max(200px, 50%)
+}
+
+.btn-wrapper {
+    height: 100%;
+    width: calc(100% - 20px);
+    background-color: none;
+    transition: background-color .12s;
+    border: 1px solid black;
+    border-radius: 100px;
+}
+
+.btn-wrapper>label {
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    width: 100%;
+    height: 100%;
+    transition: box-shadow .3s, background-color .3s;
+    border-radius: 0 100px 100px 0;
+}
+
+.btn-wrapper>label:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-wrapper>label:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3) inset;
+}
+
+.btn-wrapper:first-child>label {
+    border-radius: 100px 0 0 100px;
+}
+
+.btn-wrapper>.radio-btn {
+    visibility: hidden;
+    display: none;
+}
+
+.btn-wrapper {
+    border-radius: 0 100px 100px 0;
+}
+
+.btn-wrapper:first-child {
+    border-radius: 100px 0 0 100px;
+}
+
+.btn-wrapper:has(input:checked) {
+    background-color: rgba(255, 0, 179, .3);
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+.btn-wrapper:has(input:checked):first-child {
+    background-color: rgba(0, 98, 255, .3);
+}
+
+
+
+/* ЯЗЫКИ */
+
+
+
+.languages {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: clamp(20px, 10%, 140px);
+    width: clamp(300px, 80%, 500px);
+    padding: 12px 0px;
+}
+
+.languages>label {
+    align-content: center;
+    position: relative;
+    padding: 4px 5px;
+    min-height: 25px;
+    height: fit-content;
+    border-radius: 100px;
+    margin-right: 5px;
+
+}
+
+.language-btn {
+    position: relative;
+}
+
+#toggle-languages {
+    font-weight: 600;
+    border: none;
+    border-radius: 100px;
+    height: clamp(30px, 1vw, 70px);
+    width: clamp(50px, 15vw, 75px);
+    background-color: rgba(0, 221, 255, 0.3);
+    transition: all .3s;
+}
+
+#toggle-languages:hover {
+    background-color: rgba(0, 221, 255, 0.5);
+}
+
+#toggle-languages:focus {
+    outline: none;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+.language-list {
+    display: none;
+    flex-direction: column;
+    height: 100px;
+    width: fit-content;
+    overflow: hidden;
+    overflow-y: visible;
+    border-radius: 5px;
+    position: absolute;
+    top: 35px;
+    right: 0;
+    backdrop-filter: blur(5px);
+    z-index: 1;
+}
+
+.show-languages {
+    display: flex;
+}
+
+.language-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.language-list::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 0 5px 5px 0;
+    width: 5px;
+}
+
+.language-list::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 221, 255, 0.4);
+    border-radius: 0 5px 5px 0;
+    width: 5px;
+}
+
+.language-list>li {
+    padding-left: 5px;
+    width: 100px;
+    display: block;
+    background-color: rgba(255, 255, 255, .4);
+    transition: all .2s;
+}
+
+.language-list>li:hover {
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.language-list>li:has(input:checked) {
+    background-color: rgba(100, 255, 100, .4);
+}
+
+.language-list>li>input {
+    text-align: center;
+    visibility: hidden;
+    display: none;
+}
+
+.language-list>li>label {
+    display: block;
+    width: 100%;
+}
+
+
+
+/* БИОГРАФИЯ */
+
+
+
+#biography {
+    border-radius: 7px;
+    padding: 0px 5px;
+    height: clamp(60px, 15%, 100px);
+}
+
+#biography>textarea {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid black;
+    resize: none;
+    height: 100%;
+    padding: 5px;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+#biography>textarea::placeholder {
+    color: rgba(0, 0, 0, .5)
+}
+
+#biography>textarea:hover {
+    background-color: rgba(255, 255, 255, .2);
+}
+
+#biography>textarea:focus {
+    outline: none;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+
+
+/* ОТПРАВКА */
+
+
+
+.form-end {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    height: clamp(30px, 5%, 40px);
+}
+
+.form-end > a {
+    color: red;
+}
+
+.submit-btn {
+    font-weight: 600;
+    border: none;
+    border-radius: 100px;
+    height: clamp(30px, 1vw, 70px);
+    background-color: rgba(0, 221, 255, 0.3);
+    transition: all .3s;
+}
+
+.submit-btn:hover {
+    background-color: rgba(0, 255, 200, 0.5);
+}
+
+.submit-btn:focus {
+    outline: none;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, .3) inset;
+}
+
+
+
+/* ОШИБКИ */
+
+
+
+.error-text {
+    text-wrap: nowrap;
+    display: none;
+    color: #ff1010;
+    font-size: clamp(6px, 2.5vw, 9px);
+    position: absolute;
+    left: 20px;
+    top: 23px;
+}
+
+.error-text-sex {
+    left: 45px;
+    top: 20px;
+}
+
+.error-text-languages {
+    top: -15px;
+    left: 23px;
+}
+
+.error-text-biography {
+    left: 10px;
+    top: 22px;
+}
