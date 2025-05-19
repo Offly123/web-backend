@@ -12,7 +12,7 @@ import * as fs from 'fs';
 //      Четвёртый аргумент - путь
 export function setCookie(...args) {
     if (args.length === 2) {
-        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/; httponly');
+        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/; httponly');
         return;
     }
     if (args.length === 3) {
@@ -20,18 +20,18 @@ export function setCookie(...args) {
 
             let timeofDeath = new Date();
             timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
-            console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/; Expires=' + timeofDeath + '; httponly');
+            console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/; Expires=' + timeofDeath + '; httponly');
 
             return;
         }
 
-        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/' + args[2] + '; httponly');
+        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/' + args[2] + '; httponly');
 
         return;
     }
     let timeofDeath = new Date();
     timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
-    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/6/' + args[3] + '; Expires=' + timeofDeath + '; httponly');
+    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/' + args[3] + '; Expires=' + timeofDeath + '; httponly');
 }
 
 
@@ -49,7 +49,7 @@ export function cookiesToJSON() {
     if (process.env.HTTP_COOKIE === undefined) {
         return cookieList;
     }
-    toArray = process.env.HTTP_COOKIE.split("; ");
+    let toArray = process.env.HTTP_COOKIE.split("; ");
     toArray.forEach((cook) => {
         cookieList[cook.split("=")[0]] = cook.split("=")[1];
     });
@@ -60,7 +60,7 @@ export function cookiesToJSON() {
 // Удаляет все куки кроме session
 export function deleteRegistrationData() {
     let cooks = this.cookiesToJSON();
-    for (cookie in cooks) {
+    for (let cookie in cooks) {
         if (cookie === 'session' || cookie === 'dataSend') {
             continue;
         }
@@ -138,7 +138,7 @@ export function checkValues(formData) {
 
     // Валидация биографии
     if (!formData.biography || 
-        !(/^[А-Яа-яЁёa-zA-Z\.,\s]+$/.test(formData.biography)) || 
+        !(/^[А-Яа-яЁёa-zA-Z0-9\.,\s]+$/.test(formData.biography)) || 
         formData.biography.length > 150
     ) {
         this.setCookie('biographyError', 'true');

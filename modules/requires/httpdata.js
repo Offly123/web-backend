@@ -27,7 +27,7 @@ export function parseURLEncodedData(URLEndodedData) {
 
     let params = {};
     paramValuePairs.forEach(param => {
-        params[param.split('=')[0]] = param.split('=')[1];
+        params[param.split('=')[0]] = decodeURIComponent(param.split('=')[1]);
     });
     
     

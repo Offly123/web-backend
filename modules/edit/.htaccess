@@ -1,3 +1,0 @@
-# Если есть заголовок с HTTP авторизацией ставим
-# переменную окружения с логином паролем
-SetEnvIf Authorization "Basic (.*)" HTTP_AUTHORIZATION=$1

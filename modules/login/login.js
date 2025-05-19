@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict';
 
 
@@ -25,7 +24,7 @@ import { showDBError, connectToDB } from '../requires/hz.js';
 
 
 
-export async function login(postData) {
+export async function GETlogin() {
 try{
 
     // console.log('Content-Type: application/json\n');
@@ -46,15 +45,24 @@ try{
     
     
     // Если в POST ничего нет - возвращает страницу
-    if (!postData) {
-        html.returnHTML(base);
-        return;
-    }
-    
+    html.returnHTML(base);
+
+} catch(err) {
+    console.log('Content-Type: application/json\n');
+    console.log(err);
+}
+}
+
+
+
+export async function POSTlogin(postData) {
+try {
+
+    // console.log('Content-Type: applictaion/json\n');
 
     // Если есть JWT - перекидывает на profile
     if (cook.cookiesToJSON().session) {
-        console.log('Location: /web-backend/6/?query=profile\n');
+        console.log('Location: /web-backend/8/profile/\n');
         return;
     }
 
@@ -71,7 +79,6 @@ try{
     passwords 
     WHERE userLogin = (?)
     `;
-    
     try {
         userPassword = await con.execute(sqlGetPassword, [postData.login]);
     } catch (err) {
@@ -87,7 +94,7 @@ try{
         con.end();
 
         cook.setCookie('wrongLogin', 'true');
-        console.log('Location: /web-backend/6/?query=login\n');
+        console.log('Location: /web-backend/8/login/\n');
 
         return;
     }
@@ -122,7 +129,7 @@ try{
 
     const JWTInfo = {
         'userId': userId
-    }
+    };
     const jwt = myjwt.createJWT(JWTInfo, secret, 60 * 60 * 24 * 7);
     cook.setCookie('session', jwt, 60 * 60 * 24 * 7);
 
@@ -133,10 +140,7 @@ try{
 
 
 
-    console.log('Location: /web-backend/6/profile\n');
-
-    console.log('Content-Type: application/json\n');
-    console.log('hehe');
+    console.log('Location: /web-backend/8/profile/\n');   
 } catch(err) {
     console.log('Content-Type: application/json\n');
     console.log(err);

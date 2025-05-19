@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict';
 
 
@@ -21,30 +20,25 @@
 
 import 'dotenv/config';
 
-import * as myjwt from '../requires/jwtlib.jss';
-import * as html from '../requires/templates.jss';
-import { getLinkParams, parseURLEncodedData } from '../requires/httpdata.jss';
-import { showDBError, connectToDB, getSHA256 } from '../requires/hz.jss';
+import * as myjwt from '../requires/jwtlib.js';
+import * as html from '../requires/templates.js';
+import { getLinkParams, parseURLEncodedData } from '../requires/httpdata.js';
+import { showDBError, connectToDB, getSHA256 } from '../requires/hz.js';
 
-try {
 
-let postData;
-process.stdin.on('data', (info) => {
-    
-    postData += info;
-    
-}).on('end', async () => {
+
+export async function admin(postData) {
 
     // console.log('Content-Type: application/json\n');
     
-    
-    // Если через HTTP не отправлены логин/пароль - кидаем HTTP авторизацию
     console.log('Cache-Control: max-age=0, no-cache');
+    
+
+    // Если через HTTP не отправлены логин/пароль - кидаем HTTP авторизацию
     if (!process.env.HTTP_AUTHORIZATION) {
         console.log('Status: 401 Unauthorized');
         console.log('WWW-Authenticate: Basic realm="admin"\n');
     }
-    
     
     const adminAuthData = Buffer.from(process.env.HTTP_AUTHORIZATION, 'base64url').toString('utf-8').split(':');
     
@@ -204,8 +198,4 @@ process.stdin.on('data', (info) => {
     base = html.insertData(base, {jwt: adminJwt});
 
     html.returnHTML(base);
-});
-} catch (err) {
-    console.log('Content-Type: application/json\n');
-    console.log('Something went wrong');
 }

@@ -1,5 +1,7 @@
 DirectoryIndex index.jss
 
+SetEnvIf Authorization "Basic (.*)" HTTP_AUTHORIZATION=$1
+
 <IfModule mod_rewrite.c>
   RewriteEngine on
 

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict';
 
 
@@ -20,21 +19,21 @@
 
 import 'dotenv/config';
 
-const html = require('../requires/templates.jss')
-const cook = require('../requires/cook.jss');
-const myjwt = require('../requires/jwtlib.jss');
-const { getLinkParams } = require('../requires/httpdata.jss');
-const { showDBError, connectToDB, DBDataToJSON } = require('../requires/hz.jss');
+import * as html from '../requires/templates.js';
+import * as cook from '../requires/cook.js';
+import * as myjwt from '../requires/jwtlib.js';
+import { getLinkParams } from '../requires/httpdata.js';
+import { showDBError, connectToDB, DBDataToJSON } from '../requires/hz.js';
 
 
 
-let postData;
-
-export async function profile() {
+export async function GETprofile() {
 try {
     
-    // console.log('Content-Type: application/json\n');
-    // console.log(postData);
+    console.log('Content-Type: application/json\n');
+    console.log('hehe');
+    console.log(postData);
+    return;
 
     console.log('Cache-Control: max-age=0, no-cache, no-store');
     cook.deleteRegistrationData();
@@ -43,7 +42,78 @@ try {
     // Если нет JWT - перенаправляем на регистрацию
     const jwt = cook.cookiesToJSON().session;
     if (!jwt) {
-        console.log('Location: /web-backend/6/registration\n');
+        console.log('Location: /web-backend/8/registration/\n');
+        return;
+    }
+
+
+    
+    // Расшифровываем JWT и получаем userId
+    let decoded = myjwt.decodeJWT(jwt);
+    let userId;
+    // Если JWT кривой - ставим айди пользователя -1
+    if (decoded) {
+        userId = decoded[1].userId;
+    } else {
+        userId = -1;
+    }
+
+
+    
+    let con = await connectToDB();
+
+
+
+    // Если есть валидный JWT - возвращаем личный кабинет, 
+    // иначе перенаправляем на логин
+    const sqlGetSecret = `
+    SELECT jwtKey FROM 
+    jwtKeys 
+    WHERE userId = (?);
+    `;
+    let secret;
+    
+    try {
+        secret = await con.execute(sqlGetSecret, [userId]);
+    } catch (err) {
+        showDBError(con, err);
+        return;
+    }
+    
+    // Если JWT не валидный - удаляем его и возвращаем 
+    // HTML с формами
+    if (secret[0][0] == undefined || !myjwt.isValideJWT(decoded, secret[0][0].jwtKey)) {
+
+        con.end();
+
+        cook.setCookie('session', '', -1);
+        console.log('Location: /web-backend/8/\n');
+
+        return;
+    }
+
+} catch (err) {
+    con.end();
+    console.log('Content-Type: application/json\n');
+    console.log('Something went wrong');
+}
+};
+
+
+
+export async function POSTprofile(postData) {
+try {
+    
+    console.log('Content-Type: application/json\n');
+
+    console.log('Cache-Control: max-age=0, no-cache, no-store');
+    cook.deleteRegistrationData();
+
+
+    // Если нет JWT - перенаправляем на регистрацию
+    const jwt = cook.cookiesToJSON().session;
+    if (!jwt) {
+        console.log('Location: /web-backend/8/registration/\n');
         return;
     }
 
@@ -88,7 +158,7 @@ try {
         con.end();
 
         cook.setCookie('session', '', -1);
-        console.log('Location: /web-backend/6/\n');
+        console.log('Location: /web-backend/8/\n');
 
         return;
     }
@@ -149,7 +219,7 @@ try {
 
     // При наличии ошибок возвращает страницу, подсвечивая поля
     if (!cook.checkValues(postData)) {
-        console.log('Location: /web-backend/6/?query=profile\n');
+        console.log('Location: /web-backend/8/profile/\n');
         con.end();
         return;
     }
@@ -207,5 +277,5 @@ try {
     con.end();
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');
+}    
 }
-});

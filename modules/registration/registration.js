@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict';
 
 
@@ -27,38 +26,45 @@ import { showDBError, connectToDB } from '../requires/hz.js';
 
 let postData;
 
-export async function registration() {
+export async function GETregistration() {
 try {
     
     // console.log('Content-Type: application/json\n');
-    // console.log(process);  
-    // console.log(postData);
     
     
     console.log('Cache-Control: max-age=0, no-cache, no-store');
-    
     
     // HTML с задним фоном и регистрацией
     let base = html.getHTML('base.html');
     base = html.addBody(base, 'registration.html');
     base = html.addStyle(base, 'registration.html');
-    
-    
-    // Если в POST ничего нет - возвращает страницу
+
+    // Возвращаем регистрацию с подсвеченными полями (если есть)
     let cookieList = cook.cookiesToJSON();
     cook.formDataToCookie(postData);
-    if (!postData) {
-        base = cook.cookiesInPage(base, cookieList);
-        html.returnHTML(base);
-        return;
-    }
+    base = cook.cookiesInPage(base, cookieList);
+    html.returnHTML(base);
     
+} catch (err) {
+    console.log('Content-Type: application/json\n');
+    console.log('Something went wrong');
+}
+}
+
+
+
+export async function POSTregistration(postData) {
+try {
+
+    // console.log('Content-Type: application/json\n');
+    // console.log(postData);
     
+
     
     // При наличии ошибок возвращает страницу, подсвечивая поля
     if (!cook.checkValues(postData)) {
-        console.log('Location: /web-backend/6/?query=registration\n');
-        
+        // console.log('hehe');
+        console.log('Location: /web-backend/8/registration/\n');
         return;
     }
     
@@ -110,24 +116,23 @@ try {
     }
 
 
-
     // Вставка логина и пароля в passwords
     let login = cook.generateString(10);
     let password = cook.generateString(10);
 
     // Запись логина и пароля во временный файл, чтобы отобразить пользователю
-    try {
-        fs.writeFileSync('../auth.txt', login + ';' + password);
-    } catch (err) {
-        console.log('Content-Type: text/hmtl\n');
-        console.log(err);
-    }
+    // try {
+    //     fs.writeFileSync('../auth.txt', login + ';' + password);
+    // } catch (err) {
+    //     console.log('Content-Type: text/hmtl\n');
+    //     console.log(err);
+    // }
 
     password = createHash('sha256').update(password).digest('base64');
     let sqlPasswords = `
-        INSERT IGNORE INTO passwords 
-            (userId, userLogin, userPassword) 
-        values (?, ?, ?)
+    INSERT IGNORE INTO passwords 
+    (userId, userLogin, userPassword) 
+    values (?, ?, ?)
     `;
     let passwords = [
         userId, login, password
@@ -173,9 +178,10 @@ try {
 
 
     cook.deleteRegistrationData();
-    console.log('Location: /web-backend/6?query=profile\n');
+    console.log('Location: /web-backend/8/profile/\n');
 } catch (err) {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');
+    console.log(err);
 }
 }

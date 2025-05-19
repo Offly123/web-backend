@@ -1,4 +1,3 @@
-
 import * as mysql from 'mysql2/promise';
 import { createHash } from 'crypto';
 

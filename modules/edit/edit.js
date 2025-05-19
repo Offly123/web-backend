@@ -1,25 +1,19 @@
-#!/usr/bin/env node
 'use strict';
 
 
 import * as querystring from 'querystring';
 import 'dotenv/config';
 
-import * as html from '../requires/templates.jss'
-import * as cook from '../requires/cook.jss';
-import { getLinkParams } from '../requires/httpdata.jss';
-import { showDBError, connectToDB, DBDataToJSON, getSHA256 } from '../requires/hz.jss';
+import * as html from '../requires/templates.js'
+import * as cook from '../requires/cook.js';
+import { getLinkParams } from '../requires/httpdata.js';
+import { showDBError, connectToDB, DBDataToJSON, getSHA256 } from '../requires/hz.js';
 
 
 
 let postData;
 
-process.stdin.on('data', (info) => {
-
-    // Парсим данные из POST
-    postData = querystring.parse(info.toString());
-
-}).on('end', async () => {
+export async function edit(postData) {
 try {
     
     // console.log('Content-Type: application/json\n'); 
@@ -186,4 +180,4 @@ try {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');
 }
-});
+};
