@@ -5,28 +5,20 @@ import { getLinkParams } from './requires/httpdata.js';
 
 
 // Подключение модулей
-import { GETlogin, POSTlogin } from './login/login.js';
-import { GETregistration, POSTregistration } from './registration/registration.js';
-import { GETprofile, POSTprofile } from './profile/profile.js';
-import { admin } from './admin/admin.js';
-import { edit } from './edit/edit.js'
+import { GETmain, POSTlogin } from './main/main.js';
+import { GETabout } from './about/about.js';
 import { notFound } from './notFound/notFound.js';
 
 
 // Список доступных путей
 const GETRoutes = {
-    undefined: GETlogin,
-    'login': GETlogin,
-    'registration': GETregistration,
-    'profile': GETprofile,
-    'admin': admin,
-    'edit': edit,
+    undefined: GETmain,
+    'main': GETmain,
+    'about': GETabout
 }
 
 const POSTRoutes = {
     'login': POSTlogin,
-    'registration': POSTregistration,
-    'profile': POSTprofile
 }
 
 

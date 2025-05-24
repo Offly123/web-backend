@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Поддержка сайтов на костылях</title>
+
+    $styleStart$
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="./includes/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="./includes/slick/slick-theme.css"/>
+    <script defer type="text/javascript" src="./includes/slick/slick.min.js"></script>
+    <script defer src="./js/main.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    $styleEnd$
+</head>
+<body>
+
+    <button type="button" class="btn formOpenButton" id="showFormBtn" data-bs-toggle="modal" data-bs-target="#modalForm"></button>
+    <div class="modal modal-lg" id="modalForm" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center form-head" style="background-color: #131313;">
+                    <h1>Заполните форму</h1>
+                </div>
+                <div class="modal-body" style="background-color: #131313;">
+                    <form action="https://formcarry.com/s/kUVwgbx91Qt" class="formcarryForm">
+                        <div>
+                            ФИО:
+                            <input type="text" class="form-control" placeholder="DallbenKorass" name="account-name" required>
+                        </div>
+                            Номер телефона:
+                        <input type="text" class="form-control" placeholder="123456789" name="password" required>
+
+                        Электронная почта:
+                        <input type="text" class="form-control" placeholder="example@somemail.com" name="email" required>
+
+                        Дата рождения:
+                        <input type="date" class="form-control" placeholder="88005553535" name="phone-number" required>
+
+                        <label for="">Пол:</label>
+                        <div>
+                            <label for="sexFemale">Женский</label>
+                            <input id="sexFemale" type="radio" class="form-control" placeholder="MERCY" name="sex">
+                            <label for="sexMale">Мужской</label>
+                            <input id="sexMale" type="radio" class="form-control" placeholder="MERCY" name="sex">
+                        </div>
+
+
+                        <label for="">Любимые языки программирования:</label>
+                        <select name="languages" id="mogus" multiple required>
+                            <option value="1">Pascal</option>
+                            <option value="2">C</option>
+                            <option value="3">C++</option>
+                            <option value="4">JavaScript</option>
+                            <option value="5">PHP</option>
+                            <option value="6">Python</option>
+                            <option value="7">Java</option>
+                            <option value="8">Haskel</option>
+                            <option value="9">Clojure</option>
+                            <option value="10">Prolog</option>
+                            <option value="11">Scala</option>
+                            <option value="12">Go</option>
+                        </select>
+
+                        <input class="form-check-input" type="checkbox" value="hehe" required>
+                        С приказом об отчислении ознакомлен(а)<br>
+
+
+                        <button type="submit" class="btn" id="submitForm" style="background-color: #ffffff;">Отправить</button>
+                    </form>            
+                </div>
+                <div class="modal-footer" style="background-color: #131313;">
+                    <button type="button" class="btn btn-danger" id="hideFormBtn" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery">
+        <div class="galleryPhoto">
+            <img src="images/tank1.png" alt="tank1">
+        </div>    
+        <div class="galleryPhoto">
+            <img src="images/tank2.png" alt="tank2">
+        </div>    
+        <div class="galleryPhoto">
+            <img src="images/tank3.png" alt="tank3">
+        </div>    
+        <div class="galleryPhoto">
+            <img src="images/tank4.png" alt="tank4">
+        </div>    
+        <div class="galleryPhoto">
+            <img src="images/tank5.png" alt="tank5">
+        </div>    
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+﻿.formOpenButton {
+    width: 40vw;
+    height: calc(40vw / 3.1);
+    cursor:pointer;
+    background-image: url("../images/body_buttonFightAvaliable.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: #131313;
+
+    transition: all 0.1s;
+    filter:saturate(0%);
+}
+
+.formOpenButton:hover {
+    filter:saturate(100%);
+}
+
+.form-control {
+    border: 4px solid #a723ff;
+    border-radius: 10px;
+}
+
+.gallery {
+    width: calc(100vw - 70px);
+}
+
+.gallery .galleryPhoto {
+    display: flex;
+    justify-content: center;
+    width: 10vw;
+}
+
+.gallery img {
+    width: 40vw;
+    justify-self: center;
+}
+
+@media only screen and (max-width: 900px) {
+    .gallery {
+        width: calc(100vw - 70px);
+    }
+    
+    .gallery .galleryPhoto {
+        width: 10vw;
+    }
+    
+    .gallery img {
+        width: 70vw;
+        justify-self: center;
+    }
+    
+    #formButton {
+        cursor:pointer;
+        width: 200px;
+    }
+
+    .modal-header {
+        height: 7vw;
+        font-size: 1vw;
+        border-bottom: 4px solid #a723ff;
+    }
+
+    .modal-header h1 {
+        font-size: 5vw;
+    }
+
+    .modal-body {
+        height: 70vw;
+    }
+
+    .formcarryForm {
+        font-size: 3vw;
+    }
+
+    .form-control {
+        padding: 1vw;
+        height: 6vw;
+        font-size: 2vw;
+        border: 2px solid #a723ff;
+    }
+
+    #submitForm {
+        height: 6vw;
+        font-size: 3vw;
+        padding: 0;
+    }
+
+    #hideFormBtn {
+        height: 6vw;
+        width: 10vw;
+        font-size: 3vw;
+        padding: 0  ;
+    }
+}

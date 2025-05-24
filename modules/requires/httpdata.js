@@ -21,14 +21,13 @@ export function parseURLEncodedData(URLEndodedData) {
     // Убираем лишний undefined в начале (я не знаю откуда он)
     URLEndodedData = URLEndodedData.replace('undefined', '');
 
-
-    // Разбиваем сначала по '&', а потом по '='
     let paramValuePairs = URLEndodedData.split('&');
 
     let params = {};
     paramValuePairs.forEach(param => {
-        params[param.split('=')[0]] = decodeURIComponent(param.split('=')[1]);
+        params[param.split('=')[0]] = decodeURIComponent(param.split('=')[1]).replaceAll('+', ' ');
     });
+    // console.log(paramValuePairs);
     
     
     return params;
