@@ -219,6 +219,7 @@ footer {
     }
     
     .footerButtons {
+        padding: 0px 10px;
         display: flex;
     }
     
@@ -327,5 +328,9 @@ footer {
         background-color: #131313; 
         padding-top: 10px;
         justify-content: center;
+    }
+
+    .footerButtons {
+        padding: 0px 10px;
     }
 }

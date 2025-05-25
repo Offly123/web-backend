@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-import { getLinkParams, parseURLEncodedData } from ('../modules/requires/httpdata.js');
+const { getLinkParams, parseURLEncodedData } = require('../modules/requires/httpdata.js');
 
 
 
@@ -13,7 +13,7 @@ import { getLinkParams, parseURLEncodedData } from ('../modules/requires/httpdat
 
 
 
-const { router } = require('../modules/router.mjs');
+const { router } = require('../modules/router.js');
 
 let postData = '';
 process.stdin.on('data', (data) => {

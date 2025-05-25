@@ -1,4 +1,4 @@
-DirectoryIndex index.jss
+DirectoryIndex index.cjs
 
 SetEnvIf Authorization "Basic (.*)" HTTP_AUTHORIZATION=$1
 
