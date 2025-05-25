@@ -32,8 +32,10 @@ try{
     
     
     console.log('Cache-Control: max-age=0, no-cache, no-store');
-    // HTML с задним фоном и логином
+    // HTML с задним фоном и "о нас"
     let base = html.getHTML('base.html');
+    base = html.addBody(base, 'about.html');
+    base = html.addStyle(base, 'about.html')
     if (cook.cookiesToJSON().wrongLogin === 'true') {
         base = html.addBody(base, 'popup-error.html');
         base = html.addStyle(base, 'popup-error.html');
