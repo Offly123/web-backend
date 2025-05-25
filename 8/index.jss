@@ -1,19 +1,26 @@
 #!/usr/bin/env node
 'use strict';
 
+
+
 const { getLinkParams, parseURLEncodedData } = require('../modules/requires/httpdata.js');
 
 
 
-// Скрипт, отвечающий за роутинг. 
-// Читает query из параметров ссылки и 
-// в зависимости от значения подключает 
-// нужный модуль.
-// По стандарту перенаправляет на login.
-
-
+// // Скрипт, отвечающий за роутинг. 
+// // Читает query из параметров ссылки и 
+// // в зависимости от значения подключает 
+// // нужный модуль.
+// // По стандарту перенаправляет на login.
 
 const { router } = require('../modules/router.js');
+
+try {
+
+} catch (err) {
+    console.log('\n\n');
+    console.log(err);
+}
 
 let postData = '';
 process.stdin.on('data', (data) => {

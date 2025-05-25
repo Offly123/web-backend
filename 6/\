@@ -16,23 +16,28 @@
 //
 //
 //
-// TODO:
-// Добавить пользователям JWT в HTML
+// TODO: 
+// ☠ ☠ ☠ ☠ Фронтенд для админки ☠ ☠ ☠ ☠
 
 
-
-const { getLinkParams } = require('./requires/httpdata.jss');
-const cook = require('./requires/cook.jss');
 
 process.stdin.on('data', () => {
 
 }).on('end', async () => {
 try{
 
+    // console.log('Content-Type: application/json\n'); 
+
+
     console.log('Cache-Control: max-age=0, no-cache, no-store');
     
     // Парсим параметры из ссылки
-    let params = getLinkParams();
+    let path = process.env.QUERY_STRING.split('&');
+    
+    let params = {};
+    path.forEach(elem => {
+        params[elem.split('=')[0]] = elem.split('=')[1];
+    });
     
     
     
@@ -54,21 +59,11 @@ try{
         return;
     }
 
-    // Перенаправление на /edit/
-    if (params.query === 'edit') {
-        console.log('Location: /web-backend/6/edit/\n');
-        return;
-    }
-
-    // Выход из профиля (удаления JWT из cookie)
-    if (params.query === 'exit') {
-        cook.setCookie('session', '', -1);
-    }
-
 
     console.log('Location: /web-backend/6/login\n');
+
 } catch (err) {
     console.log('Content-Type: application/json\n');
-    console.log('Something went wrong');
+    console.log(err);
 }
 });

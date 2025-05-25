@@ -1,6 +1,6 @@
 // don't let him cook
 
-import * as fs from 'fs';
+const fs = require('fs');
 
 
 // Если два аргумента - ставит печенье на сессию (до закрытия браузера)
@@ -10,7 +10,7 @@ import * as fs from 'fs';
 // Если четрые:
 //      Третий аргумент    - время
 //      Четвёртый аргумент - путь
-export function setCookie(...args) {
+exports.setCookie = (...args) => {
     if (args.length === 2) {
         console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/; httponly');
         return;
@@ -36,7 +36,7 @@ export function setCookie(...args) {
 
 
 // получает поля формы в виде объекта и устанавливает значения cookies на год
-export function formDataToCookie(postData) {
+exports.formDataToCookie = (postData) => {
     for (let index in postData) {
         this.setCookie(index, postData[index]);
     }
@@ -44,7 +44,7 @@ export function formDataToCookie(postData) {
 
 
 // Возвращает объект, содержащий все cookies
-export function cookiesToJSON() {
+exports.cookiesToJSON = () => {
     let cookieList = {};
     if (process.env.HTTP_COOKIE === undefined) {
         return cookieList;
@@ -58,7 +58,7 @@ export function cookiesToJSON() {
 
 
 // Удаляет все куки кроме session
-export function deleteRegistrationData() {
+exports.deleteRegistrationData = () => {
     let cooks = this.cookiesToJSON();
     for (let cookie in cooks) {
         if (cookie === 'session' || cookie === 'dataSend') {
@@ -73,7 +73,7 @@ export function deleteRegistrationData() {
 // Если какое-либо значение кривое - добавляет в куки ошибку и
 // возвращает false,
 // Иначе возвращает true
-export function checkValues(formData) {
+exports.checkValues = (formData) => {
     let validValues = true;
     if (!(/^[А-Яа-яЁё\s]+$/.test(formData.fullName)) || formData.fullName.length > 150) {
         this.setCookie('fullNameError', formData.fullName);
@@ -213,7 +213,7 @@ const showError = (page, cookieName) => {
 
 // получает HTML страницу в виде строки и JSON данных, которые надо вставить.
 // Заменяет $$ на соответствующие значения cookie
-export function cookiesInPage(page, allData) {
+exports.cookiesInPage = (page, allData) => {
     const cookiesToInsertValue = [
         'fullName', 'phoneNumber', 'emailAddress', 'birthDate'
     ];
@@ -282,7 +282,7 @@ export function cookiesInPage(page, allData) {
 }
 
 
-export function generateString(length) {
+exports.generateString = (length) => {
     let string = '';
     let symbols = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for (let i = 0; i < length; i++) {

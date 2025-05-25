@@ -1,9 +1,9 @@
-import * as mysql from 'mysql2/promise';
-import { createHash } from 'crypto';
+const mysql = require('mysql2/promise');
+const { createHash } = require('crypto');
 
 // Откатывает транзакцию, закрывает соединение и возвращает 
 // пользователю ошибку
-export function showDBError(con, err) {
+exports.showDBError = (con, err) => {
     con.rollback();
     con.end();
     console.log('Content-Type: application/json\n');
@@ -13,7 +13,7 @@ export function showDBError(con, err) {
 
 
 // Получает ответ от БД и возвращает данные пользователя в JSON
-export function DBDataToJSON(personalData, languages) {
+exports.DBDataToJSON = (personalData, languages) => {
     let data;
 
     data = personalData[0][0];
@@ -32,7 +32,7 @@ export function DBDataToJSON(personalData, languages) {
     return data;
 }
 
-export async function connectToDB() {
+exports.connectToDB = () => {
     let con;
     
     try {
@@ -50,7 +50,7 @@ export async function connectToDB() {
     return con;
 }
 
-export function getSHA256(str) {
+exports.getSHA256 = (str) => {
     str = createHash('sha256').update(str).digest('base64');
     return str;
 }

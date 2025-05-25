@@ -12,19 +12,19 @@
 
 
 
-import { createHash } from 'crypto';
-import dotenv from 'dotenv';
+const { createHash } = require('crypto');
+const dotenv = require('dotenv');
 dotenv.config({path: '../../../.env'});
 
-import * as html from '../requires/templates.js';
-import * as cook from '../requires/cook.js';
-import * as myjwt from '../requires/jwtlib.js';
-import { getLinkParams } from '../requires/httpdata.js';
-import { showDBError, connectToDB } from '../requires/hz.js';
+const html = require('../requires/templates.js');
+const cook = require('../requires/cook.js');
+const myjwt = require('../requires/jwtlib.js');
+const { getLinkParams } = require('../requires/httpdata.js');
+const { showDBError, connectToDB } = require('../requires/hz.js');
 
 
 
-export async function GETabout() {
+exports.GETabout = async () => {
 try{
 
     // console.log('Content-Type: application/json\n');

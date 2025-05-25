@@ -1,7 +1,7 @@
 // "Библиотека" для работы с JWT
 
 
-import { createHmac } from 'crypto';
+const { createHmac } = require('crypto');
 
 
 // Получает JSON данных и время действия в секундах, создаёт payload
@@ -28,7 +28,7 @@ const createSignature = (header, payload, secret) => {
 
 
 // Получает JSON и секретный ключ, выдаёт jwt
-export function createJWT(payload, secret, lifeTime) {  
+exports.createJWT = (payload, secret, lifeTime) => {  
     let header = {
         'alg': 'HS256',
         'typ': 'JWT'
@@ -45,7 +45,7 @@ export function createJWT(payload, secret, lifeTime) {
 
 // Получает JWT в виде строки и возвращает его декодированным в 
 // виде массива (0 - голова, 1 - тело, 2 - подпись).
-export function decodeJWT(jwt) {
+exports.decodeJWT = (jwt) => {
     try {
         jwt = jwt.split('.');
         jwt[0] = Buffer.from(jwt[0], 'base64url').toString('utf8');
@@ -60,7 +60,7 @@ export function decodeJWT(jwt) {
 
 
 // Получает декодированный JWT в виде массива и ключ
-export function isValideJWT(decoded, secret) {
+exports.isValideJWT = (decoded, secret) => {
     // Если JWT undefined
     if (decoded == undefined) {
         return false;

@@ -1,9 +1,9 @@
-import * as fs from 'fs';
-import * as cook from './cook.js';
+const fs = require('fs');
+const cook = require('./cook.js');
 
 
 // Возвращает HTML в виде строки
-export function getHTML(page) {
+exports.getHTML = (page) => {
     let currentDir = process.cwd();
     process.chdir(process.env.DOCUMENT_ROOT + '/web-backend/html');
     try {
@@ -18,7 +18,7 @@ export function getHTML(page) {
 
 
 // Добавляет всё тело к base от выбранного HTML
-export function addBody(base, appendName) {
+exports.addBody = (base, appendName) => {
     let append = this.getHTML(appendName);
 
     let body = getBetween(append, '<body>', '</body>');
@@ -30,7 +30,7 @@ export function addBody(base, appendName) {
 
 
 // Добавляет стили из выбранного HTML
-export function addStyle(base, appendName) {
+exports.addStyle = (base, appendName) => {
     let append = this.getHTML(appendName);
 
     let style = getBetween(append, '$styleStart$', '$styleEnd$');
@@ -42,7 +42,7 @@ export function addStyle(base, appendName) {
 
 
 // Добавляет к base вместо place весь body
-export function addInsteadOf(base, append, place) {
+exports.addInsteadOf = (base, append, place) => {
     // let append = this.getHTML(appendName);
 
     let body = getBetween(append, '<body>', '</body>');
@@ -54,7 +54,7 @@ export function addInsteadOf(base, append, place) {
 
 
 // Вставляем все данные JSON в page
-export function insertData(page, data) {
+exports.insertData = (page, data) => {
     try {
         if (data.constructor !== Object) {
             throw new Error('Only Object type');
@@ -73,8 +73,6 @@ export function insertData(page, data) {
 
 
 
-
-
 // Возвращает часть строки между двумя подстроками не включительно
 const getBetween = (string, start, end) => {
     const startIndex = string.indexOf(start);
@@ -88,7 +86,7 @@ const getBetween = (string, start, end) => {
 }
 
 
-export function deleteHTMLFlags(page) {
+exports.deleteHTMLFlags = (page) => {
     page = page.replace(/\$.*?\$/g, '');
     return page;
 }
@@ -96,7 +94,7 @@ export function deleteHTMLFlags(page) {
 
 // Получает JSON данных (из куков или БД),
 // вставляет их в страницу и удаляет неиспользованные флаги
-export function returnHTML(page, data) {
+exports.returnHTML = (page, data) => {
     if (!data) {
         data = {};
     }

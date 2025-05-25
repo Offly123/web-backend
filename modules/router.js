@@ -25,7 +25,7 @@ const POSTRoutes = {
 
 // Берём из query путь и возвращаем модуль, если путь доступен, 
 // иначе 404 Not Found
-export function router() {
+exports.router = () => {
     const query = getLinkParams().query?.replace(/\/$/, '');
 
     let route;

@@ -12,21 +12,21 @@
 
 
 
-import { createHash } from 'crypto';
-import 'dotenv/config'
-import * as fs from 'fs';
+const { createHash } = require('crypto');
+require('dotenv/config');
+const fs = require('fs');
 
-import * as html from '../requires/templates.js'
-import * as cook from '../requires/cook.js';
-import * as myjwt from '../requires/jwtlib.js';
-import { getLinkParams } from '../requires/httpdata.js';
-import { showDBError, connectToDB } from '../requires/hz.js';
+const html = require('../requires/templates.js');
+const cook = require('../requires/cook.js');
+const myjwt = require('../requires/jwtlib.js');
+const { getLinkParams } = require('../requires/httpdata.js');
+const { showDBError, connectToDB } = require('../requires/hz.js');
 
 
 
 let postData;
 
-export async function GETregistration() {
+exports.GETregistration = async () =>{
 try {
     
     // console.log('Content-Type: application/json\n');
@@ -53,7 +53,7 @@ try {
 
 
 
-export async function POSTregistration(postData) {
+exports.POSTregistration = async (postData) =>{
 try {
 
     // console.log('Content-Type: application/json\n');
