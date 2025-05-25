@@ -1,13 +1,13 @@
 'use strict';
 
 // Получение параметров из ссылки
-import { getLinkParams } from './requires/httpdata.js';
+const { getLinkParams } = require('./requires/httpdata.js');
 
 
 // Подключение модулей
-import { GETmain, POSTlogin } from './main/main.js';
-import { GETabout } from './about/about.js';
-import { notFound } from './notFound/notFound.js';
+const { GETmain, POSTlogin } = require('./main/main.js');
+const { GETabout } = require('./about/about.js');
+const { notFound } = require('./notFound/notFound.js');
 
 
 // Список доступных путей
