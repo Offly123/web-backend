@@ -8,17 +8,20 @@ const { getLinkParams } = require('./requires/httpdata.js');
 const { GETmain, POSTlogin } = require('./main/main.js');
 const { GETabout } = require('./about/about.js');
 const { notFound } = require('./notFound/notFound.js');
+const { GETregistration, POSTregistration } = require('./registration/registration.js');
 
 
 // Список доступных путей
 const GETRoutes = {
     undefined: GETmain,
     'main': GETmain,
-    'about': GETabout
+    'about': GETabout,
+    'registration': GETregistration
 }
 
 const POSTRoutes = {
     'login': POSTlogin,
+    'registration': POSTregistration
 }
 
 

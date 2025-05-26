@@ -63,7 +63,6 @@ try {
     
     // При наличии ошибок возвращает страницу, подсвечивая поля
     if (!cook.checkValues(postData)) {
-        // console.log('hehe');
         console.log('Location: /web-backend/8/registration/\n');
         return;
     }
@@ -72,6 +71,7 @@ try {
     con.beginTransaction();
     
     
+
     // Вставка основных данных пользователя в users
     const sqlUsers = `
     INSERT IGNORE INTO users 
@@ -114,6 +114,7 @@ try {
         showDBError(con, err);
         return;
     }
+
 
 
     // Вставка логина и пароля в passwords
@@ -178,7 +179,7 @@ try {
 
 
     cook.deleteRegistrationData();
-    console.log('Location: /web-backend/8/profile/\n');
+    console.log('Location: /web-backend/8/\n');
 } catch (err) {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');

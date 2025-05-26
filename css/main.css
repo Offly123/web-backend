@@ -20,6 +20,11 @@
     border-radius: 10px;
 }
 
+.sex-input {
+    display: flex;
+    width: 100%;
+}
+
 .gallery {
     width: calc(100vw - 70px);
 }

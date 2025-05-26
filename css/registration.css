@@ -2,8 +2,8 @@ form {
     flex-direction: column;
     justify-content: space-between;
     font-weight: 600;
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, .5);
-    background-color: rgba(255, 255, 255, .2);
+    box-shadow: 0px 0px 10px rgba(167, 35, 255, .8);
+    background-color: rgba(167, 35, 255, .8);
     border-radius: 10px;
     color: black;
     backdrop-filter: blur(25px);

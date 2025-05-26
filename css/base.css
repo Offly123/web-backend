@@ -51,7 +51,7 @@ body {
 @keyframes kostyli {
     0% {transform: rotate(0deg);}
     50% {transform: rotate(12deg);}
-    1000% {transform: rotate(0deg);}
+    100% {transform: rotate(0deg);}
 }
 
 header {

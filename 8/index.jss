@@ -31,6 +31,7 @@ process.stdin.on('data', (data) => {
 try{
     // console.log('Content-Type: application/json\n');
     console.log('Cache-Control: max-age=0, no-cache, no-store');
+    // console.log(process.env);
 
     const getRoutated = router();
 
