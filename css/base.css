@@ -62,11 +62,7 @@ header {
     line-height: 70px;
     padding-bottom: 10px;
     border-bottom: 4px solid #a723ff;
-    height: clamp(100px, 20dvh, 200px);
-
-    @media screen and (min-width: 1200px) {
-        
-    }
+    height: 200px;
 }
 
 #title {
