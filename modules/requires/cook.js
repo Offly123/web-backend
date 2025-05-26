@@ -155,13 +155,13 @@ exports.checkValues = (formData) => {
 // Напрямую подставляет значение в HTML
 const insertDirectly = (page, cookieName, data) => {
     if (data) {
-        data = data.replace(/<.*?>/g, '');
+        data = data.replaceAll(/<.*?>/g, '');
     }
     if (data == undefined) {
         return page;
     }
 
-    page = page.replace('$' + cookieName + '$', data);
+    page = page.replaceAll('$' + cookieName + '$', data);
     return page;
 }
 
@@ -172,7 +172,7 @@ const insertValue = (page, cookieName, data) => {
         return page;
     }
 
-    page = page.replace('$' + cookieName + '$', 'value="' + data + '"');
+    page = page.replaceAll('$' + cookieName + '$', 'value="' + data + '"');
     return page;
 }
 
@@ -184,7 +184,7 @@ const insertChecked = (page, cookieName, data) => {
     }
 
     if (cookieName === 'sex') {
-        page = page.replace('$' + cookieName + data + '$', 'checked');
+        page = page.replaceAll('$' + cookieName + data + '$', 'checked');
         return page;
     }
 
@@ -193,12 +193,12 @@ const insertChecked = (page, cookieName, data) => {
             data = [data];
         }
         data.forEach(languageId => {
-            page = page.replace('$language' + languageId + '$', 'checked');
+            page = page.replaceAll('$language' + languageId + '$', 'checked');
         });
         return page;
     }
 
-    page = page.replace('$' + cookieName + '$', 'checked');
+    page = page.replaceAll('$' + cookieName + '$', 'checked');
     return page;
 }
 
@@ -221,7 +221,7 @@ exports.cookiesInPage = (page, allData) => {
         'sex', 'language', 'agreement'
     ];
     const cookiesToInsertDirectly = [
-        'biography', 'userLogin'
+        'biography', 'userLogin', 'jwt'
     ];
     
     // Вставляем значения, которые в HTML атрибуте value
@@ -236,7 +236,7 @@ exports.cookiesInPage = (page, allData) => {
     
     // Напрямую вставляем значения cookie
     cookiesToInsertDirectly.forEach((directlyCookie) => {
-        page = insertDirectly(page, directlyCookie, allData[directlyCookie])
+        page = insertDirectly(page, directlyCookie, allData[directlyCookie]);
     });
     
     // Если в имени есть Error, подсвечиваем ошибки

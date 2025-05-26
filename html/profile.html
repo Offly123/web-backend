@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>profile template</title>
+
     $styleStart$
-    <link rel="stylesheet" href="./css/registration.css">
-    <script src="./js/registration.js"></script>
+    <meta name="token" content="$jwt$">
+    <link rel="stylesheet" href="./css/profile.css">
+    <script src="./js/profile.js"></script>
     $styleEnd$
+
 </head>
 <body>
-    <form id="form-registration" class="form-hidden" method="post" action="./8/registration/">
+    <form method="post" action="./8/profile/?token=$jwt$">
         <div class="head">
-            Регистрация
+            Личный кабинет
         </div>
         <div class="main">
     
@@ -51,7 +52,7 @@
                     Дата рождения:
                     <p class="error-text" 
                     $birthDateError$>
-                    Год не может быть меньше 1900 и больше 2025
+                        Год не может быть меньше 1900 и больше 2025
                     </p>
                 </label>
                 <input type="date" name="birthDate" required 
@@ -82,11 +83,10 @@
                         Укажите ваш пол
                     </p>
     
-                    <div class="btn-wrapper" 
-                    $sexErrorBorder$>
+                    <div class="btn-wrapper" $sexErrorBorder$>
                         <input name="sex" type="radio" id="radio2" class="radio-btn" value="Female" 
                         $sexFemale$>
-                        <label for="radio2" tabindex="0">Ж</label>
+                        <label class="TEST" for="radio2" tabindex="0">Ж</label>
                     </div>
     
                 </div>
@@ -173,20 +173,17 @@
                 <label>Краткая биография:</label>
                 <p class="error-text-biography error-text" 
                 $biographyError$>
-                Только кириллические и латинские буквы, не больше 150 символов
+                    Только кириллические и латинские буквы, не больше 150 символов
                 </p>
                 <textarea id="mytext" name="biography" placeholder="Биография" required
                 $biographyErrorBorder$>$biography$</textarea>
             </div>
-            <div>
-                <input id="agreement" type="checkbox" name="agreement" required $agreement$>
-                <label for="agreement">С приказом об отчислении ознакомлен(а)<!--мне лень делать эту кнопку красивой--></label><br>
-            </div>
         </div>
         <div class="form-end">
-            <button class="submit-btn" type="submit">Отправить</button>
-            <a href="./8/login/">Войти</a>
+            <button class="submit-btn" type="submit">Сохранить</button>
+            <a href="./">Выйти</a>
         </div>
     </form>
+    $bodyToAppend$
 </body>
 </html>

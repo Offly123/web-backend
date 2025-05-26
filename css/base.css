@@ -57,12 +57,13 @@ body {
 header {
     display: flex;
     justify-content: space-between;
+    flex-shrink: 0;
     font-weight: 800;
     font-size: 65px;
     line-height: 70px;
     padding-bottom: 10px;
     border-bottom: 4px solid #a723ff;
-    height: 200px;
+    height: 175px;
 }
 
 #title {
@@ -103,7 +104,7 @@ nav .nav-item span {
     text-decoration: underline 4px;
     text-underline-offset: 3px;
     text-decoration-color: transparent;
-    transition: text-decoration-color 0.5s;
+    transition: all 0.5s;
 }
 
 nav .nav-item :hover {
@@ -129,7 +130,7 @@ nav .nav-item :hover {
     padding: 10px;
     visibility: hidden;
     position: absolute;
-    top: 100%;
+    top: 63%;
     background-color: #a723ff;
 }
 
@@ -238,7 +239,8 @@ footer {
     }
     
     .dropdown-wrapper {
-        top: 56%;
+        top: 91%;
+        right: 0;
         text-align: right;
     }
 }
@@ -272,11 +274,6 @@ footer {
         margin: 0 0 0 20px;
         display: table;
         text-wrap: nowrap;
-    }
-    
-    #title span {
-        display: table-cell;
-        vertical-align: middle;
     }
 
     #menuMobile {

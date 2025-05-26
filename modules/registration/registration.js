@@ -48,6 +48,7 @@ try {
 } catch (err) {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');
+    console.log(err);
 }
 }
 
@@ -179,7 +180,8 @@ try {
 
 
     cook.deleteRegistrationData();
-    console.log('Location: /web-backend/8/\n');
+    console.log('Status: 301');
+    console.log('Location: /web-backend/8/profile/\n');
 } catch (err) {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');

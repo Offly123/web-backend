@@ -5,10 +5,12 @@ const { getLinkParams } = require('./requires/httpdata.js');
 
 
 // Подключение модулей
-const { GETmain, POSTlogin } = require('./main/main.js');
+const { GETmain } = require('./main/main.js');
 const { GETabout } = require('./about/about.js');
 const { notFound } = require('./notFound/notFound.js');
 const { GETregistration, POSTregistration } = require('./registration/registration.js');
+const { GETprofile, POSTprofile } = require('./profile/profile.js');
+const { GETlogin, POSTlogin } = require('./login/login.js');
 
 
 // Список доступных путей
@@ -16,12 +18,15 @@ const GETRoutes = {
     undefined: GETmain,
     'main': GETmain,
     'about': GETabout,
-    'registration': GETregistration
+    'registration': GETregistration,
+    'login': GETlogin,
+    'profile': GETprofile
 }
 
 const POSTRoutes = {
     'login': POSTlogin,
-    'registration': POSTregistration
+    'registration': POSTregistration,
+    'profile': POSTprofile
 }
 
 

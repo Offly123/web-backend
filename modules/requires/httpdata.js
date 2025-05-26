@@ -25,9 +25,24 @@ exports.parseURLEncodedData = (URLEndodedData) => {
 
     let params = {};
     paramValuePairs.forEach(param => {
-        params[param.split('=')[0]] = decodeURIComponent(param.split('=')[1]).replaceAll('+', ' ');
+        const key = param.split('=')[0];
+        const value = decodeURIComponent(param.split('=')[1]).replaceAll('+', ' ');
+        // console.log('key = ' + key);
+        // console.log('value = ' + value);
+        
+        // Если нет такого ключа - просто добавляем
+        // Если есть, и значение одно - пихаем в массив
+        // Иначе просто расширяем массив
+        if (params[key]) {
+            if (params[key] instanceof Array) {
+                params[key] = [...params[key], value];
+            } else {
+                params[key] = [params[key], value];
+            }
+        } else {
+            params[key] = value;
+        }
     });
-    // console.log(paramValuePairs);
     
     
     return params;

@@ -11,7 +11,6 @@ $(document).ready(function () {
     // Показывает/скрывает список языков
     $("#toggle-languages").click(function () {
         $(".language-list").toggleClass("show-languages");
-        console.log('hehe');
     });
 
     $(".language-list").on({

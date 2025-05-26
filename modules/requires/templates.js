@@ -9,8 +9,7 @@ exports.getHTML = (page) => {
     try {
         page = fs.readFileSync(page, 'utf-8');
     } catch (err) {
-        console.log('Content-Type: application/json\n');
-        console.log('Something went wrong');
+        throw new Error('file ' + page + ' not found');
     }
     process.chdir(currentDir);
     return page;
@@ -92,7 +91,7 @@ exports.deleteHTMLFlags = (page) => {
 }
 
 
-// Получает JSON данных (из куков или БД),
+// Получает JSON данных (из куков или БД), 
 // вставляет их в страницу и удаляет неиспользованные флаги
 exports.returnHTML = (page, data) => {
     if (!data) {
@@ -104,7 +103,3 @@ exports.returnHTML = (page, data) => {
     // console.log('Content-Type: application/json; charset=utf-8\n');
     console.log(page);
 }
-
-// Логин: hDy6T5BUAW
-
-// Пароль: Wd1EttDiMF

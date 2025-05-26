@@ -15,12 +15,7 @@ const { getLinkParams, parseURLEncodedData } = require('../modules/requires/http
 
 const { router } = require('../modules/router.js');
 
-try {
 
-} catch (err) {
-    console.log('\n\n');
-    console.log(err);
-}
 
 let postData = '';
 process.stdin.on('data', (data) => {
@@ -30,6 +25,10 @@ process.stdin.on('data', (data) => {
 }).on('end', async () => {
 try{
     // console.log('Content-Type: application/json\n');
+    // console.log('\nhere\n');
+    // console.log(postData);
+
+
     console.log('Cache-Control: max-age=0, no-cache, no-store');
     // console.log(process.env);
 
@@ -39,8 +38,8 @@ try{
 
     const JSONPostData = parseURLEncodedData(postData);
     
-    getRoutated(JSONPostData);
-    
+    await getRoutated(JSONPostData);
+
 } catch (err) {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');

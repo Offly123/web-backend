@@ -2,15 +2,12 @@ form {
     flex-direction: column;
     justify-content: space-between;
     font-weight: 600;
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, .5);
-    background-color: rgba(255, 255, 255, .2);
+    box-shadow: 0px 0px 10px rgba(167, 35, 255, .8);
+    background-color: rgba(167, 35, 255, .8);
     border-radius: 10px;
     color: black;
     backdrop-filter: blur(25px);
     padding: max(5px, 1vw);
-}
-
-#form-login {
     width: clamp(200px, 85vw, 350px);
     height: clamp(50px, 35dvh, 250px);
 }
@@ -114,7 +111,7 @@ form>.main>.element {
     border: none;
     border-radius: 100px;
     height: clamp(30px, 1vw, 70px);
-    width: clamp();
+    padding: 0px 10px;
     background-color: rgba(0, 221, 255, 0.3);
     transition: all .3s;
 }

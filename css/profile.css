@@ -1,19 +1,15 @@
 form {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: clamp(200px, 85vw, 600px);
-    height: clamp(50px, 95dvh, 650px);
-    transform: translate(-50%, -50%);
     flex-direction: column;
     justify-content: space-between;
     font-weight: 600;
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, .5);
-    background-color: rgba(255, 255, 255, .2);
+    box-shadow: 0px 0px 10px rgba(167, 35, 255, .8);
+    background-color: rgba(167, 35, 255, .8);
     border-radius: 10px;
     color: black;
     backdrop-filter: blur(25px);
     padding: max(5px, 1vw);
+    width: clamp(200px, 85vw, 600px);
+    height: clamp(50px, 95dvh, 650px);
 }
 
 
@@ -348,6 +344,7 @@ form>.main>.element {
     border: none;
     border-radius: 100px;
     height: clamp(30px, 1vw, 70px);
+    padding: 0px 10px;
     background-color: rgba(0, 221, 255, 0.3);
     transition: all .3s;
 }

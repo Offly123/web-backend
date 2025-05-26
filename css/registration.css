@@ -349,6 +349,7 @@ form>.main>.element {
     border: none;
     border-radius: 100px;
     height: clamp(30px, 1vw, 70px);
+    padding: 0px 10px;
     background-color: rgba(0, 221, 255, 0.3);
     transition: all .3s;
 }
