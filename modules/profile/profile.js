@@ -148,7 +148,7 @@ try{
     if (cookieList.updateError === 'true') {
         base = html.addBody(base, 'popup-badData.html');
         base = html.addStyle(base, 'popup-badData.html');
-        cook.setCookie('wrongLogin', 'false');
+        cook.setCookie('updateError', 'false');
     }
     if (cookieList.dataSentFirstTime === 'true') {
         base = html.addBody(base, 'popup.html');
@@ -342,7 +342,3 @@ try {
     console.log(err);
 }
 };
-
-// Логин: yK3dEbnihS
-
-// Пароль: bE3WtCspH6
