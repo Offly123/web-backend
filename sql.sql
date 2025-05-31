@@ -168,7 +168,7 @@ ORDER BY COUNT(userId) DESC;
 --Вставить пароль для админа (admin yo)
 INSERT IGNORE INTO adminPasswords
     (adminLogin, adminPassword)
-values ('admin', 'ZGgjswm5hOo83HmjMOvs6hDoWLFP+RXvPTtiF9t1nB8=');
+values ('admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=');
 
 --Получить пароль админа
 SELECT adminPassword FROM adminPasswords

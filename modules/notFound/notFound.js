@@ -1,5 +1,10 @@
+'use strict'
+
+const html = require('../requires/templates.js');
+
 exports.notFound = () => {
-    console.log('Status: 404 Not Found');
-    console.log('Content-Type: text/html\n')
-    console.log(`404 Not Found`);
+    
+    let base = html.getHTML('notFound.html');
+
+    html.returnHTML(base);
 }

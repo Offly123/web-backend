@@ -15,24 +15,23 @@ const deleteUser = async (e) => {
     // Получаем userId и token из вызванной формы
     const userId = form.querySelector('[name=userId]').value;
     let dataToSent = new URLSearchParams( new FormData(form)).toString();
-    console.log(dataToSent);
+    // console.log(dataToSent);
 
 
     // Отправляем fetch
-    const url = `./admin/?query=delete`;
+    const url = `./8/admin/`;
     let response = await fetch(url, {
         method: 'POST',
         body: dataToSent
     });
 
 
-    // Получаем ответ сервера
+    // Получаем ответ сервера)
     let fetchData = await response.json();
 
 
     // Если что-то не так - кидаем ошибку
     if (!response.ok || fetchData.deleted !== 'true') {
-        // alert('Ошибка при удалении, свяжитесь сами с собой, потому что вы админ');
         console.error('Пришибка');
         console.log(fetchData);
         return;

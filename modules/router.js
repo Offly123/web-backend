@@ -9,10 +9,11 @@ const { getLinkParams } = require('./requires/httpdata.js');
 // Подключение модулей
 const { GETmain } = require('./main/main.js');
 const { GETabout } = require('./about/about.js');
-const { notFound } = require('./notFound/notFound.js');
 const { GETregistration, POSTregistration } = require('./registration/registration.js');
-const { GETprofile, POSTprofile } = require('./profile/profile.js');
 const { GETlogin, POSTlogin } = require('./login/login.js');
+const { GETprofile, POSTprofile } = require('./profile/profile.js');
+const { GETadmin, POSTadmin } = require('./admin/admin.js');
+const { notFound } = require('./notFound/notFound.js');
 
 
 // Список доступных путей
@@ -22,13 +23,15 @@ const GETRoutes = {
     'about': GETabout,
     'registration': GETregistration,
     'login': GETlogin,
-    'profile': GETprofile
+    'profile': GETprofile,
+    'admin': GETadmin
 }
 
 const POSTRoutes = {
-    'login': POSTlogin,
     'registration': POSTregistration,
-    'profile': POSTprofile
+    'login': POSTlogin,
+    'profile': POSTprofile,
+    'admin': POSTadmin
 }
 
 
