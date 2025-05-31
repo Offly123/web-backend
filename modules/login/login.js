@@ -62,7 +62,7 @@ try {
 }
 }
 
-exports.POSTlogin = async () => {
+exports.POSTlogin = async (postData) => {
 try {
     // Если есть JWT - перекидывает на profile
     if (cook.cookiesToJSON().session) {
@@ -88,7 +88,7 @@ try {
     try {
         userPassword = await con.execute(sqlGetPassword, [postData.login]);
     } catch (err) {
-        showDBError();
+        showDBError(con, err);
         return;
     }
     
@@ -129,7 +129,7 @@ try {
         userId = userId[0][0].userId;
 
     } catch (err) {
-        showDBError();
+        showDBError(con, err);
         return;
     }
 
@@ -149,7 +149,6 @@ try {
     console.log('Status: 301');
     console.log('Location: /web-backend/8/profile\n');
 }  catch(err) {
-    con.end();
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');
     console.log(err);

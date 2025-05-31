@@ -1,0 +1,13 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.galleryPhoto {
+    display: block;
+    width: 30vw !important;
+}
+
+.galleryPhoto > img {
+    width: 100% !important;
+}

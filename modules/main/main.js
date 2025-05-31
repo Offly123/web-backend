@@ -29,7 +29,10 @@ try{
 
     // console.log('Content-Type: application/json\n');
     // console.log(process.env);
-    
+    const query = getLinkParams();
+    if (query.exit === 'exit') {
+        cook.setCookie('session', '', -1);
+    }
     
     console.log('Cache-Control: max-age=0, no-cache, no-store');
     // HTML с задним фоном и логином

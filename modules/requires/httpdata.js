@@ -10,7 +10,7 @@ exports.getLinkParams = () => {
     linkParams.forEach(param => {
         params[param.split('=')[0]] = param.split('=')[1];
     });
-
+    
     return params;
 }
 

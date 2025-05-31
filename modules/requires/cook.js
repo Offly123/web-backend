@@ -11,27 +11,33 @@ const fs = require('fs');
 //      Третий аргумент    - время
 //      Четвёртый аргумент - путь
 exports.setCookie = (...args) => {
+    const name = args[0];
+    const value = args[1];
     if (args.length === 2) {
-        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/; httponly');
+        console.log('Set-Cookie: ' + name + '=' + value + '; path=/web-backend/8/; httponly');
         return;
     }
     if (args.length === 3) {
         if (args[2].constructor === Number) {
+            const timeToLive = args[2];
 
             let timeofDeath = new Date();
-            timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
-            console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/; Expires=' + timeofDeath + '; httponly');
+            timeofDeath.setSeconds(timeofDeath.getSeconds() + timeToLive);
+            console.log('Set-Cookie: ' + name + '=' + value + '; path=/web-backend/8/; Expires=' + timeofDeath + '; httponly');
 
             return;
         }
+        const path = args[2];
 
-        console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/' + args[2] + '; httponly');
+        console.log('Set-Cookie: ' + name + '=' + value + '; path=/web-backend/8/' + path + '; httponly');
 
         return;
     }
+    const timeToLive = args[2];
+    const path = args[3];
     let timeofDeath = new Date();
     timeofDeath.setSeconds(timeofDeath.getSeconds() + args[2]);
-    console.log('Set-Cookie: ' + args[0] + '=' + args[1] + '; path=/web-backend/8/' + args[3] + '; Expires=' + timeofDeath + '; httponly');
+    console.log('Set-Cookie: ' + name + '=' + value + '; path=/web-backend/8/' + args[3] + '; Expires=' + timeofDeath + '; httponly');
 }
 
 
@@ -50,6 +56,8 @@ exports.cookiesToJSON = () => {
         return cookieList;
     }
     let toArray = process.env.HTTP_COOKIE.split("; ");
+    // console.log(process.env.HTTP_COOKIE);
+    // console.log('hehe');
     toArray.forEach((cook) => {
         cookieList[cook.split("=")[0]] = cook.split("=")[1];
     });
@@ -221,7 +229,7 @@ exports.cookiesInPage = (page, allData) => {
         'sex', 'language', 'agreement'
     ];
     const cookiesToInsertDirectly = [
-        'biography', 'userLogin', 'jwt'
+        'biography', 'userLogin', 'jwt', 'login', 'password'
     ];
     
     // Вставляем значения, которые в HTML атрибуте value

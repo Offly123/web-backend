@@ -121,14 +121,10 @@ try {
     // Вставка логина и пароля в passwords
     let login = cook.generateString(10);
     let password = cook.generateString(10);
+    cook.setCookie('login', login, 5);
+    cook.setCookie('password', password, 5);
+    
 
-    // Запись логина и пароля во временный файл, чтобы отобразить пользователю
-    // try {
-    //     fs.writeFileSync('../auth.txt', login + ';' + password);
-    // } catch (err) {
-    //     console.log('Content-Type: text/hmtl\n');
-    //     console.log(err);
-    // }
 
     password = createHash('sha256').update(password).digest('base64');
     let sqlPasswords = `
@@ -171,7 +167,7 @@ try {
         return;
     }
     cook.setCookie('session', jwt, 60 * 60 * 24 * 7);
-    cook.setCookie('dataSentFirstTime', 'true');
+    cook.setCookie('dataSentFirstTime', 'true', 5);
 
 
 

@@ -3,7 +3,7 @@
 
 
 
-const { getLinkParams, parseURLEncodedData } = require('../modules/requires/httpdata.js');
+const { parseURLEncodedData } = require('../modules/requires/httpdata.js');
 
 
 

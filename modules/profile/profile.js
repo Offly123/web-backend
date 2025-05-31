@@ -43,12 +43,13 @@ try{
 
     // console.log('Content-Type: application/json\n');
     // console.log(process.env);
+    const cookieList = cook.cookiesToJSON();
 
     // HTML с задним фоном и профилем
     let base = html.getHTML('base.html');
     
     // Если нет JWT - перенаправляем на регистрацию
-    const jwt = cook.cookiesToJSON().session;
+    const jwt = cookieList.session;
     if (!jwt) {
         con.end();
 
@@ -117,8 +118,10 @@ try{
     `;
     let data;
     try {
-        let personalData = await con.execute(sqlGetData, [userId]);
-        let languages = await con.execute(sqlGetLanguages, [userId]);
+        const [personalData, languages] = await Promise.all([
+            con.execute(sqlGetData, [userId]),
+            con.execute(sqlGetLanguages, [userId])
+        ]);
         data = DBDataToJSON(personalData, languages);
     } catch (err) {
         showDBError(con, err);
@@ -133,17 +136,26 @@ try{
 
     base = html.addBody(base, 'profile.html');
     base = html.addStyle(base, 'profile.html');
+    
+    
 
-    let cookieList = cook.cookiesToJSON();
+    // console.log(cookieList);
     if (cookieList.dataUpdated === 'true') {
         cook.setCookie('dataUpdated', '', -1);
         base = html.addBody(base, 'popup-update.html');
         base = html.addStyle(base, 'popup-update.html');
     }
-    if (cookieList.wrongLogin === 'true') {
-        base = html.addBody(base, 'popup-error.html');
-        base = html.addStyle(base, 'popup-error.html');
+    if (cookieList.updateError === 'true') {
+        base = html.addBody(base, 'popup-badData.html');
+        base = html.addStyle(base, 'popup-badData.html');
         cook.setCookie('wrongLogin', 'false');
+    }
+    if (cookieList.dataSentFirstTime === 'true') {
+        base = html.addBody(base, 'popup.html');
+        base = html.addStyle(base, 'popup.html');
+        cook.setCookie('dataSentFirstTime', '', -1);
+        cook.setCookie('login', '', -1);
+        cook.setCookie('password', '', -1);
     }
     
     
@@ -154,7 +166,7 @@ try{
         'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=', 
         60 * 5
     );
-    html.returnHTML(base, {...data, jwt: adminJwt, ...cook.cookiesToJSON()});
+    html.returnHTML(base, {...data, jwt: adminJwt, ...cookieList});
 } catch(err) {
     con.end();
     console.log('Content-Type: application/json\n');
@@ -266,6 +278,7 @@ try {
     // При наличии ошибок возвращает страницу, подсвечивая поля
     if (!cook.checkValues(postData)) {
         await con.end();
+        cook.setCookie('updateError', 'true');
         console.log('Status: 301');
         console.log('Location: /web-backend/8/profile/\n');
         return;
@@ -329,3 +342,7 @@ try {
     console.log(err);
 }
 };
+
+// Логин: yK3dEbnihS
+
+// Пароль: bE3WtCspH6

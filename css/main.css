@@ -35,7 +35,7 @@
     width: 10vw;
 }
 
-.gallery img {
+.galleryPhoto > img {
     width: 40vw;
     justify-self: center;
 }

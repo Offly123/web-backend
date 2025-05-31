@@ -1,5 +1,7 @@
 'use strict';
 
+const { cook } = require('./requires/cook.js');
+
 // Получение параметров из ссылки
 const { getLinkParams } = require('./requires/httpdata.js');
 
@@ -34,7 +36,7 @@ const POSTRoutes = {
 // Берём из query путь и возвращаем модуль, если путь доступен, 
 // иначе 404 Not Found
 exports.router = () => {
-    const query = getLinkParams().query?.replace(/\/$/, '');
+    const query = getLinkParams().query?.replace(/\/$/, '').split('&')[0];
 
     let route;
 
