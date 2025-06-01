@@ -82,10 +82,10 @@ exports.deleteRegistrationData = () => {
 // возвращает false,
 // Иначе возвращает true
 exports.checkValues = (formData) => {
-    let validValues = true;
+    let errorList = [];
     if (!(/^[А-Яа-яЁё\s]+$/.test(formData.fullName)) || formData.fullName.length > 150) {
         this.setCookie('fullNameError', formData.fullName);
-        validValues = false;
+        errorList.push('fullName');
     } else {
         this.setCookie('fullNameError', '', -1);
     }
@@ -93,7 +93,7 @@ exports.checkValues = (formData) => {
 
     if (!(/^[0-9]+$/.test(formData.phoneNumber)) || formData.phoneNumber.length > 15) {
         this.setCookie('phoneNumberError', formData.phoneNumber);
-        validValues = false;
+        errorList.push('phoneNumber');
     } else {
         this.setCookie('phoneNumberError', '', -1);
     }
@@ -101,7 +101,7 @@ exports.checkValues = (formData) => {
 
     if (!(/^[0-9a-zA-Z\-_]+@[0-9a-zA-Z\-_]+\.[a-z]+$/.test(formData.emailAddress)) || formData.emailAddress.length > 50) {
         this.setCookie('emailAddressError', formData.emailAddress);
-        validValues = false;
+        errorList.push('emailAddress');
     } else {
         this.setCookie('emailAddressError', '', -1);
     }
@@ -110,7 +110,7 @@ exports.checkValues = (formData) => {
     let currentYear = new Date().getFullYear();
     if (!(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(formData.birthDate)) || birthYear < 1900 || birthYear > currentYear) {
         this.setCookie('birthDateError', formData.birthDate);
-        validValues = false;
+        errorList.push('birthDate');
     } else {
         this.setCookie('birthDateError', '', -1);
     } 
@@ -118,7 +118,7 @@ exports.checkValues = (formData) => {
 
     if (formData.sex !== 'Male' && formData.sex !== 'Female') {
         this.setCookie('sexError', 'none');
-        validValues = false;
+        errorList.push('sex');
     } else {
         this.setCookie('sexError', '', -1);
     }
@@ -126,7 +126,7 @@ exports.checkValues = (formData) => {
 
     if (formData.language === undefined) {
         this.setCookie('languageError', 'none');
-        validValues = false;
+        errorList.push('language');
     } else {
         this.setCookie('languageError', '', -1);
         
@@ -136,7 +136,7 @@ exports.checkValues = (formData) => {
         formData.language.forEach((language) => {
             if (language < 1 || language > 12) {
                 this.setCookie('languageError', 'none');
-                validValues = false;
+                errorList.push('language');
             } else {
                 this.setCookie('languageError', '', -1);
             }
@@ -150,13 +150,13 @@ exports.checkValues = (formData) => {
         formData.biography.length > 150
     ) {
         this.setCookie('biographyError', 'true');
-        validValues = false;
+        errorList.push('biography');
     } else {
         this.setCookie('biographyError', '', -1);
     }
 
 
-    return validValues;
+    return errorList;
 }
 
 
@@ -192,7 +192,7 @@ const insertChecked = (page, cookieName, data) => {
     }
 
     if (cookieName === 'sex') {
-        page = page.replaceAll('$' + cookieName + data + '$', 'checked');
+        page = page.replaceAll('$' + cookieName + data + '$', 'checked selected');
         return page;
     }
 
@@ -201,12 +201,12 @@ const insertChecked = (page, cookieName, data) => {
             data = [data];
         }
         data.forEach(languageId => {
-            page = page.replaceAll('$language' + languageId + '$', 'checked');
+            page = page.replaceAll('$language' + languageId + '$', 'checked selected');
         });
         return page;
     }
 
-    page = page.replaceAll('$' + cookieName + '$', 'checked');
+    page = page.replaceAll('$' + cookieName + '$', 'checked selected');
     return page;
 }
 

@@ -44,6 +44,7 @@ try{
     // console.log('Content-Type: application/json\n');
     // console.log(process.env);
     const cookieList = cook.cookiesToJSON();
+    cook.deleteRegistrationData();
 
     // HTML с задним фоном и профилем
     let base = html.getHTML('base.html');
@@ -162,9 +163,9 @@ try{
 
     
     let adminJwt = myjwt.createJWT(
-        {}, 
+        {userId: userId},
         'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=', 
-        60 * 5
+        60 * 10
     );
     html.returnHTML(base, {...data, jwt: adminJwt, ...cookieList});
 } catch(err) {
@@ -190,7 +191,6 @@ try {
     // console.log(postData);
 
     console.log('Cache-Control: max-age=0, no-cache, no-store');
-    cook.deleteRegistrationData();
 
     // Если нет JWT - перенаправляем на регистрацию
     const jwt = cook.cookiesToJSON().session;
@@ -276,7 +276,8 @@ try {
     
 
     // При наличии ошибок возвращает страницу, подсвечивая поля
-    if (!cook.checkValues(postData)) {
+    const errorList = cook.checkValues(postData);
+    if (errorList.length) {
         await con.end();
         cook.setCookie('updateError', 'true');
         console.log('Status: 301');
@@ -332,9 +333,14 @@ try {
     con.end();
 
 
-    cook.setCookie('dataUpdated', 'true');
-    console.log('Status: 301');
-    console.log('Location: /web-backend/8/profile/\n');
+
+    if (postData.js === 'disabled') {
+        console.log('Status: 301');
+        console.log('Location: /web-backend/8/profile/\n');
+        return;
+    }
+    console.log();
+    console.log(JSON.stringify(errorList));
 } catch (err) {
     con.end();
     console.log('Content-Type: application/json\n');

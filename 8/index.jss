@@ -29,14 +29,13 @@ try{
     // console.log(postData);
     // console.log(process.env);
 
-
-    console.log('Cache-Control: max-age=0, no-cache, no-store');
-
     const getRoutated = router();
 
     // console.log(getRoutated);
 
     const JSONPostData = parseURLEncodedData(postData);
+
+
     
     await getRoutated(JSONPostData);
 

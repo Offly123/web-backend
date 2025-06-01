@@ -19,7 +19,7 @@ const deleteUser = async (e) => {
 
 
     // Отправляем fetch
-    const url = `./8/admin/`;
+    const url = './8/admin/';
     let response = await fetch(url, {
         method: 'POST',
         body: dataToSent

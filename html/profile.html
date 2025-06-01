@@ -11,19 +11,21 @@
 
 </head>
 <body>
-    <form method="post" action="./8/profile/?token=$jwt$">
+    <form method="post" action="./8/profile/">
+        <input type="text" name="jwt" value="$jwt$" hidden>
+        <noscript>
+            <input type="text" name="js" value="disabled" hidden>
+        </noscript>
         <div class="head">
             Личный кабинет
         </div>
         <div class="main">
     
             <div class="element">
-                <label>
-                    ФИО:
-                    <p class="error-text" $fullNameError$>
-                        Только кириллические буквы, не больше 150 символов
-                    </p>
-                </label>
+                <label>ФИО:</label>
+                <p class="error-text" $fullNameError$>
+                    Только кириллические буквы, не больше 150 символов
+                </p>
                 <input type="text" name="fullName" placeholder="Иванов Иван Иванович" required $fullName$ $fullNameErrorBorder$>
             </div>
     
@@ -48,13 +50,11 @@
             </div>
     
             <div class="element">
-                <label>
-                    Дата рождения:
-                    <p class="error-text" 
-                    $birthDateError$>
-                        Год не может быть меньше 1900 и больше 2025
-                    </p>
-                </label>
+                <label>Дата рождения:</label>
+                <p class="error-text" 
+                $birthDateError$>
+                    Год не может быть меньше 1900 и больше 2025
+                </p>
                 <input type="date" name="birthDate" required 
                 $birthDate$ $birthDateErrorBorder$>
             </div>
@@ -102,7 +102,15 @@
                     </p>
                     Любимые языки программирования:
                 </label>
-                <div class="language-btn">
+                <script>
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const languageList = document.querySelector('div.language-btn');
+                        const languageListNoScript = document.querySelector('#language-select');
+                        languageList.style.display = 'block';
+                        languageListNoScript.style.display = 'none';
+                    });
+                </script>
+                <div style="display: none;" class="language-btn">
                     <button class="dont-close" id="toggle-languages" type="button">Языки</button>
                     <ul class="language-list">
                         <li class="dont-close">
@@ -167,6 +175,21 @@
                         </li>
                     </ul>
                 </div>
+                <!-- Если JS отключён --> 
+                <select name="language" id="language-select" multiple>
+                    <option value="1" $language1$>Pascal</option>
+                    <option value="2" $language2$>C</option>
+                    <option value="3" $language3$>C++</option>
+                    <option value="4" $language4$>JavaScript</option>
+                    <option value="5" $language5$>PHP</option>
+                    <option value="6" $language6$>Python</option>
+                    <option value="7" $language7$>Java</option>
+                    <option value="8" $language8$>Haskell</option>
+                    <option value="9" $language9$>Clojure</option>
+                    <option value="10" $language10$>Prolog</option>
+                    <option value="11" $language11$>Scala</option>
+                    <option value="12" $language12$>Go</option>
+                </select>
             </div>
     
             <div class="element" id="biography">

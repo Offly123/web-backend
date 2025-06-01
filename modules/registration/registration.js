@@ -21,6 +21,7 @@ const cook = require('../requires/cook.js');
 const myjwt = require('../requires/jwtlib.js');
 const { getLinkParams } = require('../requires/httpdata.js');
 const { showDBError, connectToDB } = require('../requires/hz.js');
+const { error } = require('console');
 
 
 
@@ -39,11 +40,15 @@ try {
     base = html.addBody(base, 'registration.html');
     base = html.addStyle(base, 'registration.html');
 
+    const cookieList = cook.cookiesToJSON();
+    if (cookieList.registrationErrors === 'true') {
+        base = html.addBody(base, 'popup-badData.html');
+        base = html.addStyle(base, 'popup-badData.html')
+        cook.setCookie('registrationErrors', '', -1);
+    }
+
     // Возвращаем регистрацию с подсвеченными полями (если есть)
-    let cookieList = cook.cookiesToJSON();
-    cook.formDataToCookie(postData);
-    base = cook.cookiesInPage(base, cookieList);
-    html.returnHTML(base);
+    html.returnHTML(base, cookieList);
     
 } catch (err) {
     console.log('Content-Type: application/json\n');
@@ -63,10 +68,23 @@ try {
 
     
     // При наличии ошибок возвращает страницу, подсвечивая поля
-    if (!cook.checkValues(postData)) {
-        console.log('Location: /web-backend/8/registration/\n');
+    const errorList = cook.checkValues(postData);
+    cook.formDataToCookie(postData);
+    // console.log(errorList);
+    if (errorList.length) {
+        cook.setCookie('registrationErrors', 'true');
+        if (postData.js === 'disabled') {
+            console.log('Status: 301');
+            console.log('Location: /web-backend/8/registration/\n');
+            return;
+        }
+        console.log();
+        console.log(JSON.stringify(errorList)); 
+        
         return;
     }
+
+
     
     const con = await connectToDB();
     con.beginTransaction();
@@ -176,8 +194,13 @@ try {
 
 
     cook.deleteRegistrationData();
-    console.log('Status: 301');
-    console.log('Location: /web-backend/8/profile/\n');
+    if (postData.js === 'disabled') {
+        console.log('Status: 301');
+        console.log('Location: /web-backend/8/profile/\n');
+        return;
+    }
+    console.log();
+    console.log(JSON.stringify(errorList));
 } catch (err) {
     console.log('Content-Type: application/json\n');
     console.log('Something went wrong');

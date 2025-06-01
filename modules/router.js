@@ -42,6 +42,8 @@ const POSTRoutes = {
 // Берём из query путь и возвращаем модуль, если путь доступен, 
 // иначе 404 Not Found
 exports.router = () => {
+    console.log('Cache-Control: max-age=0, no-cache, no-store');
+    
     const query = getLinkParams().query?.replace(/\/$/, '').split('&')[0];
     // console.log(query);
 
