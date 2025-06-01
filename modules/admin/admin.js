@@ -133,7 +133,7 @@ try{
     // Добавляем JWT на 5 минут
     let adminJwt = myjwt.createJWT(
         {}, 
-        'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=', 
+        process.env.JWTKEY, 
         60 * 5
     );
     base = html.insertData(base, {jwt: adminJwt});

@@ -162,12 +162,12 @@ try{
     
 
     
-    let adminJwt = myjwt.createJWT(
-        {userId: userId},
-        'qOH+n+EowSAa0YIppUIwoaETtUjt/K0hprcNt1Jnup8=', 
+    let sessionJWT = myjwt.createJWT(
+        { userId: userId },
+        process.env.JWTKEY,
         60 * 10
     );
-    html.returnHTML(base, {...data, jwt: adminJwt, ...cookieList});
+    html.returnHTML(base, {...data, jwt: sessionJWT, ...cookieList});
 } catch(err) {
     con.end();
     console.log('Content-Type: application/json\n');
@@ -244,6 +244,16 @@ try {
 
         return;
     }
+    const decodedSessionJWT = myjwt.decodeJWT(postData.jwt);
+    if (!myjwt.isValideJWT(decodedSessionJWT, process.env.JWTKEY)) {
+        con.end();
+
+        cook.setCookie('session', '', -1);
+        console.log('Status: 301');
+        console.log('Location: /web-backend/8/\n');
+
+        return;
+    }
     
 
 
@@ -307,7 +317,13 @@ try {
     values (?, ?)
     `;
     let userData = [
-        postData.fullName, postData.phoneNumber, postData.emailAddress, postData.birthDate, postData.sex, postData.biography, userId
+        postData.fullName, 
+        postData.phoneNumber, 
+        postData.emailAddress, 
+        postData.birthDate, 
+        postData.sex, 
+        postData.biography, 
+        userId
     ];
     // Суём в массив если выбран только один язык, чтобы forEach заработал
     if (postData.language.constructor !== Array) {
