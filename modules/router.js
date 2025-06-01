@@ -13,6 +13,7 @@ const { GETregistration, POSTregistration } = require('./registration/registrati
 const { GETlogin, POSTlogin } = require('./login/login.js');
 const { GETprofile, POSTprofile } = require('./profile/profile.js');
 const { GETadmin, POSTadmin } = require('./admin/admin.js');
+const { GETedit, POSTedit } = require('./edit/edit.js');
 const { notFound } = require('./notFound/notFound.js');
 
 
@@ -24,14 +25,16 @@ const GETRoutes = {
     'registration': GETregistration,
     'login': GETlogin,
     'profile': GETprofile,
-    'admin': GETadmin
+    'admin': GETadmin,
+    'edit': GETedit
 }
 
 const POSTRoutes = {
     'registration': POSTregistration,
     'login': POSTlogin,
     'profile': POSTprofile,
-    'admin': POSTadmin
+    'admin': POSTadmin,
+    'edit': POSTedit
 }
 
 
@@ -40,6 +43,7 @@ const POSTRoutes = {
 // иначе 404 Not Found
 exports.router = () => {
     const query = getLinkParams().query?.replace(/\/$/, '').split('&')[0];
+    // console.log(query);
 
     let route;
 

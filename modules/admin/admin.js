@@ -30,8 +30,6 @@ try{
     // console.log('Content-Type: application/json\n');
     // console.log('');
 
-    
-    
     // Если через HTTP не отправлены логин/пароль - кидаем HTTP авторизацию
     console.log('Cache-Control: max-age=0, no-cache');
     if (!process.env.HTTP_AUTHORIZATION) {
@@ -41,14 +39,12 @@ try{
     }
     
     
-    const adminAuthData = Buffer.from(process.env.HTTP_AUTHORIZATION, 'base64url').toString('utf-8').split(':');
-    
-    
     
     let con = await connectToDB();
     
-
-
+    
+    
+    const adminAuthData = Buffer.from(process.env.HTTP_AUTHORIZATION, 'base64url').toString('utf-8').split(':');
     let sqlAdminPassword = `
     SELECT adminPassword FROM adminPasswords
     WHERE adminLogin = ?
@@ -229,7 +225,7 @@ exports.POSTadmin = async (postData) => {
     deleteResponse.newToken = newToken;
     
     
-    // Если удаление прошло успешно - кидаем 200, иначе 403
+
     let sqlDeleteUser = `
     DELETE u, p, ul, jk FROM users u 
     JOIN passwords p ON u.userId = p.userId 

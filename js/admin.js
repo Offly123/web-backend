@@ -26,13 +26,13 @@ const deleteUser = async (e) => {
     });
 
 
-    // Получаем ответ сервера)
+    // Получаем ответ сервера
     let fetchData = await response.json();
 
 
     // Если что-то не так - кидаем ошибку
     if (!response.ok || fetchData.deleted !== 'true') {
-        console.error('Пришибка');
+        console.error('Ошибка');
         console.log(fetchData);
         return;
     }

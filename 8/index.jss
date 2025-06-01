@@ -3,15 +3,15 @@
 
 
 
-const { parseURLEncodedData } = require('../modules/requires/httpdata.js');
-
-
-
 // Скрипт, отвечающий за роутинг. 
 // Читает query из параметров ссылки и 
 // в зависимости от значения подключает 
 // нужный модуль.
 // По стандарту перенаправляет на login.
+
+
+
+const { parseURLEncodedData } = require('../modules/requires/httpdata.js');
 
 const { router } = require('../modules/router.js');
 
@@ -27,10 +27,10 @@ try{
     // console.log('Content-Type: application/json\n');
     // console.log('\nhere\n');
     // console.log(postData);
+    // console.log(process.env);
 
 
     console.log('Cache-Control: max-age=0, no-cache, no-store');
-    // console.log(process.env);
 
     const getRoutated = router();
 
